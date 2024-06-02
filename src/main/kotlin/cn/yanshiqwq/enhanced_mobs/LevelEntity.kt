@@ -4,6 +4,7 @@ import net.kyori.adventure.text.Component
 import net.kyori.adventure.text.TextComponent
 import net.kyori.adventure.text.format.NamedTextColor
 import org.bukkit.Material
+import org.bukkit.NamespacedKey
 import org.bukkit.attribute.Attribute
 import org.bukkit.enchantments.Enchantment
 import org.bukkit.entity.*
@@ -11,6 +12,7 @@ import org.bukkit.event.EventHandler
 import org.bukkit.event.Listener
 import org.bukkit.event.entity.EntityTargetEvent
 import org.bukkit.event.player.PlayerInteractEntityEvent
+import org.bukkit.persistence.PersistentDataType
 import kotlin.math.ln
 import kotlin.math.max
 
@@ -22,7 +24,7 @@ import kotlin.math.max
  * @since 2024/5/31 00:02
  */
 
-class EntityTargetListener: Listener {
+class LevelEntity: Listener {
     // debug
 //    @EventHandler
 //    fun onPlayerDamage(event: EntityDamageByEntityEvent) {
@@ -48,26 +50,32 @@ class EntityTargetListener: Listener {
     @EventHandler
     fun onEntityTarget(event: EntityTargetEvent) {
         val entity = event.entity
-        if (entity !is LivingEntity) return
-        val name = levelEntity(entity) ?: return
+        if (entity !is LivingEntity || entity.spawnCategory != SpawnCategory.MONSTER) return
+        val name = levelEntity(entity)
         entity.customName(name)
         entity.isCustomNameVisible = true
     }
 
+    private var delay = false
     @EventHandler
     fun onPlayerQuery(event: PlayerInteractEntityEvent) {
+        delay = !delay
+        if (delay) { return } // ??
         val player = event.player
         val entity = event.rightClicked
-        val level = levelEntity(entity as LivingEntity) ?: return
-        val data = level.append(splitter).append(Component.text("❤: ${String.format("%.3f", entity.getAttribute(Attribute.GENERIC_MAX_HEALTH)!!.value)}", NamedTextColor.RED))
+        val level = levelEntity(entity as LivingEntity)
+        val distanceBoost = entity.persistentDataContainer.get(NamespacedKey(Main.INSTANCE!!, "distance_boost"), PersistentDataType.DOUBLE) ?: 0.0
+
+        val distanceComponent = Component.text(" (+${String.format("%.2f", distanceBoost * 100)}%)", NamedTextColor.GRAY)
+        val healthComponent = splitter.append(Component.text("❤: ${String.format("%.3f", entity.getAttribute(Attribute.GENERIC_MAX_HEALTH)!!.value)}", NamedTextColor.RED))
         val armorComponent = splitter.append(Component.text("🛡: ${String.format("%.3f", entity.getAttribute(Attribute.GENERIC_ARMOR)!!.value)}"))
         val attackComponent = splitter.append(Component.text("🗡: ${String.format("%.3f", getDamage(entity))}", NamedTextColor.YELLOW))
         val speedComponent = splitter.append(Component.text("⚡: ${String.format("%.3f", entity.getAttribute(Attribute.GENERIC_MOVEMENT_SPEED)!!.value)}", NamedTextColor.AQUA))
-        player.sendMessage(data.append(armorComponent).append(attackComponent).append(speedComponent))
+        player.sendMessage(level.append(distanceComponent).append(healthComponent).append(armorComponent).append(attackComponent).append(speedComponent))
     }
 
-    private fun levelEntity(entity: LivingEntity): TextComponent? {
-        val level = getLevel(entity) ?: return null
+    private fun levelEntity(entity: LivingEntity): TextComponent {
+        val level = getCommonLevel(entity)
         val typeKey = entity.type.translationKey()
         val levelColor = when (level) {
             in 10..19 -> NamedTextColor.GREEN
@@ -85,52 +93,8 @@ class EntityTargetListener: Listener {
             .append(Component.translatable(typeKey, nameColor))
     }
 
-    private fun getLevel(entity: LivingEntity): Int? {
-        return when (entity) {
-            is Zombie -> getZombieLevel(entity)
-            is Skeleton, is Stray -> getSkeletonLevel(entity as AbstractSkeleton)
-            is Creeper -> getCreeperLevel(entity)
-            is Spider -> getSpiderLevel(entity)
-            is Witch -> 21
-            is Enderman -> 28
-            else -> return null
-        }
-    }
-
-    private fun getZombieLevel(entity: Zombie): Int {
-        val speed = entity.getAttribute(Attribute.GENERIC_MOVEMENT_SPEED)!!.value
-        val factorSpeed = speed - 0.23 + 1
-
-        val factorBaby = if (entity.isAdult) 1.0 else 1.35
-
-        val level = getFactorHealth(entity) * getFactorDamage(entity) * factorSpeed * factorBaby
-        return level.toInt()
-    }
-
-    private fun getSkeletonLevel(entity: AbstractSkeleton): Int {
-        val speed = entity.getAttribute(Attribute.GENERIC_MOVEMENT_SPEED)!!.value
-        val factorSpeed = 1.2 * (speed - 0.25) + 1
-
-        val level = getFactorHealth(entity) * getFactorDamage(entity) * factorSpeed
-        return level.toInt()
-    }
-
-    private fun getCreeperLevel(entity: Creeper): Int {
-        val speed = entity.getAttribute(Attribute.GENERIC_MOVEMENT_SPEED)!!.value
-        val factorSpeed = speed - 0.25 + 1
-
-        val fuse = entity.maxFuseTicks
-        val factorFuse = 1 - (fuse - 40) / 240
-
-        val level = getFactorHealth(entity) * getFactorDamage(entity) * factorSpeed * factorFuse + 8
-        return level.toInt()
-    }
-
-    private fun getSpiderLevel(entity: Spider): Int {
-        val speed = entity.getAttribute(Attribute.GENERIC_MOVEMENT_SPEED)!!.value
-        val factorSpeed = speed - 0.3 + 1
-
-        val level = getFactorHealth(entity) * getFactorDamage(entity) * factorSpeed
+    private fun getCommonLevel(entity: LivingEntity): Int {
+        val level = getFactorHealth(entity) * getFactorDamage(entity) * getFactorSpeed(entity) * getFactorAge(entity)
         return level.toInt()
     }
 
@@ -145,6 +109,12 @@ class EntityTargetListener: Listener {
     private fun getFactorArmor(entity: LivingEntity): Double {
         val armor = entity.getAttribute(Attribute.GENERIC_ARMOR)?.value ?: 0.0
         return max(1.0 - 0.04 * armor, 0.2)
+    }
+
+    private fun getFactorSpeed(entity: LivingEntity): Double {
+        return entity.getAttribute(Attribute.GENERIC_MOVEMENT_SPEED)!!.run {
+            (value / baseValue - 1) * 0.35 + 1
+        }
     }
 
     private fun getDamage(entity: LivingEntity): Double {
@@ -163,8 +133,8 @@ class EntityTargetListener: Listener {
                 damage * flame * (1 + 0.15 * knockback) * 0.85
             }
             is Creeper -> {
-                val factorPowered = if (entity.isPowered) 1.0 else 1.35
-                entity.explosionRadius * factorPowered * 1.15
+                val factorFuse = 1 - (entity.maxFuseTicks - 40) / 240
+                entity.explosionRadius * factorFuse * 1.15
             }
             else -> entity.getAttribute(Attribute.GENERIC_ATTACK_DAMAGE)?.value ?: 1.0
         }
@@ -176,5 +146,9 @@ class EntityTargetListener: Listener {
             7 * ln(damage + 1) - 7.7
         else
             damage / 3 + 1
+    }
+
+    private fun getFactorAge(entity: LivingEntity): Double {
+        return if (entity is Ageable && !entity.isAdult) 1.35 else 1.0
     }
 }

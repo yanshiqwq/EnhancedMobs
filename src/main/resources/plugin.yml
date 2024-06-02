@@ -7,3 +7,7 @@ api-version: 1.16
 load: STARTUP
 description: qwq
 folia-supported: true
+commands:
+  enhancedmobs:
+    description: qwq
+    usage: /enhancedmobs spawn [怪物类型] [怪物强度]
