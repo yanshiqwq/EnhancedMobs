@@ -1,0 +1,9 @@
+name: EnhancedMobs
+main: cn.yanshiqwq.enhanced_mobs.Main
+version: 0.0.1-SNAPSHOT
+authors:
+  - 'yanshiqwq'
+api-version: 1.16
+load: STARTUP
+description: qwq
+folia-supported: true
