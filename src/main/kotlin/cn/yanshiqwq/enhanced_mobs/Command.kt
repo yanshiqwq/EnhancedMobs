@@ -24,7 +24,6 @@ import java.util.*
  * @since 2024/6/2 23:52
  */
 
-
 class Command : CommandExecutor {
     private val prefix = Component.text("[EnhancedMobs] ", NamedTextColor.GRAY)
     override fun onCommand(sender: CommandSender, command: Command, label: String, args: Array<out String>?): Boolean {
@@ -35,53 +34,56 @@ class Command : CommandExecutor {
         }
 
         // 检查命令参数数量
-        if (args != null) {
-            if (args.size < 3) {
-                sender.sendMessage(prefix.append(Component.text("用法: /enhancedmobs spawn <怪物类型> <强化类型> <怪物强度> [坐标]", NamedTextColor.GREEN)))
-                return true
-            }
-        }
-
-        // 解析怪物类型参数
-        val typeArg = args?.get(1) ?: return false
-        val entityType: EntityType = try {
-            EntityType.valueOf(typeArg.uppercase(Locale.getDefault()))
-        } catch (e: IllegalArgumentException) {
-            sender.sendMessage(prefix.append(Component.text("无效的怪物类型！", NamedTextColor.RED)))
+        if (args == null || args.size < 4) {
+            sender.sendMessage(prefix.append(Component.text("用法: /enhancedmobs spawn <怪物类型> <强化类型> <怪物强度> [坐标]", NamedTextColor.GREEN)))
             return true
         }
 
-        val boostType = try {
-            EnhancedMobs.map[typeArg.uppercase(Locale.getDefault())]!!
+        // 解析怪物类型参数
+        val entityTypeArg = args[1].uppercase(Locale.getDefault())
+        val entityType: EntityType = try {
+            EntityType.valueOf(entityTypeArg)
         } catch (e: IllegalArgumentException) {
-            sender.sendMessage(prefix.append(Component.text("无效的强化类型！", NamedTextColor.RED)))
+            sender.sendMessage(prefix.append(Component.text("无效的怪物类型 \"$entityTypeArg\" ！", NamedTextColor.RED)))
+            return true
+        }
+
+        val boostTypeArg = args[2].uppercase(Locale.getDefault())
+        val boostTypeFunc = try {
+            Main.mobManager!!.query(boostTypeArg) ?: throw Exception()
+        } catch (e: Exception) {
+            sender.sendMessage(prefix.append(Component.text("无效的强化类型 \"$boostTypeArg\" ！", NamedTextColor.RED)))
             return true
         }
 
         // 解析倍数参数
+        val multiplierArg = args[3]
         val multiplier = try {
-            args[3].toDouble()
+            multiplierArg.toDouble()
         } catch (e: NumberFormatException) {
-            sender.sendMessage(prefix.append(Component.text("无效的怪物强度！", NamedTextColor.RED)))
+            sender.sendMessage(prefix.append(Component.text("无效的怪物强度 \"$multiplierArg\" ！", NamedTextColor.RED)))
             return true
         }
 
         // 解析坐标参数
         val location: Location = if (args.size >= 7) {
+            val xArg = args[4]
+            val yArg = args[5]
+            val zArg = args[6]
             try {
-                val x = args[4].toDouble()
-                val y = args[5].toDouble()
-                val z = args[6].toDouble()
+                val x = xArg.toDouble()
+                val y = yArg.toDouble()
+                val z = zArg.toDouble()
                 Location(sender.world, x, y, z)
             } catch (e: NumberFormatException) {
-                sender.sendMessage(prefix.append(Component.text("坐标格式不正确！", NamedTextColor.RED)))
+                sender.sendMessage(prefix.append(Component.text("坐标 ($xArg, $yArg, $zArg) 格式错误！", NamedTextColor.RED)))
                 return true
             }
         } else sender.location.toCenterLocation()
 
         // 生成实体
         val entity: LivingEntity = sender.world.spawnEntity(location, entityType, CreatureSpawnEvent.SpawnReason.CUSTOM) as LivingEntity
-        boostType(multiplier, entity)
+        boostTypeFunc(EnhancedMob(multiplier, entity))
         entity.health = entity.getAttribute(Attribute.GENERIC_MAX_HEALTH)!!.value
 
         val percent = String.format("${if (multiplier >= 0.0) "+" else ""}%.2f", multiplier * 100)
@@ -102,11 +104,11 @@ class CommandTabCompleter : TabCompleter {
             completions.add("spawn")
         } else if (args[0].equals("spawn", ignoreCase = true)) {
             when (args.size) {
-                2 -> for (type in randomList) completions.add(type.name) // 自动补全怪物类型
-                3 -> for (type in EnhancedMobs.map) completions.add(type.key)
-                4 -> completions.addAll(arrayOf("-0.5", "0.0", "0.5", "1.0", "2.0")) // 自动补全怪物强度
+                2 -> for (type in randomList) completions.add(type.name) // 怪物类型
+                3 -> for (type in Main.mobManager!!.list()) completions.add(type) // 强化类型
+                4 -> completions.addAll(arrayOf("-0.5", "0.0", "0.5", "1.0", "2.0")) // 怪物强度
                 in 5..7 -> {
-                    if (sender is Player) { // 自动补全玩家坐标
+                    if (sender is Player) { // 玩家坐标
                         val location = sender.location.toCenterLocation()
                         when (args.size) {
                             5 -> completions.add(location.x.toString())

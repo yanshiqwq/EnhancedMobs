@@ -12,6 +12,14 @@ class Main : JavaPlugin() {
         server.pluginManager.registerEvents(Arrow(), this)
         getCommand("enhancedmobs")!!.setExecutor(Command())
         getCommand("enhancedmobs")!!.tabCompleter = CommandTabCompleter()
+        mobManager = MobManager().apply {
+            register("ZOMBIE", Mobs::zombie)
+            register("SKELETON", Mobs::skeleton)
+            register("SKELETON_VARIANT", Mobs::skeletonVariant)
+            register("SPIDER", Mobs::spider)
+            register("CREEPER", Mobs::creeper)
+            register("GENERIC", Mobs::generic)
+        }
         logger.info("Plugin enabled")
     }
 
@@ -23,5 +31,6 @@ class Main : JavaPlugin() {
     companion object {
         var INSTANCE: Plugin? = null
         var LOGGER: java.util.logging.Logger? = null
+        var mobManager: MobManager? = null
     }
 }
