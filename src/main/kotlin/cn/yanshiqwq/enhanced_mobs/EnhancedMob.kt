@@ -3,24 +3,11 @@ package cn.yanshiqwq.enhanced_mobs
 import cn.yanshiqwq.enhanced_mobs.Main.Companion.INSTANCE
 import org.bukkit.Material
 import org.bukkit.NamespacedKey
-import org.bukkit.attribute.Attribute
-import org.bukkit.attribute.Attribute.*
-import org.bukkit.attribute.AttributeModifier
-import org.bukkit.attribute.AttributeModifier.Operation
-import org.bukkit.attribute.AttributeModifier.Operation.*
-import org.bukkit.enchantments.Enchantment
-import org.bukkit.entity.Arrow
 import org.bukkit.entity.LivingEntity
-import org.bukkit.entity.Player
-import org.bukkit.event.EventHandler
-import org.bukkit.event.Listener
-import org.bukkit.event.entity.EntityDamageByEntityEvent
 import org.bukkit.inventory.EquipmentSlot
 import org.bukkit.inventory.ItemStack
 import org.bukkit.persistence.PersistentDataType
 import java.util.*
-import kotlin.math.floor
-import kotlin.math.ln
 
 
 /**

@@ -21,14 +21,14 @@ class Boost {
         fun applyBoost(entity: LivingEntity, multiplier: Double) {
             try {
                 when (entity) {
-                    is Zombie -> Mobs.Zombie(multiplier, entity)
+                    is Zombie -> Main.mobManager!!.create("ZOMBIE", multiplier, entity)
                     is WitherSkeleton, is AbstractSkeleton -> {
-                        if (Random.nextDouble() >= 0.3) Mobs.Skeleton(multiplier, entity)
-                        else Mobs.SkeletonVariant(multiplier, entity)
+                        if (Random.nextDouble() >= 0.3) Main.mobManager!!.create("SKELETON", multiplier, entity)
+                        else Main.mobManager!!.create("SKElETON_VARIANT", multiplier, entity)
                     }
-                    is Spider -> Mobs.Spider(multiplier, entity)
-                    is Creeper -> Mobs.Creeper(multiplier, entity)
-                    else -> Mobs.Generic(multiplier, entity)
+                    is Spider -> Main.mobManager!!.create("SPIDER", multiplier, entity)
+                    is Creeper -> Main.mobManager!!.create("CREEPER", multiplier, entity)
+                    else -> Main.mobManager!!.create("GENERIC", multiplier, entity)
                 }
             } catch (ignored: IllegalArgumentException) {}
         }

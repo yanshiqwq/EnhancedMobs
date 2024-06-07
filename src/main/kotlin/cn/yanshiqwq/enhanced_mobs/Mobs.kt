@@ -99,7 +99,7 @@ class Mobs {
                 )))
             }
             val multiplier = entity.multiplier
-            (entity as org.bukkit.entity.Creeper).apply {
+            (entity.entity as org.bukkit.entity.Creeper).apply {
                 maxFuseTicks = IntRecordFactor({-2 * it + 30}, 15..32767).value(multiplier)
                 explosionRadius = IntRecordFactor({3 * it + 3}, 0..32).value(multiplier)
             }
