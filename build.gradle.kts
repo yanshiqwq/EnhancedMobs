@@ -16,8 +16,9 @@ repositories {
 }
 
 dependencies {
-    compileOnly(kotlin("stdlib"))
-    compileOnly("io.papermc.paper:paper-api:1.20.2-R0.1-SNAPSHOT")
+    implementation("io.papermc.paper:paper-api:1.20.2-R0.1-SNAPSHOT")
+    implementation(kotlin("stdlib"))
+    implementation(kotlin("reflect"))
 }
 
 java {

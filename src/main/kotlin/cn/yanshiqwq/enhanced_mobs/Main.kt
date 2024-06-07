@@ -9,6 +9,7 @@ class Main : JavaPlugin() {
         LOGGER = logger
         server.pluginManager.registerEvents(LevelEntity(), this)
         server.pluginManager.registerEvents(Spawn(), this)
+        server.pluginManager.registerEvents(Arrow(), this)
         getCommand("enhancedmobs")!!.setExecutor(Command())
         getCommand("enhancedmobs")!!.tabCompleter = CommandTabCompleter()
         logger.info("Plugin enabled")
