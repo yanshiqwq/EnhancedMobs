@@ -16,7 +16,7 @@ import org.bukkit.event.entity.EntityDamageByEntityEvent
  * @author yanshiqwq
  * @since 2024/6/8 07:01
  */
-class Arrow: Listener {
+class ArrowModifier: Listener {
     @EventHandler
     fun onArrowDamage(event: EntityDamageByEntityEvent) {
         if (event.damager is Arrow) {

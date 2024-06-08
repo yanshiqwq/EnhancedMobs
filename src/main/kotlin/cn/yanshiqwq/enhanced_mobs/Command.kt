@@ -1,8 +1,9 @@
 package cn.yanshiqwq.enhanced_mobs
 
-import cn.yanshiqwq.enhanced_mobs.Boost.Companion.randomList
+import cn.yanshiqwq.enhanced_mobs.Main.Companion.instance
 import net.kyori.adventure.text.Component
 import net.kyori.adventure.text.format.NamedTextColor
+import org.bukkit.Bukkit
 import org.bukkit.Location
 import org.bukkit.attribute.Attribute
 import org.bukkit.command.Command
@@ -14,6 +15,7 @@ import org.bukkit.entity.LivingEntity
 import org.bukkit.entity.Player
 import org.bukkit.event.entity.CreatureSpawnEvent
 import java.util.*
+import kotlin.random.Random
 
 
 /**
@@ -48,9 +50,13 @@ class Command : CommandExecutor {
             return true
         }
 
+        // 解析强化类型参数
         val boostTypeArg = args[2].uppercase(Locale.getDefault())
         val boostTypeFunc = try {
-            Main.mobManager!!.query(boostTypeArg) ?: throw Exception()
+            instance!!.mobTypeManager.queryTypeFunc(
+                if (boostTypeArg != "DEFAULT") TypeId(boostTypeArg)
+                else defaultBoost(entityType)
+            ) ?: throw Exception()
         } catch (e: Exception) {
             sender.sendMessage(prefix.append(Component.text("无效的强化类型 \"$boostTypeArg\" ！", NamedTextColor.RED)))
             return true
@@ -84,15 +90,30 @@ class Command : CommandExecutor {
         // 生成实体
         val entity: LivingEntity = sender.world.spawnEntity(location, entityType, CreatureSpawnEvent.SpawnReason.CUSTOM) as LivingEntity
         boostTypeFunc(EnhancedMob(multiplier, entity))
-        entity.health = entity.getAttribute(Attribute.GENERIC_MAX_HEALTH)!!.value
+        Bukkit.getScheduler().runTaskLater(instance!!, Runnable {
+            entity.health = entity.getAttribute(Attribute.GENERIC_MAX_HEALTH)!!.value
+        }, 1L)
+
 
         val percent = String.format("${if (multiplier >= 0.0) "+" else ""}%.2f", multiplier * 100)
         sender.sendMessage(prefix
-            .append(Component.text("已生成 ${entityType.name}$ ", NamedTextColor.GREEN))
-            .append(Component.text("(", NamedTextColor.GRAY))
+            .append(Component.text("已生成 ${entityType.name} ", NamedTextColor.GREEN))
+            .append(Component.text("(${boostTypeArg} ", NamedTextColor.GRAY))
             .append(Component.text(percent, NamedTextColor.AQUA))
             .append(Component.text("%) 于 (${location.x}, ${location.y}, ${location.z}).", NamedTextColor.GRAY)))
         return true
+    }
+    private fun defaultBoost(entityType: EntityType): TypeId {
+        return when (entityType) {
+            in arrayOf(EntityType.ZOMBIE_VILLAGER, EntityType.ZOMBIE, EntityType.HUSK, EntityType.DROWNED) -> TypeId("VANILLA","ZOMBIE")
+            in arrayOf(EntityType.SKELETON, EntityType.STRAY, EntityType.WITHER_SKELETON) -> {
+                if (Random.nextDouble() >= 0.3) TypeId("VANILLA","SKELETON")
+                else TypeId("EXTEND","SKElETON_VARIANT_A")
+            }
+            in arrayOf(EntityType.SPIDER, EntityType.CAVE_SPIDER) -> TypeId("VANILLA","SPIDER")
+            EntityType.CREEPER -> TypeId("VANILLA","CREEPER")
+            else -> TypeId("VANILLA","GENERIC")
+        }
     }
 }
 
@@ -104,9 +125,27 @@ class CommandTabCompleter : TabCompleter {
             completions.add("spawn")
         } else if (args[0].equals("spawn", ignoreCase = true)) {
             when (args.size) {
-                2 -> for (type in randomList) completions.add(type.name) // 怪物类型
-                3 -> for (type in Main.mobManager!!.list()) completions.add(type) // 强化类型
-                4 -> completions.addAll(arrayOf("-0.5", "0.0", "0.5", "1.0", "2.0")) // 怪物强度
+                2 -> {
+                    for (type in EntityType.entries){
+                        if (type.name.startsWith(args[1], ignoreCase = true)){
+                            completions.add(type.name)
+                        }
+                    }
+                } // 怪物类型
+                3 -> {
+                    val input = args[2].uppercase().split(".")
+                    val packId = input[0]
+                    val mobTypeManager = instance!!.mobTypeManager
+                    val packNames = mobTypeManager.listPackIds()
+                    val matchingPackages = packNames.filter { it.startsWith(packId) }
+                    matchingPackages.addFirst("DEFAULT")
+                    return if (input.size == 1 || "DEFAULT".startsWith(input[0])) {
+                        matchingPackages
+                    } else {
+                        mobTypeManager.listTypeIds(packId).map { it.value() }
+                    }
+                } // 强化类型
+                4 -> completions.addAll(arrayOf("-0.5", "0.0", "1.0", "2.0")) // 怪物强度
                 in 5..7 -> {
                     if (sender is Player) { // 玩家坐标
                         val location = sender.location.toCenterLocation()
@@ -122,5 +161,3 @@ class CommandTabCompleter : TabCompleter {
         return completions
     }
 }
-
-

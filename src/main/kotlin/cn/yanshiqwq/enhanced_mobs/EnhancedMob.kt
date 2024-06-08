@@ -1,6 +1,6 @@
 package cn.yanshiqwq.enhanced_mobs
 
-import cn.yanshiqwq.enhanced_mobs.Main.Companion.INSTANCE
+import cn.yanshiqwq.enhanced_mobs.Main.Companion.instance
 import org.bukkit.Material
 import org.bukkit.NamespacedKey
 import org.bukkit.entity.LivingEntity
@@ -20,10 +20,11 @@ import java.util.*
 
 class EnhancedMob(val multiplier: Double, val entity: LivingEntity){
     companion object {
-        val key = NamespacedKey(INSTANCE!!, "multiplier")
+        val key = NamespacedKey(instance!!, "multiplier")
     }
     init {
         entity.persistentDataContainer.set(key, PersistentDataType.DOUBLE, multiplier)
+        instance!!.mobManager.register(entity.uniqueId, this)
     }
 
     fun initAttribute(record: AttributeRecord){
@@ -31,7 +32,10 @@ class EnhancedMob(val multiplier: Double, val entity: LivingEntity){
         val attributeName = "EnhancedMob Spawn Boost"
         record.apply(this.entity, this.multiplier, attributeUUID, attributeName)
     }
-    fun initEquipment(material: Material, slot: EquipmentSlot){
+    fun initEquipment(slot: EquipmentSlot, item: ItemStack){
+        this.entity.equipment?.setItem(slot, item)
+    }
+    fun initEquipment(slot: EquipmentSlot, material: Material){
         this.entity.equipment?.setItem(slot, ItemStack(material))
     }
     fun initEnchant(slot: EquipmentSlot, record: EnchantRecord){

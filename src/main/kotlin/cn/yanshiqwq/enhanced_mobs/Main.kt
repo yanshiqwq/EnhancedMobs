@@ -1,36 +1,42 @@
 package cn.yanshiqwq.enhanced_mobs
 
-import org.bukkit.plugin.Plugin
+import org.bukkit.Bukkit.getLogger
+import org.bukkit.event.EventHandler
+import org.bukkit.event.Listener
+import org.bukkit.event.world.WorldSaveEvent
 import org.bukkit.plugin.java.JavaPlugin
+import java.util.logging.Logger
 
-class Main : JavaPlugin() {
+class Main : JavaPlugin(), Listener {
+    val mobTypeManager: MobTypeManager = MobTypeManager()
+    val mobManager: MobManager = MobManager(mobDataPath)
+
     override fun onEnable() {
-        INSTANCE = this
-        LOGGER = logger
+        instance = this
+
         server.pluginManager.registerEvents(LevelEntity(), this)
         server.pluginManager.registerEvents(Spawn(), this)
-        server.pluginManager.registerEvents(Arrow(), this)
+        server.pluginManager.registerEvents(ArrowModifier(), this)
         getCommand("enhancedmobs")!!.setExecutor(Command())
         getCommand("enhancedmobs")!!.tabCompleter = CommandTabCompleter()
-        mobManager = MobManager().apply {
-            register("ZOMBIE", Mobs::zombie)
-            register("SKELETON", Mobs::skeleton)
-            register("SKELETON_VARIANT", Mobs::skeletonVariant)
-            register("SPIDER", Mobs::spider)
-            register("CREEPER", Mobs::creeper)
-            register("GENERIC", Mobs::generic)
-        }
+        mobTypeManager.loadPacks(vanillaPack, extendPack)
+
         logger.info("Plugin enabled")
     }
 
     override fun onDisable() {
+        instance = null
         logger.info("Plugin disabled")
-        INSTANCE = null
+    }
+
+    @EventHandler
+    fun onAutoSave(event: WorldSaveEvent) {
+        mobManager.save(mobDataPath)
     }
 
     companion object {
-        var INSTANCE: Plugin? = null
-        var LOGGER: java.util.logging.Logger? = null
-        var mobManager: MobManager? = null
+        private const val mobDataPath = "mobs.dat"
+        val logger: Logger = getLogger()
+        var instance: Main? = null
     }
 }
