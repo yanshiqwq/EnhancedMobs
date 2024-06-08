@@ -1,13 +1,13 @@
 name: EnhancedMobs
 main: cn.yanshiqwq.enhanced_mobs.Main
-version: 0.0.1-SNAPSHOT
+version: 1.0
 authors:
   - 'yanshiqwq'
 api-version: 1.16
 load: STARTUP
-description: qwq
+description: 一个根据参数定向强化怪物的 Bukkit 插件
 folia-supported: true
 commands:
   enhancedmobs:
-    description: qwq
-    usage: /enhancedmobs spawn [怪物类型] [怪物强度]
+    description: 强化怪物
+    usage: /enhancedmobs spawn <怪物类型> <强化类型> <怪物强度> [坐标]
