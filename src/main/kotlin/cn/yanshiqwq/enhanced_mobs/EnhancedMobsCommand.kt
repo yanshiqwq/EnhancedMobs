@@ -35,7 +35,14 @@ class EnhancedMobsCommand : CommandExecutor {
 
         // 检查命令参数数量
         if (args == null || args.size < 4) {
-            sender.sendMessage(prefix.append(Component.text("用法: /enhancedmobs spawn <怪物类型> <强化类型> <怪物强度> [坐标]", NamedTextColor.GREEN)))
+            sender.sendMessage(
+                prefix.append(
+                    Component.text(
+                        "用法: /enhancedmobs spawn <怪物类型> <强化类型> <怪物强度> [坐标]",
+                        NamedTextColor.GREEN
+                    )
+                )
+            )
             return true
         }
 
@@ -80,7 +87,14 @@ class EnhancedMobsCommand : CommandExecutor {
                 val z = zArg.toDouble()
                 Location(sender.world, x, y, z)
             } catch (e: NumberFormatException) {
-                sender.sendMessage(prefix.append(Component.text("坐标 ($xArg, $yArg, $zArg) 格式错误！", NamedTextColor.RED)))
+                sender.sendMessage(
+                    prefix.append(
+                        Component.text(
+                            "坐标 ($xArg, $yArg, $zArg) 格式错误！",
+                            NamedTextColor.RED
+                        )
+                    )
+                )
                 return true
             }
         } else sender.location.toCenterLocation()
@@ -92,35 +106,53 @@ class EnhancedMobsCommand : CommandExecutor {
 
 
         val percent = String.format("${if (multiplier >= 0.0) "+" else ""}%.2f", multiplier * 100)
-        sender.sendMessage(prefix
-            .append(Component.text("已生成 ${entityType.name} ", NamedTextColor.GREEN))
-            .append(Component.text("(${boostTypeArg} ", NamedTextColor.GRAY))
-            .append(Component.text(percent, NamedTextColor.AQUA))
-            .append(Component.text("%) 于 (${location.x}, ${location.y}, ${location.z}).", NamedTextColor.GRAY)))
+        sender.sendMessage(
+            prefix
+                .append(Component.text("已生成 ${entityType.name} ", NamedTextColor.GREEN))
+                .append(Component.text("(${boostTypeArg} ", NamedTextColor.GRAY))
+                .append(Component.text(percent, NamedTextColor.AQUA))
+                .append(Component.text("%) 于 (${location.x}, ${location.y}, ${location.z}).", NamedTextColor.GRAY))
+        )
         return true
     }
+
     private fun defaultBoost(entityType: EntityType): TypeId {
         return when (entityType) {
-            in arrayOf(EntityType.ZOMBIE_VILLAGER, EntityType.ZOMBIE, EntityType.HUSK, EntityType.DROWNED) -> TypeId("VANILLA","ZOMBIE")
-            in arrayOf(EntityType.SKELETON, EntityType.STRAY, EntityType.WITHER_SKELETON) -> TypeId("VANILLA","SKELETON")
-            in arrayOf(EntityType.SPIDER, EntityType.CAVE_SPIDER) -> TypeId("VANILLA","SPIDER")
-            EntityType.CREEPER -> TypeId("VANILLA","CREEPER")
-            else -> TypeId("VANILLA","GENERIC")
+            in arrayOf(
+                EntityType.ZOMBIE_VILLAGER,
+                EntityType.ZOMBIE,
+                EntityType.HUSK,
+                EntityType.DROWNED
+            ) -> TypeId("VANILLA", "ZOMBIE")
+
+            in arrayOf(EntityType.SKELETON, EntityType.STRAY, EntityType.WITHER_SKELETON) -> TypeId(
+                "VANILLA",
+                "SKELETON"
+            )
+
+            in arrayOf(EntityType.SPIDER, EntityType.CAVE_SPIDER) -> TypeId("VANILLA", "SPIDER")
+            EntityType.CREEPER -> TypeId("VANILLA", "CREEPER")
+            else -> TypeId("VANILLA", "GENERIC")
         }
     }
 }
 
 
 class EnhancedMobsTabCompleter : TabCompleter {
-    override fun onTabComplete(sender: CommandSender, command: Command, alias: String, args: Array<String>): List<String> {
+    override fun onTabComplete(
+        sender: CommandSender,
+        command: Command,
+        alias: String,
+        args: Array<String>
+    ): List<String> {
         val completions: MutableList<String> = ArrayList()
         if (args.size == 1) {
             completions.add("spawn")
         } else if (args[0].equals("spawn", ignoreCase = true)) {
             when (args.size) {
                 2 -> {
-                    for (type in EntityType.entries.filter { it.isSpawnable }){
-                        if (type.name.startsWith(args[1], ignoreCase = true)){
+                    for (type in EntityType.entries.filter { it.isSpawnable }) {
+                        if (type.name.startsWith(args[1], ignoreCase = true)) {
                             completions.add(type.name)
                         }
                     }

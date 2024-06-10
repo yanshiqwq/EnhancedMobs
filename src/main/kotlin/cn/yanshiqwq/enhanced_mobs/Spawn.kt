@@ -2,7 +2,7 @@ package cn.yanshiqwq.enhanced_mobs
 
 import cn.yanshiqwq.enhanced_mobs.VariantBoost.Companion.applyVariantBoost
 import org.bukkit.attribute.Attribute
-import org.bukkit.entity.*
+import org.bukkit.entity.LivingEntity
 import org.bukkit.event.EventHandler
 import org.bukkit.event.Listener
 import org.bukkit.event.entity.EntitySpawnEvent
@@ -15,9 +15,9 @@ import org.bukkit.event.entity.EntitySpawnEvent
  * @since 2024/6/2 09:13
  */
 
-class Spawn: Listener {
+class Spawn : Listener {
     @EventHandler
-    fun onEntitySpawn(event: EntitySpawnEvent){
+    fun onEntitySpawn(event: EntitySpawnEvent) {
         val entity = event.entity
         if (entity !is LivingEntity) return
 

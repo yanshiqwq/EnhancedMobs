@@ -4,18 +4,9 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="d5ee4be2-1981-48f1-8632-49b4c7636b94" name="更改" comment="修改版本号, 修正插件信息文件">
+    <list default="true" id="d5ee4be2-1981-48f1-8632-49b4c7636b94" name="更改" comment="重构Pack类结构&#10;新增ListenerAPI&#10;新增7个使用了ListenerAPI的示例type (位于extendPack)&#10;新增右键发射火焰弹功能&#10;&#10;暂时删除MobManager的保存功能 (EnhancedMob无法Serialize)">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build.gradle.kts" beforeDir="false" afterPath="$PROJECT_DIR$/build.gradle.kts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/kotlin/cn/yanshiqwq/enhanced_mobs/ArrowModifier.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/cn/yanshiqwq/enhanced_mobs/Modifier.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/kotlin/cn/yanshiqwq/enhanced_mobs/Command.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/cn/yanshiqwq/enhanced_mobs/EnhancedMobsCommand.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/kotlin/cn/yanshiqwq/enhanced_mobs/EnhancedMob.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/cn/yanshiqwq/enhanced_mobs/EnhancedMob.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/kotlin/cn/yanshiqwq/enhanced_mobs/LevelEntity.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/cn/yanshiqwq/enhanced_mobs/LevelEntity.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/kotlin/cn/yanshiqwq/enhanced_mobs/Main.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/cn/yanshiqwq/enhanced_mobs/Main.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/kotlin/cn/yanshiqwq/enhanced_mobs/MobManager.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/cn/yanshiqwq/enhanced_mobs/MobManager.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/kotlin/cn/yanshiqwq/enhanced_mobs/MobTypeManager.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/cn/yanshiqwq/enhanced_mobs/MobTypeManager.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/kotlin/cn/yanshiqwq/enhanced_mobs/Packs.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/cn/yanshiqwq/enhanced_mobs/Packs.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/plugin.yml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/plugin.yml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -322,7 +313,14 @@
       <option name="project" value="LOCAL" />
       <updated>1717888031590</updated>
     </task>
-    <option name="localTasksCounter" value="9" />
+    <task id="LOCAL-00009" summary="重构Pack类结构&#10;新增ListenerAPI&#10;新增7个使用了ListenerAPI的示例type (位于extendPack)&#10;新增右键发射火焰弹功能&#10;&#10;暂时删除MobManager的保存功能 (EnhancedMob无法Serialize)">
+      <created>1718032887755</created>
+      <option name="number" value="00009" />
+      <option name="presentableId" value="LOCAL-00009" />
+      <option name="project" value="LOCAL" />
+      <updated>1718032887755</updated>
+    </task>
+    <option name="localTasksCounter" value="10" />
     <servers />
   </component>
   <component name="Vcs.Log.History.Properties">
@@ -378,6 +376,7 @@
     <MESSAGE value="修复猪比bug" />
     <MESSAGE value="重构, 优化Tab补全, 回滚实体等级计算方法" />
     <MESSAGE value="修改版本号, 修正插件信息文件" />
-    <option name="LAST_COMMIT_MESSAGE" value="修改版本号, 修正插件信息文件" />
+    <MESSAGE value="重构Pack类结构&#10;新增ListenerAPI&#10;新增7个使用了ListenerAPI的示例type (位于extendPack)&#10;新增右键发射火焰弹功能&#10;&#10;暂时删除MobManager的保存功能 (EnhancedMob无法Serialize)" />
+    <option name="LAST_COMMIT_MESSAGE" value="重构Pack类结构&#10;新增ListenerAPI&#10;新增7个使用了ListenerAPI的示例type (位于extendPack)&#10;新增右键发射火焰弹功能&#10;&#10;暂时删除MobManager的保存功能 (EnhancedMob无法Serialize)" />
   </component>
 </project>

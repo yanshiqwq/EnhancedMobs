@@ -11,17 +11,18 @@ class Main : JavaPlugin() {
 
     override fun onEnable() {
         instance = this
-
         mobManager = MobManager()
+        mobTypeManager.loadPacks(vanillaPack, extendPack)
 
         server.pluginManager.registerEvents(LevelEntity(), this)
         server.pluginManager.registerEvents(Spawn(), this)
         server.pluginManager.registerEvents(Modifier(), this)
         server.pluginManager.registerEvents(MobEventListener(), this)
 
-        getCommand("enhancedmobs")!!.setExecutor(EnhancedMobsCommand())
-        getCommand("enhancedmobs")!!.tabCompleter = EnhancedMobsTabCompleter()
-        mobTypeManager.loadPacks(vanillaPack, extendPack)
+        getCommand("enhancedmobs")!!.apply {
+            setExecutor(EnhancedMobsCommand())
+            tabCompleter = EnhancedMobsTabCompleter()
+        }
 
         logger.info("Plugin enabled")
     }

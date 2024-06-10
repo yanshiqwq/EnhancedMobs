@@ -10,8 +10,11 @@ import org.bukkit.attribute.Attribute
 import org.bukkit.attribute.AttributeModifier
 import org.bukkit.enchantments.Enchantment
 import org.bukkit.entity.*
-import org.bukkit.event.entity.*
+import org.bukkit.event.entity.EntityDamageByEntityEvent
+import org.bukkit.event.entity.EntityDamageEvent
 import org.bukkit.event.entity.EntityDamageEvent.DamageCause
+import org.bukkit.event.entity.EntityDeathEvent
+import org.bukkit.event.entity.EntityResurrectEvent
 import org.bukkit.inventory.EquipmentSlot
 import org.bukkit.inventory.ItemStack
 import org.bukkit.potion.PotionEffect
@@ -36,7 +39,7 @@ val logFormula: (Double) -> (Double) -> Double = { scale ->
     }
 }
 
-data class Pack(val id: String, val typeMap: Map<String, EnhancedMob.() -> Unit>){
+data class Pack(val id: String, val typeMap: Map<String, EnhancedMob.() -> Unit>) {
     fun implement(id: String, function: EnhancedMob.() -> Unit): EnhancedMob.() -> Unit {
         return {
             typeMap[id]?.let { it(this) } ?: logger.warning("${Main.prefix} Cannot implement type $id.")
@@ -47,55 +50,133 @@ data class Pack(val id: String, val typeMap: Map<String, EnhancedMob.() -> Unit>
 
 val vanillaPack = Pack("VANILLA", mapOf(
     "ZOMBIE" to {
-        initAttribute(AttributeRecord(mapOf(
-            Attribute.GENERIC_MAX_HEALTH to AttributeRecordFactor(AttributeModifier.Operation.MULTIPLY_SCALAR_1, DoubleRecordFactor({1.4 * it})),
-            Attribute.GENERIC_MOVEMENT_SPEED to AttributeRecordFactor(AttributeModifier.Operation.MULTIPLY_SCALAR_1, DoubleRecordFactor(logFormula(0.25))),
-            Attribute.GENERIC_ARMOR to AttributeRecordFactor(AttributeModifier.Operation.MULTIPLY_SCALAR_1, DoubleRecordFactor({0.35 * it}, -1.0..5.0)),
-            Attribute.GENERIC_ATTACK_DAMAGE to AttributeRecordFactor(AttributeModifier.Operation.MULTIPLY_SCALAR_1, DoubleRecordFactor(logFormula(1.0))),
-            Attribute.GENERIC_KNOCKBACK_RESISTANCE to AttributeRecordFactor(AttributeModifier.Operation.ADD_NUMBER, DoubleRecordFactor({0.065 * it})),
-            Attribute.GENERIC_FOLLOW_RANGE to AttributeRecordFactor(AttributeModifier.Operation.MULTIPLY_SCALAR_1, DoubleRecordFactor({0.15 * it}))
-        )))
+        initAttribute(
+            AttributeRecord(
+                mapOf(
+                    Attribute.GENERIC_MAX_HEALTH to AttributeRecordFactor(
+                        AttributeModifier.Operation.MULTIPLY_SCALAR_1,
+                        DoubleRecordFactor({ 1.4 * it })
+                    ),
+                    Attribute.GENERIC_MOVEMENT_SPEED to AttributeRecordFactor(
+                        AttributeModifier.Operation.MULTIPLY_SCALAR_1,
+                        DoubleRecordFactor(logFormula(0.25))
+                    ),
+                    Attribute.GENERIC_ARMOR to AttributeRecordFactor(
+                        AttributeModifier.Operation.MULTIPLY_SCALAR_1,
+                        DoubleRecordFactor({ 0.35 * it }, -1.0..5.0)
+                    ),
+                    Attribute.GENERIC_ATTACK_DAMAGE to AttributeRecordFactor(
+                        AttributeModifier.Operation.MULTIPLY_SCALAR_1,
+                        DoubleRecordFactor(logFormula(1.0))
+                    ),
+                    Attribute.GENERIC_KNOCKBACK_RESISTANCE to AttributeRecordFactor(
+                        AttributeModifier.Operation.ADD_NUMBER,
+                        DoubleRecordFactor({ 0.065 * it })
+                    ),
+                    Attribute.GENERIC_FOLLOW_RANGE to AttributeRecordFactor(
+                        AttributeModifier.Operation.MULTIPLY_SCALAR_1,
+                        DoubleRecordFactor({ 0.15 * it })
+                    )
+                )
+            )
+        )
     },
 
     "SKELETON" to {
-        initAttribute(AttributeRecord(mapOf(
-            Attribute.GENERIC_MAX_HEALTH to AttributeRecordFactor(AttributeModifier.Operation.MULTIPLY_SCALAR_1, DoubleRecordFactor({0.65 * it})),
-            Attribute.GENERIC_ATTACK_DAMAGE to AttributeRecordFactor(AttributeModifier.Operation.MULTIPLY_SCALAR_1, DoubleRecordFactor(logFormula(3.0))),
-            Attribute.GENERIC_MOVEMENT_SPEED to AttributeRecordFactor(AttributeModifier.Operation.MULTIPLY_SCALAR_1, DoubleRecordFactor(logFormula(0.25)))
-        )))
-        initEnchant(EquipmentSlot.HAND, EnchantRecord(mapOf(
-            Enchantment.ARROW_KNOCKBACK to IntRecordFactor({0.5 * it}),
-            Enchantment.ARROW_FIRE to IntRecordFactor({0.5 * it})
-        )))
+        initAttribute(
+            AttributeRecord(
+                mapOf(
+                    Attribute.GENERIC_MAX_HEALTH to AttributeRecordFactor(
+                        AttributeModifier.Operation.MULTIPLY_SCALAR_1,
+                        DoubleRecordFactor({ 0.65 * it })
+                    ),
+                    Attribute.GENERIC_ATTACK_DAMAGE to AttributeRecordFactor(
+                        AttributeModifier.Operation.MULTIPLY_SCALAR_1,
+                        DoubleRecordFactor(logFormula(3.0))
+                    ),
+                    Attribute.GENERIC_MOVEMENT_SPEED to AttributeRecordFactor(
+                        AttributeModifier.Operation.MULTIPLY_SCALAR_1,
+                        DoubleRecordFactor(logFormula(0.25))
+                    )
+                )
+            )
+        )
+        initEnchant(
+            EquipmentSlot.HAND, EnchantRecord(
+                mapOf(
+                    Enchantment.ARROW_KNOCKBACK to IntRecordFactor({ 0.5 * it }),
+                    Enchantment.ARROW_FIRE to IntRecordFactor({ 0.5 * it })
+                )
+            )
+        )
     },
 
     "SPIDER" to {
-        initAttribute(AttributeRecord(mapOf(
-            Attribute.GENERIC_MAX_HEALTH to AttributeRecordFactor(AttributeModifier.Operation.MULTIPLY_SCALAR_1, DoubleRecordFactor({2.0 * it})),
-            Attribute.GENERIC_MOVEMENT_SPEED to AttributeRecordFactor(AttributeModifier.Operation.MULTIPLY_SCALAR_1, DoubleRecordFactor(logFormula(0.25))),
-            Attribute.GENERIC_ATTACK_DAMAGE to AttributeRecordFactor(AttributeModifier.Operation.MULTIPLY_SCALAR_1, DoubleRecordFactor(logFormula(1.0)))
-        )))
+        initAttribute(
+            AttributeRecord(
+                mapOf(
+                    Attribute.GENERIC_MAX_HEALTH to AttributeRecordFactor(
+                        AttributeModifier.Operation.MULTIPLY_SCALAR_1,
+                        DoubleRecordFactor({ 2.0 * it })
+                    ),
+                    Attribute.GENERIC_MOVEMENT_SPEED to AttributeRecordFactor(
+                        AttributeModifier.Operation.MULTIPLY_SCALAR_1,
+                        DoubleRecordFactor(logFormula(0.25))
+                    ),
+                    Attribute.GENERIC_ATTACK_DAMAGE to AttributeRecordFactor(
+                        AttributeModifier.Operation.MULTIPLY_SCALAR_1,
+                        DoubleRecordFactor(logFormula(1.0))
+                    )
+                )
+            )
+        )
     },
 
     "CREEPER" to {
         if (entity !is Creeper) throw IllegalArgumentException("Illegal EntityType: ${entity.type}")
-        initAttribute(AttributeRecord(mapOf(
-            Attribute.GENERIC_MAX_HEALTH to AttributeRecordFactor(AttributeModifier.Operation.MULTIPLY_SCALAR_1, DoubleRecordFactor({0.35 * it})),
-            Attribute.GENERIC_MOVEMENT_SPEED to AttributeRecordFactor(AttributeModifier.Operation.MULTIPLY_SCALAR_1, DoubleRecordFactor(logFormula(0.25))),
-            Attribute.GENERIC_KNOCKBACK_RESISTANCE to AttributeRecordFactor(AttributeModifier.Operation.ADD_NUMBER, DoubleRecordFactor({0.065 * it}))
-        )))
+        initAttribute(
+            AttributeRecord(
+                mapOf(
+                    Attribute.GENERIC_MAX_HEALTH to AttributeRecordFactor(
+                        AttributeModifier.Operation.MULTIPLY_SCALAR_1,
+                        DoubleRecordFactor({ 0.35 * it })
+                    ),
+                    Attribute.GENERIC_MOVEMENT_SPEED to AttributeRecordFactor(
+                        AttributeModifier.Operation.MULTIPLY_SCALAR_1,
+                        DoubleRecordFactor(logFormula(0.25))
+                    ),
+                    Attribute.GENERIC_KNOCKBACK_RESISTANCE to AttributeRecordFactor(
+                        AttributeModifier.Operation.ADD_NUMBER,
+                        DoubleRecordFactor({ 0.065 * it })
+                    )
+                )
+            )
+        )
         entity.apply {
-            maxFuseTicks = IntRecordFactor({-2 * it + 30}, 15..32767).value(multiplier)
-            explosionRadius = IntRecordFactor({3 * it + 3}, 0..32).value(multiplier)
+            maxFuseTicks = IntRecordFactor({ -2 * it + 30 }, 15..32767).value(multiplier)
+            explosionRadius = IntRecordFactor({ 3 * it + 3 }, 0..32).value(multiplier)
         }
     },
 
     "GENERIC" to {
-        initAttribute(AttributeRecord(mapOf(
-            Attribute.GENERIC_MAX_HEALTH to AttributeRecordFactor(AttributeModifier.Operation.MULTIPLY_SCALAR_1, DoubleRecordFactor({it})),
-            Attribute.GENERIC_MOVEMENT_SPEED to AttributeRecordFactor(AttributeModifier.Operation.MULTIPLY_SCALAR_1, DoubleRecordFactor(logFormula(0.25))),
-            Attribute.GENERIC_ATTACK_DAMAGE to AttributeRecordFactor(AttributeModifier.Operation.MULTIPLY_SCALAR_1, DoubleRecordFactor(logFormula(1.0)))
-        )))
+        initAttribute(
+            AttributeRecord(
+                mapOf(
+                    Attribute.GENERIC_MAX_HEALTH to AttributeRecordFactor(
+                        AttributeModifier.Operation.MULTIPLY_SCALAR_1,
+                        DoubleRecordFactor({ it })
+                    ),
+                    Attribute.GENERIC_MOVEMENT_SPEED to AttributeRecordFactor(
+                        AttributeModifier.Operation.MULTIPLY_SCALAR_1,
+                        DoubleRecordFactor(logFormula(0.25))
+                    ),
+                    Attribute.GENERIC_ATTACK_DAMAGE to AttributeRecordFactor(
+                        AttributeModifier.Operation.MULTIPLY_SCALAR_1,
+                        DoubleRecordFactor(logFormula(1.0))
+                    )
+                )
+            )
+        )
     }
 ))
 
@@ -124,7 +205,7 @@ val extendPack = Pack("EXTEND", mapOf(
     },
     "ZOMBIE_TNT" to vanillaPack.implement("ZOMBIE") {
         periodRangeItem(4.0, Material.TNT) {
-            it.location.spawnEntity<TNTPrimed>(EntityType.PRIMED_TNT){
+            it.location.spawnEntity<TNTPrimed>(EntityType.PRIMED_TNT) {
                 fuseTicks = 30
                 source = entity
                 location.direction.multiply(1.4)
@@ -183,7 +264,7 @@ val extendPack = Pack("EXTEND", mapOf(
                     shieldBlock(damager)
                     it.isCancelled = true
                 }
-            } else if (Random.nextDouble() <= (0.15 * (multiplier + 1)).coerceIn(0.0, 0.65)){
+            } else if (Random.nextDouble() <= (0.15 * (multiplier + 1)).coerceIn(0.0, 0.65)) {
                 holdShield(entity)
                 Bukkit.getScheduler().runTaskLater(instance!!, Runnable {
                     if (entity.isGlowing) breakShield(entity, damager)
@@ -193,16 +274,16 @@ val extendPack = Pack("EXTEND", mapOf(
     }
 ))
 
-fun holdShield(entity: Mob){
+fun holdShield(entity: Mob) {
     entity.isGlowing = true
 }
 
-fun shieldBlock(damager: Entity){
+fun shieldBlock(damager: Entity) {
     damager.velocity = damager.location.direction.multiply(-0.35)
     damager.world.playSound(damager.location, Sound.ITEM_SHIELD_BLOCK, 1.0F, 1.0F)
 }
 
-fun breakShield(entity: Mob, damager: Entity){
+fun breakShield(entity: Mob, damager: Entity) {
     entity.isGlowing = false
     val particleLocation = entity.location.apply { y += 1 }
     damager.world.run {
@@ -211,6 +292,13 @@ fun breakShield(entity: Mob, damager: Entity){
     }
 }
 
-fun Material.isAxe(): Boolean{
-    return this in arrayOf(Material.WOODEN_AXE, Material.STONE_AXE, Material.GOLDEN_AXE, Material.IRON_AXE, Material.DIAMOND_AXE, Material.NETHERITE_AXE)
+fun Material.isAxe(): Boolean {
+    return this in arrayOf(
+        Material.WOODEN_AXE,
+        Material.STONE_AXE,
+        Material.GOLDEN_AXE,
+        Material.IRON_AXE,
+        Material.DIAMOND_AXE,
+        Material.NETHERITE_AXE
+    )
 }

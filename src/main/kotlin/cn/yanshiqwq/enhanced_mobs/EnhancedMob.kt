@@ -40,55 +40,129 @@ class MobEventListener : Listener {
 //    fun onEntityEvent(event: EntityEvent) { triggerListeners(event) }
 
     @EventHandler
-    fun onEvent(event: EntityCombustEvent) { triggerListeners(event) }
+    fun onEvent(event: EntityCombustEvent) {
+        triggerListeners(event)
+    }
+
     @EventHandler
-    fun onEvent(event: EntityDamageEvent) { triggerListeners(event) }
+    fun onEvent(event: EntityDamageEvent) {
+        triggerListeners(event)
+    }
+
     @EventHandler
-    fun onEvent(event: EntityDeathEvent) { triggerListeners(event) }
+    fun onEvent(event: EntityDeathEvent) {
+        triggerListeners(event)
+    }
+
     @EventHandler
-    fun onEvent(event: EntityEnterBlockEvent) { triggerListeners(event) }
+    fun onEvent(event: EntityEnterBlockEvent) {
+        triggerListeners(event)
+    }
+
     @EventHandler
-    fun onEvent(event: EntityExplodeEvent) { triggerListeners(event) }
+    fun onEvent(event: EntityExplodeEvent) {
+        triggerListeners(event)
+    }
+
     @EventHandler
-    fun onEvent(event: EntityInteractEvent) { triggerListeners(event) }
+    fun onEvent(event: EntityInteractEvent) {
+        triggerListeners(event)
+    }
+
     @EventHandler
-    fun onEvent(event: EntityPickupItemEvent) { triggerListeners(event) }
+    fun onEvent(event: EntityPickupItemEvent) {
+        triggerListeners(event)
+    }
+
     @EventHandler
-    fun onEvent(event: EntityPotionEffectEvent) { triggerListeners(event) }
+    fun onEvent(event: EntityPotionEffectEvent) {
+        triggerListeners(event)
+    }
+
     @EventHandler
-    fun onEvent(event: EntityRegainHealthEvent) { triggerListeners(event) }
+    fun onEvent(event: EntityRegainHealthEvent) {
+        triggerListeners(event)
+    }
+
     @EventHandler
-    fun onEvent(event: EntityResurrectEvent) { triggerListeners(event) }
+    fun onEvent(event: EntityResurrectEvent) {
+        triggerListeners(event)
+    }
+
     @EventHandler
-    fun onEvent(event: EntityShootBowEvent) { triggerListeners(event) }
+    fun onEvent(event: EntityShootBowEvent) {
+        triggerListeners(event)
+    }
+
     @EventHandler
-    fun onEvent(event: EntitySpawnEvent) { triggerListeners(event) }
+    fun onEvent(event: EntitySpawnEvent) {
+        triggerListeners(event)
+    }
+
     @EventHandler
-    fun onEvent(event: EntityTargetEvent) { triggerListeners(event) }
+    fun onEvent(event: EntityTargetEvent) {
+        triggerListeners(event)
+    }
+
     @EventHandler
-    fun onEvent(event: EntityTeleportEvent) { triggerListeners(event) }
+    fun onEvent(event: EntityTeleportEvent) {
+        triggerListeners(event)
+    }
+
     @EventHandler
-    fun onEvent(event: EntityToggleGlideEvent) { triggerListeners(event) }
+    fun onEvent(event: EntityToggleGlideEvent) {
+        triggerListeners(event)
+    }
+
     @EventHandler
-    fun onEvent(event: EntityToggleSwimEvent) { triggerListeners(event) }
+    fun onEvent(event: EntityToggleSwimEvent) {
+        triggerListeners(event)
+    }
+
     @EventHandler
-    fun onEvent(event: EntityToggleSitEvent) { triggerListeners(event) }
+    fun onEvent(event: EntityToggleSitEvent) {
+        triggerListeners(event)
+    }
+
     @EventHandler
-    fun onEvent(event: ExplosionPrimeEvent) { triggerListeners(event) }
+    fun onEvent(event: ExplosionPrimeEvent) {
+        triggerListeners(event)
+    }
+
     @EventHandler
-    fun onEvent(event: PiglinBarterEvent) { triggerListeners(event) }
+    fun onEvent(event: PiglinBarterEvent) {
+        triggerListeners(event)
+    }
+
     @EventHandler
-    fun onEvent(event: PigZombieAngerEvent) { triggerListeners(event) }
+    fun onEvent(event: PigZombieAngerEvent) {
+        triggerListeners(event)
+    }
+
     @EventHandler
-    fun onEvent(event: ProjectileLaunchEvent) { triggerListeners(event) }
+    fun onEvent(event: ProjectileLaunchEvent) {
+        triggerListeners(event)
+    }
+
     @EventHandler
-    fun onEvent(event: ProjectileHitEvent) { triggerListeners(event) }
+    fun onEvent(event: ProjectileHitEvent) {
+        triggerListeners(event)
+    }
+
     @EventHandler
-    fun onEvent(event: SlimeSplitEvent) { triggerListeners(event) }
+    fun onEvent(event: SlimeSplitEvent) {
+        triggerListeners(event)
+    }
+
     @EventHandler
-    fun onEvent(event: EntityAirChangeEvent) { triggerListeners(event) }
+    fun onEvent(event: EntityAirChangeEvent) {
+        triggerListeners(event)
+    }
+
     @EventHandler
-    fun onEvent(event: EntityPathfindEvent) { triggerListeners(event) }
+    fun onEvent(event: EntityPathfindEvent) {
+        triggerListeners(event)
+    }
 
     private fun triggerListeners(event: Event) {
         try {
@@ -105,10 +179,11 @@ class MobEventListener : Listener {
     }
 }
 
-class EnhancedMob(val multiplier: Double, val entity: Mob){
+class EnhancedMob(val multiplier: Double, val entity: Mob) {
     companion object {
         val multiplierKey = NamespacedKey(instance!!, "multiplier")
     }
+
     init {
         entity.persistentDataContainer.set(multiplierKey, PersistentDataType.DOUBLE, multiplier)
         instance!!.mobManager!!.register(entity.uniqueId, this)
@@ -116,27 +191,43 @@ class EnhancedMob(val multiplier: Double, val entity: Mob){
 
     val listeners = mutableMapOf<KClass<out Event>, (Event) -> Unit>()
 
-    fun initAttribute(record: AttributeRecord){
+    fun initAttribute(record: AttributeRecord) {
         val attributeUUID: UUID = UUID.fromString("a8d0bc44-1534-43f0-a594-f74c7c91bc59")
         val attributeName = "EnhancedMob Spawn Boost"
         record.apply(this.entity, this.multiplier, attributeUUID, attributeName)
     }
-    fun initEquipment(slot: EquipmentSlot, material: Material){
+
+    fun initEquipment(slot: EquipmentSlot, material: Material) {
         this.entity.equipment.setItem(slot, ItemStack(material))
     }
-    fun initEnchant(slot: EquipmentSlot, record: EnchantRecord){
+
+    fun initEnchant(slot: EquipmentSlot, record: EnchantRecord) {
         record.apply(this.entity, multiplier, slot)
     }
-    fun addEffect(effectType: PotionEffectType, amplifier: Int = 0, duration: Int = Int.MAX_VALUE, particle: Boolean = false, ambient: Boolean = true){
+
+    fun addEffect(
+        effectType: PotionEffectType,
+        amplifier: Int = 0,
+        duration: Int = Int.MAX_VALUE,
+        particle: Boolean = false,
+        ambient: Boolean = true
+    ) {
         this.entity.addPotionEffect(PotionEffect(effectType, duration, amplifier, ambient, particle))
     }
 
     @Suppress("UNCHECKED_CAST")
-    inline fun <reified T: Event> initListener(noinline function: (T) -> Unit) {
+    inline fun <reified T : Event> initListener(noinline function: (T) -> Unit) {
         this.listeners[T::class] = function as (Event) -> Unit
     }
 
-    fun periodRangeItem(distance: Double, before: Material, after: Material = Material.AIR, slot: EquipmentSlot = EquipmentSlot.OFF_HAND, shouldSee: Boolean = true, function: EnhancedMob.(LivingEntity) -> Unit) {
+    fun periodRangeItem(
+        distance: Double,
+        before: Material,
+        after: Material = Material.AIR,
+        slot: EquipmentSlot = EquipmentSlot.OFF_HAND,
+        shouldSee: Boolean = true,
+        function: EnhancedMob.(LivingEntity) -> Unit
+    ) {
         initEquipment(slot, before)
         var task: BukkitTask? = null
         val func = Runnable {
@@ -156,12 +247,12 @@ class EnhancedMob(val multiplier: Double, val entity: Mob){
 
 fun Location.placeBlock(type: Material) {
     this.block.run {
-        if(!isReplaceable) return
+        if (!isReplaceable) return
         setType(type, true)
     }
 }
 
-inline fun <reified T: Entity> Location.spawnEntity(type: EntityType, function: T.() -> Unit) {
+inline fun <reified T : Entity> Location.spawnEntity(type: EntityType, function: T.() -> Unit) {
     val entity = this.world.spawnEntity(this, type, CreatureSpawnEvent.SpawnReason.REINFORCEMENTS)
     if (type.entityClass == T::class.java)
         (entity as T).function()

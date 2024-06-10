@@ -19,25 +19,31 @@ import kotlin.math.floor
 interface RecordFactor {
     fun value(base: Double): Number
 }
-data class DoubleRecordFactor(val formula: (Double) -> Double, private val range: ClosedFloatingPointRange<Double>? = null): RecordFactor {
+
+data class DoubleRecordFactor(
+    val formula: (Double) -> Double,
+    private val range: ClosedFloatingPointRange<Double>? = null
+) : RecordFactor {
     override fun value(base: Double): Double {
         return if (range == null) formula(base) else formula(base).coerceIn(range)
     }
 }
-data class IntRecordFactor(val formula: (Double) -> Double, private val range: IntRange? = null): RecordFactor {
+
+data class IntRecordFactor(val formula: (Double) -> Double, private val range: IntRange? = null) : RecordFactor {
     override fun value(base: Double): Int {
         return if (range == null) floor(formula(base)).toInt() else floor(formula(base)).toInt().coerceIn(range)
     }
 }
 
-data class AttributeRecordFactor(val operation: AttributeModifier.Operation, val factor: DoubleRecordFactor){
+data class AttributeRecordFactor(val operation: AttributeModifier.Operation, val factor: DoubleRecordFactor) {
     fun getModifier(multiplier: Double, uuid: UUID, name: String): AttributeModifier {
         val amount = factor.value(multiplier)
         return AttributeModifier(uuid, name, amount, operation)
     }
 }
-data class AttributeRecord(val attribute: Map<Attribute, AttributeRecordFactor>){
-    fun apply(entity: LivingEntity, multiplier: Double, uuid: UUID, name: String){
+
+data class AttributeRecord(val attribute: Map<Attribute, AttributeRecordFactor>) {
+    fun apply(entity: LivingEntity, multiplier: Double, uuid: UUID, name: String) {
         attribute.forEach {
             val attribute = it.key
             val factor = it.value
@@ -46,7 +52,7 @@ data class AttributeRecord(val attribute: Map<Attribute, AttributeRecordFactor>)
     }
 }
 
-data class EnchantRecord(val enchant: Map<Enchantment, IntRecordFactor>){
+data class EnchantRecord(val enchant: Map<Enchantment, IntRecordFactor>) {
     fun apply(entity: LivingEntity, multiplier: Double, slot: EquipmentSlot) {
         enchant.forEach {
             val enchant = it.key

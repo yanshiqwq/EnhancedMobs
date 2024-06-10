@@ -11,21 +11,25 @@ import java.util.*
  * @since 2024/6/8 15:40
  */
 
-class MobManager() {
+class MobManager {
     private val map: MutableMap<UUID, EnhancedMob> = mutableMapOf()
 
-    fun register(uuid: UUID, entity: EnhancedMob){
+    fun register(uuid: UUID, entity: EnhancedMob) {
         map[uuid] = entity
     }
-    fun remove(uuid: UUID){
+
+    fun remove(uuid: UUID) {
         map.remove(uuid)
     }
+
     fun map(): MutableMap<UUID, EnhancedMob> {
         return map
     }
+
     fun get(uuid: UUID): EnhancedMob? {
         return map[uuid]
     }
+
     fun get(entity: Mob): EnhancedMob? {
         map.values.forEach {
             if (it.entity == entity) return it

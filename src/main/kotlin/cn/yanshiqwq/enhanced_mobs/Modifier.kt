@@ -10,11 +10,11 @@ import org.bukkit.entity.LivingEntity
 import org.bukkit.entity.Player
 import org.bukkit.event.EventHandler
 import org.bukkit.event.Listener
+import org.bukkit.event.block.Action
 import org.bukkit.event.entity.EntityDamageByEntityEvent
 import org.bukkit.event.player.PlayerInteractEvent
-import org.bukkit.inventory.ItemStack
-import org.bukkit.event.block.Action
 import org.bukkit.inventory.EquipmentSlot
+import org.bukkit.inventory.ItemStack
 import kotlin.random.Random
 
 
@@ -25,7 +25,7 @@ import kotlin.random.Random
  * @author yanshiqwq
  * @since 2024/6/8 07:01
  */
-class Modifier: Listener {
+class Modifier : Listener {
     @EventHandler
     fun onArrowDamage(event: EntityDamageByEntityEvent) {
         if (event.damager is Arrow) {

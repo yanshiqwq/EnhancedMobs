@@ -23,7 +23,7 @@ import kotlin.math.max
  * @since 2024/5/31 00:02
  */
 
-class LevelEntity: Listener {
+class LevelEntity : Listener {
     // debug
 //    @EventHandler
 //    fun onPlayerDamage(event: EntityDamageByEntityEvent) {
@@ -56,21 +56,58 @@ class LevelEntity: Listener {
     }
 
     private var delay = false
+
     @EventHandler
     fun onPlayerQuery(event: PlayerInteractEntityEvent) {
         delay = !delay
-        if (delay) { return } // ??
+        if (delay) {
+            return
+        } // ??
         val player = event.player
         val entity = event.rightClicked
         val level = levelEntity(entity as LivingEntity)
         val multiplier = entity.persistentDataContainer.get(EnhancedMob.multiplierKey, PersistentDataType.DOUBLE) ?: 0.0
 
-        val multiplierComponent = Component.text(" (${if (multiplier >= 0) "+" else ""}${String.format("%.2f", multiplier * 100)}%)", NamedTextColor.GRAY)
-        val healthComponent = splitter.append(Component.text("❤: ${String.format("%.3f", entity.getAttribute(Attribute.GENERIC_MAX_HEALTH)!!.value)}", NamedTextColor.RED))
-        val armorComponent = splitter.append(Component.text("🛡: ${String.format("%.3f", entity.getAttribute(Attribute.GENERIC_ARMOR)!!.value)}"))
-        val attackComponent = splitter.append(Component.text("🗡: ${String.format("%.3f", getDamage(entity))}", NamedTextColor.YELLOW))
-        val speedComponent = splitter.append(Component.text("⚡: ${String.format("%.3f", entity.getAttribute(Attribute.GENERIC_MOVEMENT_SPEED)!!.value)}", NamedTextColor.AQUA))
-        player.sendMessage(level.append(multiplierComponent).append(healthComponent).append(armorComponent).append(attackComponent).append(speedComponent))
+        val multiplierComponent = Component.text(
+            " (${if (multiplier >= 0) "+" else ""}${String.format("%.2f", multiplier * 100)}%)",
+            NamedTextColor.GRAY
+        )
+        val healthComponent = splitter.append(
+            Component.text(
+                "❤: ${
+                    String.format(
+                        "%.3f",
+                        entity.getAttribute(Attribute.GENERIC_MAX_HEALTH)!!.value
+                    )
+                }", NamedTextColor.RED
+            )
+        )
+        val armorComponent = splitter.append(
+            Component.text(
+                "🛡: ${
+                    String.format(
+                        "%.3f",
+                        entity.getAttribute(Attribute.GENERIC_ARMOR)!!.value
+                    )
+                }"
+            )
+        )
+        val attackComponent =
+            splitter.append(Component.text("🗡: ${String.format("%.3f", getDamage(entity))}", NamedTextColor.YELLOW))
+        val speedComponent = splitter.append(
+            Component.text(
+                "⚡: ${
+                    String.format(
+                        "%.3f",
+                        entity.getAttribute(Attribute.GENERIC_MOVEMENT_SPEED)!!.value
+                    )
+                }", NamedTextColor.AQUA
+            )
+        )
+        player.sendMessage(
+            level.append(multiplierComponent).append(healthComponent).append(armorComponent).append(attackComponent)
+                .append(speedComponent)
+        )
     }
 
     private fun levelEntity(entity: LivingEntity): TextComponent {
@@ -122,25 +159,28 @@ class LevelEntity: Listener {
                 var damage = entity.getAttribute(Attribute.GENERIC_ATTACK_DAMAGE)?.value ?: 1.0
                 var knockback = 0
                 var flame = 1.0
-                val mainHand = entity.equipment?.itemInMainHand ?: return entity.getAttribute(Attribute.GENERIC_ATTACK_DAMAGE)?.value ?: 0.0
+                val mainHand = entity.equipment?.itemInMainHand
+                    ?: return entity.getAttribute(Attribute.GENERIC_ATTACK_DAMAGE)?.value ?: 0.0
                 if (mainHand.type in arrayOf(Material.BOW, Material.CROSSBOW)) {
                     val power = mainHand.enchantments[Enchantment.ARROW_DAMAGE] ?: 0
                     damage = 4.5 * (1 + 0.15 * power)
                     knockback = mainHand.enchantments[Enchantment.ARROW_KNOCKBACK] ?: 0
-                    flame = if ((mainHand.enchantments[Enchantment.ARROW_FIRE]?: 0) >= 1) 1.25 else 1.0
+                    flame = if ((mainHand.enchantments[Enchantment.ARROW_FIRE] ?: 0) >= 1) 1.25 else 1.0
                 }
                 damage * flame * (1 + 0.15 * knockback) * 0.85
             }
+
             is Creeper -> {
                 val factorFuse = 1 - (entity.maxFuseTicks - 40) / 240
                 entity.explosionRadius * factorFuse * 1.15
             }
+
             else -> entity.getAttribute(Attribute.GENERIC_ATTACK_DAMAGE)?.value ?: 1.0
         }
     }
 
     private fun getFactorDamage(entity: LivingEntity): Double {
-        val damage= getDamage(entity)
+        val damage = getDamage(entity)
         return if (damage >= 3)
             7 * ln(damage + 1) - 7.7
         else

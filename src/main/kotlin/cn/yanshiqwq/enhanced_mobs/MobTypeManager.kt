@@ -13,6 +13,7 @@ import org.bukkit.entity.Mob
 
 data class TypeId(val pack: String, val mob: String) {
     constructor(id: String) : this(id.split(".")[0], id.split(".")[1])
+
     fun value(): String {
         return "$pack.$mob"
     }
@@ -31,15 +32,19 @@ class MobTypeManager {
             }
         }
     }
-    fun create(id: TypeId, multiplier: Double, entity: Mob){
+
+    fun create(id: TypeId, multiplier: Double, entity: Mob) {
         typeMap[id]?.let { it(EnhancedMob(multiplier, entity)) }
     }
+
     fun queryTypeFunc(id: TypeId): ((EnhancedMob) -> Unit)? {
         return typeMap[id]
     }
+
     fun listPackIds(): MutableSet<String> {
         return packMap.keys
     }
+
     fun listTypeIds(packId: String): ArrayList<TypeId> {
         val typeNames = packMap[packId]?.toTypedArray() ?: return arrayListOf()
         val typeIds = ArrayList<TypeId>()
