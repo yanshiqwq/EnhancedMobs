@@ -63,7 +63,7 @@ class LevelEntity: Listener {
         val player = event.player
         val entity = event.rightClicked
         val level = levelEntity(entity as LivingEntity)
-        val multiplier = entity.persistentDataContainer.get(EnhancedMob.key, PersistentDataType.DOUBLE) ?: 0.0
+        val multiplier = entity.persistentDataContainer.get(EnhancedMob.multiplierKey, PersistentDataType.DOUBLE) ?: 0.0
 
         val multiplierComponent = Component.text(" (${if (multiplier >= 0) "+" else ""}${String.format("%.2f", multiplier * 100)}%)", NamedTextColor.GRAY)
         val healthComponent = splitter.append(Component.text("❤: ${String.format("%.3f", entity.getAttribute(Attribute.GENERIC_MAX_HEALTH)!!.value)}", NamedTextColor.RED))

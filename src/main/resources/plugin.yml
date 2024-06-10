@@ -1,6 +1,6 @@
 name: EnhancedMobs
 main: cn.yanshiqwq.enhanced_mobs.Main
-version: 1.0
+version: 1.1.0
 authors:
   - 'yanshiqwq'
 api-version: 1.16

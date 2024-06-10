@@ -1,7 +1,7 @@
 package cn.yanshiqwq.enhanced_mobs
 
 import cn.yanshiqwq.enhanced_mobs.Main.Companion.logger
-import org.bukkit.entity.LivingEntity
+import org.bukkit.entity.Mob
 
 /**
  * enhanced_mobs
@@ -31,7 +31,7 @@ class MobTypeManager {
             }
         }
     }
-    fun create(id: TypeId, multiplier: Double, entity: LivingEntity){
+    fun create(id: TypeId, multiplier: Double, entity: Mob){
         typeMap[id]?.let { it(EnhancedMob(multiplier, entity)) }
     }
     fun queryTypeFunc(id: TypeId): ((EnhancedMob) -> Unit)? {
@@ -48,5 +48,4 @@ class MobTypeManager {
         }
         return typeIds
     }
-
 }

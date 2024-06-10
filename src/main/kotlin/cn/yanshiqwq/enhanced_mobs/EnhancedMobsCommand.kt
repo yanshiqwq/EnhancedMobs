@@ -3,7 +3,6 @@ package cn.yanshiqwq.enhanced_mobs
 import cn.yanshiqwq.enhanced_mobs.Main.Companion.instance
 import net.kyori.adventure.text.Component
 import net.kyori.adventure.text.format.NamedTextColor
-import org.bukkit.Bukkit
 import org.bukkit.Location
 import org.bukkit.attribute.Attribute
 import org.bukkit.command.Command
@@ -11,11 +10,10 @@ import org.bukkit.command.CommandExecutor
 import org.bukkit.command.CommandSender
 import org.bukkit.command.TabCompleter
 import org.bukkit.entity.EntityType
-import org.bukkit.entity.LivingEntity
+import org.bukkit.entity.Mob
 import org.bukkit.entity.Player
 import org.bukkit.event.entity.CreatureSpawnEvent
 import java.util.*
-import kotlin.random.Random
 
 
 /**
@@ -26,8 +24,8 @@ import kotlin.random.Random
  * @since 2024/6/2 23:52
  */
 
-class Command : CommandExecutor {
-    private val prefix = Component.text("[EnhancedMobs] ", NamedTextColor.GRAY)
+class EnhancedMobsCommand : CommandExecutor {
+    private val prefix = Component.text(Main.prefix + " ", NamedTextColor.GRAY)
     override fun onCommand(sender: CommandSender, command: Command, label: String, args: Array<out String>?): Boolean {
         // 检查命令发送者是否是玩家
         if (sender !is Player) {
@@ -88,11 +86,9 @@ class Command : CommandExecutor {
         } else sender.location.toCenterLocation()
 
         // 生成实体
-        val entity: LivingEntity = sender.world.spawnEntity(location, entityType, CreatureSpawnEvent.SpawnReason.CUSTOM) as LivingEntity
+        val entity: Mob = sender.world.spawnEntity(location, entityType, CreatureSpawnEvent.SpawnReason.CUSTOM) as Mob
         boostTypeFunc(EnhancedMob(multiplier, entity))
-        Bukkit.getScheduler().runTaskLater(instance!!, Runnable {
-            entity.health = entity.getAttribute(Attribute.GENERIC_MAX_HEALTH)!!.value
-        }, 1L)
+        entity.health = entity.getAttribute(Attribute.GENERIC_MAX_HEALTH)!!.value
 
 
         val percent = String.format("${if (multiplier >= 0.0) "+" else ""}%.2f", multiplier * 100)
@@ -106,10 +102,7 @@ class Command : CommandExecutor {
     private fun defaultBoost(entityType: EntityType): TypeId {
         return when (entityType) {
             in arrayOf(EntityType.ZOMBIE_VILLAGER, EntityType.ZOMBIE, EntityType.HUSK, EntityType.DROWNED) -> TypeId("VANILLA","ZOMBIE")
-            in arrayOf(EntityType.SKELETON, EntityType.STRAY, EntityType.WITHER_SKELETON) -> {
-                if (Random.nextDouble() >= 0.3) TypeId("VANILLA","SKELETON")
-                else TypeId("EXTEND","SKElETON_VARIANT_A")
-            }
+            in arrayOf(EntityType.SKELETON, EntityType.STRAY, EntityType.WITHER_SKELETON) -> TypeId("VANILLA","SKELETON")
             in arrayOf(EntityType.SPIDER, EntityType.CAVE_SPIDER) -> TypeId("VANILLA","SPIDER")
             EntityType.CREEPER -> TypeId("VANILLA","CREEPER")
             else -> TypeId("VANILLA","GENERIC")
@@ -118,7 +111,7 @@ class Command : CommandExecutor {
 }
 
 
-class CommandTabCompleter : TabCompleter {
+class EnhancedMobsTabCompleter : TabCompleter {
     override fun onTabComplete(sender: CommandSender, command: Command, alias: String, args: Array<String>): List<String> {
         val completions: MutableList<String> = ArrayList()
         if (args.size == 1) {
@@ -126,7 +119,7 @@ class CommandTabCompleter : TabCompleter {
         } else if (args[0].equals("spawn", ignoreCase = true)) {
             when (args.size) {
                 2 -> {
-                    for (type in EntityType.entries){
+                    for (type in EntityType.entries.filter { it.isSpawnable }){
                         if (type.name.startsWith(args[1], ignoreCase = true)){
                             completions.add(type.name)
                         }
