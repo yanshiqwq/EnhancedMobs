@@ -1,25 +1,26 @@
-package cn.yanshiqwq.enhanced_mobs
+package cn.yanshiqwq.enhanced_mobs.managers
 
+import cn.yanshiqwq.enhanced_mobs.EnhancedMob
 import cn.yanshiqwq.enhanced_mobs.Main.Companion.logger
+import cn.yanshiqwq.enhanced_mobs.Pack
 import org.bukkit.entity.Mob
 
 /**
  * enhanced_mobs
- * cn.yanshiqwq.enhanced_mobs.MobManager
+ * cn.yanshiqwq.enhanced_mobs.managers.MobManager
  *
  * @author yanshiqwq
  * @since 2024/6/8 15:39
  */
 
-data class TypeId(val pack: String, val mob: String) {
-    constructor(id: String) : this(id.split(".")[0], id.split(".")[1])
-
-    fun value(): String {
-        return "$pack.$mob"
-    }
-}
-
 class MobTypeManager {
+    data class TypeId(val pack: String, val mob: String) {
+        constructor(id: String) : this(id.split(".")[0], id.split(".")[1])
+
+        fun value(): String {
+            return "$pack.$mob"
+        }
+    }
     private val packMap: MutableMap<String, Set<String>> = mutableMapOf()
     private val typeMap: MutableMap<TypeId, (EnhancedMob) -> Unit> = mutableMapOf()
     fun loadPacks(vararg packs: Pack) {

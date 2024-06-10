@@ -1,6 +1,6 @@
-package cn.yanshiqwq.enhanced_mobs
+package cn.yanshiqwq.enhanced_mobs.listeners
 
-import cn.yanshiqwq.enhanced_mobs.VariantBoost.Companion.applyVariantBoost
+import cn.yanshiqwq.enhanced_mobs.VariantBoost
 import org.bukkit.attribute.Attribute
 import org.bukkit.entity.LivingEntity
 import org.bukkit.event.EventHandler
@@ -15,13 +15,13 @@ import org.bukkit.event.entity.EntitySpawnEvent
  * @since 2024/6/2 09:13
  */
 
-class Spawn : Listener {
+class SpawnListener : Listener {
     @EventHandler
     fun onEntitySpawn(event: EntitySpawnEvent) {
         val entity = event.entity
         if (entity !is LivingEntity) return
 
-        applyVariantBoost(entity)
+        VariantBoost.apply(entity)
 
 //        distanceBoost(entity)
 //        typeBoost(entity)

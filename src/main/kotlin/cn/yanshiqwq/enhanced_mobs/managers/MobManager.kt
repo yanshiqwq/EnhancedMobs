@@ -1,5 +1,6 @@
-package cn.yanshiqwq.enhanced_mobs
+package cn.yanshiqwq.enhanced_mobs.managers
 
+import cn.yanshiqwq.enhanced_mobs.EnhancedMob
 import org.bukkit.entity.Mob
 import java.util.*
 

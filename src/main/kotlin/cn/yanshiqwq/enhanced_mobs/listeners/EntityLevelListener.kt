@@ -1,5 +1,6 @@
-package cn.yanshiqwq.enhanced_mobs
+package cn.yanshiqwq.enhanced_mobs.listeners
 
+import cn.yanshiqwq.enhanced_mobs.EnhancedMob
 import net.kyori.adventure.text.Component
 import net.kyori.adventure.text.TextComponent
 import net.kyori.adventure.text.format.NamedTextColor
@@ -23,7 +24,7 @@ import kotlin.math.max
  * @since 2024/5/31 00:02
  */
 
-class LevelEntity : Listener {
+class EntityLevelListener : Listener {
     // debug
 //    @EventHandler
 //    fun onPlayerDamage(event: EntityDamageByEntityEvent) {

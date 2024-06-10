@@ -1,4 +1,4 @@
-package cn.yanshiqwq.enhanced_mobs
+package cn.yanshiqwq.enhanced_mobs.listeners
 
 import org.bukkit.GameMode
 import org.bukkit.Material
@@ -25,7 +25,7 @@ import kotlin.random.Random
  * @author yanshiqwq
  * @since 2024/6/8 07:01
  */
-class Modifier : Listener {
+class ModifierListener : Listener {
     @EventHandler
     fun onArrowDamage(event: EntityDamageByEntityEvent) {
         if (event.damager is Arrow) {
