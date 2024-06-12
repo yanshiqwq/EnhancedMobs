@@ -47,7 +47,7 @@ class ModifierListener : Listener {
 
         if (player.gameMode == GameMode.CREATIVE) return
         if (event.item != null)
-            player.damageItemStack(event.item!!, 1)
+            event.item!!.add(-1)
         else
             player.inventory.removeItem(ItemStack(Material.FIRE_CHARGE, 1))
     }
