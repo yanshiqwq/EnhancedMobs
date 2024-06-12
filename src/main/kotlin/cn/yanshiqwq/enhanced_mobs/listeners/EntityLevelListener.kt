@@ -65,7 +65,9 @@ class EntityLevelListener : Listener {
             return
         } // ??
         val player = event.player
-        val entity = event.rightClicked as LivingEntity
+        val entity = event.rightClicked
+        if (entity !is LivingEntity) return
+
         val level = entity.getLeveledNameComponent()
         val multiplier = entity.persistentDataContainer.get(EnhancedMob.multiplierKey, PersistentDataType.DOUBLE) ?: 0.0
 
