@@ -2,8 +2,7 @@ package cn.yanshiqwq.enhanced_mobs
 
 import org.bukkit.Location
 import org.bukkit.Material
-import org.bukkit.entity.Entity
-import org.bukkit.entity.EntityType
+import org.bukkit.entity.*
 import org.bukkit.event.entity.CreatureSpawnEvent
 
 /**

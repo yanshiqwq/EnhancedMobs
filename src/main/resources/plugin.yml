@@ -1,6 +1,6 @@
 name: EnhancedMobs
 main: cn.yanshiqwq.enhanced_mobs.Main
-version: 1.1.0
+version: 1.1.1
 authors:
   - 'yanshiqwq'
 api-version: 1.16
@@ -10,4 +10,4 @@ folia-supported: true
 commands:
   enhancedmobs:
     description: 强化怪物
-    usage: /enhancedmobs spawn <怪物类型> <强化类型> <怪物强度> [坐标]
+    usage: /enhancedmobs spawn <怪物类型> <强化类型> [怪物强度] [坐标]

@@ -1,10 +1,8 @@
 @file:JvmName("PackKt")
 
-package cn.yanshiqwq.enhanced_mobs.config
+package cn.yanshiqwq.enhanced_mobs.data
 
 import cn.yanshiqwq.enhanced_mobs.Main.Companion.instance
-import cn.yanshiqwq.enhanced_mobs.Pack
-import cn.yanshiqwq.enhanced_mobs.Record
 import cn.yanshiqwq.enhanced_mobs.Utils.isAxe
 import cn.yanshiqwq.enhanced_mobs.Utils.placeBlock
 import cn.yanshiqwq.enhanced_mobs.Utils.spawnEntity
@@ -30,13 +28,13 @@ import kotlin.random.Random
 
 /**
  * enhanced_mobs
- * cn.yanshiqwq.enhanced_mobs.EnhancedMobs
+ * cn.yanshiqwq.enhanced_mobs.data.BuiltInPacks
  *
  * @author yanshiqwq
  * @since 2024/6/8 07:01
  */
 
-object Packs {
+object BuiltInPacks {
     val logFormula: (Double) -> (Double) -> Double = { scale ->
         {
             when (it) {
@@ -189,21 +187,23 @@ object Packs {
                     radius = 2.0F
                     addCustomEffect(PotionEffect(PotionEffectType.INCREASE_DAMAGE, 120, 1), true)
                 }
+                return@initListener true
             }
         },
         "ZOMBIE_TOTEM" to vanillaPack.implement("ZOMBIE") {
             initEquipment(EquipmentSlot.OFF_HAND, Material.TOTEM_OF_UNDYING)
             initListener<EntityResurrectEvent> {
-                if (it.hand == null) return@initListener
-                val maxHealth = it.entity.getAttribute(Attribute.GENERIC_MAX_HEALTH)?.value ?: return@initListener
+                if (it.isCancelled) return@initListener false
+                val maxHealth = it.entity.getAttribute(Attribute.GENERIC_MAX_HEALTH)?.value ?: return@initListener false
                 it.entity.health = maxHealth * 0.5
                 it.entity.addPotionEffect(PotionEffect(PotionEffectType.INCREASE_DAMAGE, Int.MAX_VALUE, 0))
+                return@initListener true
             }
         },
         "ZOMBIE_TNT" to vanillaPack.implement("ZOMBIE") {
-            periodRangeItem(4.0, Material.TNT) {
+            initRangeUsingItemTask(6.0, Material.TNT) {
                 it.location.spawnEntity<TNTPrimed>(EntityType.PRIMED_TNT) {
-                    fuseTicks = 30
+                    fuseTicks = 40
                     source = entity
                     location.direction.multiply(1.4)
                 }
@@ -211,45 +211,49 @@ object Packs {
                     playSound(it.location, Sound.BLOCK_GRASS_PLACE, 1.0F, 0.75F)
                     playSound(it.location, Sound.ENTITY_TNT_PRIMED, 1.0F, 1.0F)
                 }
+                return@initRangeUsingItemTask true
             }
         },
         "ZOMBIE_LAVA" to vanillaPack.implement("ZOMBIE") {
-            periodRangeItem(3.0, Material.LAVA_BUCKET, Material.BUCKET) {
-                if (it.isInWaterOrBubbleColumn || it.isInLava) return@periodRangeItem
+            initRangeUsingItemTask(5.0, Material.LAVA_BUCKET, true, Material.BUCKET) {
+                if (it.isInWaterOrBubbleColumn || it.isInLava) return@initRangeUsingItemTask false
                 it.location.placeBlock(Material.LAVA)
                 it.world.playSound(it.location, Sound.ITEM_BUCKET_EMPTY_LAVA, 1.0F, 1.0F)
                 addEffect(PotionEffectType.FIRE_RESISTANCE, 0, 1200, true)
+                return@initRangeUsingItemTask true
             }
         },
         "ZOMBIE_FLINT_AND_STEEL" to vanillaPack.implement("ZOMBIE") {
-            periodRangeItem(4.0, Material.FLINT_AND_STEEL) {
-                if (it.isInWaterOrBubbleColumn || it.isInLava) return@periodRangeItem
+            initRangeUsingItemTask(5.0, Material.FLINT_AND_STEEL, false) {
+                if (it.isInWaterOrBubbleColumn || it.isInLava) return@initRangeUsingItemTask false
                 it.location.placeBlock(Material.FIRE)
                 it.world.playSound(it.location, Sound.ITEM_FLINTANDSTEEL_USE, 1.0F, 1.0F)
-                entity.equipment.setItemInOffHand(ItemStack(Material.AIR))
+                return@initRangeUsingItemTask true
             }
         },
         "ZOMBIE_ENDER_PEARL" to vanillaPack.implement("ZOMBIE") {
-            periodRangeItem(16.0, Material.ENDER_PEARL) {
+            initRangeUsingItemTask(16.0, Material.ENDER_PEARL) {
                 entity.teleport(it)
                 it.damage(0.0, entity)
                 it.world.run {
                     playSound(it.location, Sound.ENTITY_ENDER_PEARL_THROW, 1.0F, 1.0F)
                     playSound(it.location, Sound.ENTITY_GENERIC_SMALL_FALL, 1.0F, 1.0F)
+                    spawnParticle(Particle.PORTAL, it.location.apply { y += 1 }, 64, 0.0, 0.0, 0.0, 0.6)
                 }
-                entity.lastDamageCause = EntityDamageEvent(entity, DamageCause.FALL, 3.0)
-                entity.equipment.setItemInOffHand(ItemStack(Material.AIR))
+                val event = EntityDamageEvent(entity, DamageCause.FALL, 5.0)
+                event.callEvent()
+                return@initRangeUsingItemTask true
             }
         },
         "ZOMBIE_SHIELD" to vanillaPack.implement("ZOMBIE") {
             val itemType = Material.SHIELD
             initEquipment(EquipmentSlot.OFF_HAND, itemType)
             initListener<EntityDamageByEntityEvent> {
-                if (it.entity != entity) return@initListener
-                if (entity.isDead) return@initListener
+                if (it.entity != entity) return@initListener false
+                if (entity.isDead) return@initListener false
 
                 val shield = entity.equipment.itemInOffHand
-                if (shield.type != itemType) return@initListener
+                if (shield.type != itemType) return@initListener false
 
                 val damager = it.damager as LivingEntity
                 if (entity.isGlowing) {
@@ -267,6 +271,7 @@ object Packs {
                         if (entity.isGlowing) breakShield(entity, damager)
                     }, 60L)
                 }
+                return@initListener true
             }
         }
     ))

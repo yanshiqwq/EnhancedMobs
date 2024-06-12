@@ -1,4 +1,4 @@
-package cn.yanshiqwq.enhanced_mobs
+package cn.yanshiqwq.enhanced_mobs.data
 
 import org.bukkit.attribute.Attribute
 import org.bukkit.attribute.AttributeModifier
@@ -10,7 +10,7 @@ import kotlin.math.floor
 
 /**
  * enhanced_mobs
- * cn.yanshiqwq.enhanced_mobs.Record
+ * cn.yanshiqwq.enhanced_mobs.data.Record
  *
  * @author yanshiqwq
  * @since 2024/6/8 07:02
@@ -21,10 +21,8 @@ object Record {
         fun value(base: Double): Number
     }
 
-    data class DoubleFactor(
-        val formula: (Double) -> Double,
-        private val range: ClosedFloatingPointRange<Double>? = null
-    ) : Factor {
+    data class DoubleFactor(val formula: (Double) -> Double, private val range: ClosedFloatingPointRange<Double>? = null) :
+        Factor {
         override fun value(base: Double): Double {
             return if (range == null) formula(base) else formula(base).coerceIn(range)
         }

@@ -4,23 +4,21 @@ import org.bukkit.GameMode
 import org.bukkit.Material
 import org.bukkit.attribute.Attribute
 import org.bukkit.enchantments.Enchantment
-import org.bukkit.entity.Arrow
-import org.bukkit.entity.Fireball
-import org.bukkit.entity.LivingEntity
-import org.bukkit.entity.Player
+import org.bukkit.entity.*
 import org.bukkit.event.EventHandler
 import org.bukkit.event.Listener
 import org.bukkit.event.block.Action
 import org.bukkit.event.entity.EntityDamageByEntityEvent
+import org.bukkit.event.entity.EntitySpawnEvent
 import org.bukkit.event.player.PlayerInteractEvent
-import org.bukkit.inventory.EquipmentSlot
 import org.bukkit.inventory.ItemStack
-import kotlin.random.Random
+import org.bukkit.potion.PotionEffect
+import org.bukkit.potion.PotionEffectType
 
 
 /**
  * enhanced_mobs
- * cn.yanshiqwq.enhanced_mobs.Arrow
+ * cn.yanshiqwq.enhanced_mobs.listeners.ModifierListener
  *
  * @author yanshiqwq
  * @since 2024/6/8 07:01
@@ -28,39 +26,80 @@ import kotlin.random.Random
 class ModifierListener : Listener {
     @EventHandler
     fun onArrowDamage(event: EntityDamageByEntityEvent) {
-        if (event.damager is Arrow) {
-            val arrow = event.damager as Arrow
-            val damager = arrow.shooter as LivingEntity
-            if (damager is Player) return
-            val level = damager.equipment?.itemInMainHand?.enchantments?.get(Enchantment.ARROW_DAMAGE) ?: 0
-            event.damage = (damager.getAttribute(Attribute.GENERIC_ATTACK_DAMAGE)?.value ?: 0.0) * (1 + level * 0.25)
-        }
+        if (event.damager !is Arrow) return
+
+        val arrow = event.damager as Arrow
+        val damager = arrow.shooter as LivingEntity
+        if (damager is Player) return
+        val level = damager.equipment?.itemInMainHand?.enchantments?.get(Enchantment.ARROW_DAMAGE) ?: 0
+        event.damage = (damager.getAttribute(Attribute.GENERIC_ATTACK_DAMAGE)?.value ?: 0.0) * (1 + level * 0.25)
     }
 
     @EventHandler
     fun onUsingFireCharge(event: PlayerInteractEvent) {
         if (event.action != Action.RIGHT_CLICK_AIR || event.material != Material.FIRE_CHARGE) return
+
         val player = event.player
         val fireball = player.launchProjectile(Fireball::class.java)
-        fireball.velocity = player.location.direction.multiply(1.85)
+        fireball.velocity = player.location.direction.multiply(2)
         fireball.shooter = player
-        fireball.yield = 1.85F
+        fireball.yield = 2.0F
 
         if (player.gameMode == GameMode.CREATIVE) return
-        if (player.equipment.itemInMainHand.type == Material.FIRE_CHARGE)
-            player.damageItemStack(EquipmentSlot.HAND, 1)
+        if (event.item != null)
+            player.damageItemStack(event.item!!, 1)
         else
             player.inventory.removeItem(ItemStack(Material.FIRE_CHARGE, 1))
     }
 
     @EventHandler
-    fun onFireballDamage(event: EntityDamageByEntityEvent) {
-        if (event.damager is Fireball) {
-            val fireball = event.damager as Fireball
-            val entity = event.entity
-            if (entity is Player) return
-            if (fireball.yield >= 1.5 && Random.nextDouble() >= 0.85) {
-                entity.fireTicks += 100
+    fun onEntitySpawn(event: EntitySpawnEvent) {
+        val entity = event.entity
+        if (entity !is Mob) return
+
+        entity.applyVariantBoost()
+        entity.health = entity.getAttribute(Attribute.GENERIC_MAX_HEALTH)?.value ?: return
+    }
+
+    private fun Mob.applyVariantBoost() {
+        when (this) {
+            is Stray, is WitherSkeleton, is Husk, is Drowned -> {
+                getAttribute(Attribute.GENERIC_MAX_HEALTH)?.baseValue = 28.0
+                getAttribute(Attribute.GENERIC_ARMOR)?.baseValue = 4.0
+                getAttribute(Attribute.GENERIC_ATTACK_DAMAGE)?.baseValue = 4.0
+                getAttribute(Attribute.GENERIC_FOLLOW_RANGE)?.baseValue = 24.0
+            }
+
+            is Creeper -> {
+                if (!isPowered) return
+                getAttribute(Attribute.GENERIC_MAX_HEALTH)?.baseValue = 24.0
+                getAttribute(Attribute.GENERIC_ARMOR)?.baseValue = 6.0
+                getAttribute(Attribute.GENERIC_FOLLOW_RANGE)?.baseValue = 24.0
+                getAttribute(Attribute.GENERIC_KNOCKBACK_RESISTANCE)?.baseValue = 0.35
+            }
+
+            is Giant -> {
+                getAttribute(Attribute.GENERIC_MAX_HEALTH)?.baseValue = 196.0
+                getAttribute(Attribute.GENERIC_ARMOR)?.baseValue = 6.0
+                getAttribute(Attribute.GENERIC_FOLLOW_RANGE)?.baseValue = 128.0
+                getAttribute(Attribute.GENERIC_MOVEMENT_SPEED)?.baseValue = 0.35
+                getAttribute(Attribute.GENERIC_ATTACK_DAMAGE)?.baseValue = 9.0
+                getAttribute(Attribute.GENERIC_KNOCKBACK_RESISTANCE)?.baseValue = 0.85
+                getAttribute(Attribute.ZOMBIE_SPAWN_REINFORCEMENTS)?.baseValue = 0.35
+                addPotionEffect(PotionEffect(PotionEffectType.JUMP, Int.MAX_VALUE, 3, true, false))
+            }
+
+            is Piglin -> {
+                getAttribute(Attribute.GENERIC_MAX_HEALTH)?.baseValue = 24.0
+                getAttribute(Attribute.GENERIC_ARMOR)?.baseValue = 2.0
+                isImmuneToZombification = true
+            }
+
+            is PiglinBrute -> {
+                getAttribute(Attribute.GENERIC_MAX_HEALTH)?.baseValue = 72.0
+                getAttribute(Attribute.GENERIC_ARMOR)?.baseValue = 4.0
+                getAttribute(Attribute.GENERIC_KNOCKBACK_RESISTANCE)?.baseValue = 0.15
+                isImmuneToZombification = true
             }
         }
     }

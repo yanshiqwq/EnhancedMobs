@@ -8,6 +8,13 @@ import org.bukkit.entity.EntityType
 import org.bukkit.entity.Player
 import java.util.ArrayList
 
+/**
+ * enhanced_mobs
+ * cn.yanshiqwq.enhanced_mobs.commands.EnhancedMobsCompleter
+ *
+ * @author yanshiqwq
+ * @since 2024/6/11 00:18
+ */
 class EnhancedMobsCompleter : TabCompleter {
     override fun onTabComplete(
         sender: CommandSender,

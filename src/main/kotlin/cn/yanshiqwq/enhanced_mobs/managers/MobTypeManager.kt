@@ -2,7 +2,7 @@ package cn.yanshiqwq.enhanced_mobs.managers
 
 import cn.yanshiqwq.enhanced_mobs.EnhancedMob
 import cn.yanshiqwq.enhanced_mobs.Main.Companion.logger
-import cn.yanshiqwq.enhanced_mobs.Pack
+import cn.yanshiqwq.enhanced_mobs.data.Pack
 import org.bukkit.entity.Mob
 
 /**
@@ -38,7 +38,11 @@ class MobTypeManager {
         typeMap[id]?.let { it(EnhancedMob(multiplier, entity)) }
     }
 
-    fun queryTypeFunc(id: TypeId): ((EnhancedMob) -> Unit)? {
+    fun hasTypeId(id: TypeId): Boolean {
+        return (typeMap[id] != null)
+    }
+
+    fun queryTypeFunction(id: TypeId): ((EnhancedMob) -> Unit)? {
         return typeMap[id]
     }
 

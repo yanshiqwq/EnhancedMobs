@@ -1,6 +1,7 @@
 package cn.yanshiqwq.enhanced_mobs.listeners
 
 import cn.yanshiqwq.enhanced_mobs.Main
+import cn.yanshiqwq.enhanced_mobs.Main.Companion.instance
 import com.destroystokyo.paper.event.entity.EntityPathfindEvent
 import io.papermc.paper.event.entity.EntityToggleSitEvent
 import org.bukkit.event.Event
@@ -10,13 +11,27 @@ import org.bukkit.event.entity.*
 
 /**
  * enhanced_mobs
- * cn.yanshiqwq.enhanced_mobs.EnhancedMob
+ * cn.yanshiqwq.enhanced_mobs.listeners.MobEventListener
  *
  * @author yanshiqwq
  * @since 2024/6/7 05:29
  */
 
 class MobEventListener : Listener {
+    private fun triggerListeners(event: Event) {
+        try {
+            for (mob in instance!!.mobManager!!.map().values) {
+                for (it in mob.listeners) {
+                    if (it.eventClass != event::class) continue
+                    it.function.invoke(event)
+                }
+            }
+        } catch (e: Exception) {
+            Main.logger.warning("An unexpected exception occurred while triggering skill.")
+            e.printStackTrace()
+        }
+    }
+
     // JB BUKKIT API
 //    @EventHandler
 //    fun onEntityEvent(event: EntityEvent) { triggerListeners(event) }
@@ -144,19 +159,5 @@ class MobEventListener : Listener {
     @EventHandler
     fun onEvent(event: EntityPathfindEvent) {
         triggerListeners(event)
-    }
-
-    private fun triggerListeners(event: Event) {
-        try {
-            for (mob in Main.instance?.mobManager?.map()?.values ?: emptyList()) {
-                for (it in mob.listeners) {
-                    if (it.key != event::class) continue
-                    it.value(event)
-                }
-            }
-        } catch (e: Exception) {
-            Main.logger.warning("An unexpected exception occurred while triggering skill.")
-            e.printStackTrace()
-        }
     }
 }
