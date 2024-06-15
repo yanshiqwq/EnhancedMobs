@@ -40,10 +40,11 @@ class ModifierListener : Listener {
         if (event.action != Action.RIGHT_CLICK_AIR || event.material != Material.FIRE_CHARGE) return
 
         val player = event.player
-        val fireball = player.launchProjectile(Fireball::class.java)
-        fireball.velocity = player.location.direction.multiply(2)
-        fireball.shooter = player
-        fireball.yield = 2.0F
+        player.launchProjectile(Fireball::class.java).apply {
+            velocity = player.location.direction.multiply(2)
+            shooter = player
+            yield = 2.0F
+        }
 
         if (player.gameMode == GameMode.CREATIVE) return
         if (event.item != null)

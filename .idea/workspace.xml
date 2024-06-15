@@ -4,8 +4,8 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="d5ee4be2-1981-48f1-8632-49b4c7636b94" name="更改" comment="修复查询非LivingEntity的实体属性会报错的问题">
-      <change beforePath="$PROJECT_DIR$/src/main/kotlin/cn/yanshiqwq/enhanced_mobs/listeners/ModifierListener.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/cn/yanshiqwq/enhanced_mobs/listeners/ModifierListener.kt" afterDir="false" />
+    <list default="true" id="d5ee4be2-1981-48f1-8632-49b4c7636b94" name="更改" comment="优化代码格式，修复了ListenerAPI无法正常使用的问题，新增随机强化生成功能，上调了怪物的攻击力成长曲线">
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/cn/yanshiqwq/enhanced_mobs/listeners/SpawnListener.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/cn/yanshiqwq/enhanced_mobs/listeners/SpawnListener.kt" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -372,7 +372,28 @@
       <option name="project" value="LOCAL" />
       <updated>1718208017640</updated>
     </task>
-    <option name="localTasksCounter" value="16" />
+    <task id="LOCAL-00016" summary="修复非创造模式玩家使用火球物品不会减少的问题">
+      <created>1718208289011</created>
+      <option name="number" value="00016" />
+      <option name="presentableId" value="LOCAL-00016" />
+      <option name="project" value="LOCAL" />
+      <updated>1718208289011</updated>
+    </task>
+    <task id="LOCAL-00017" summary="优化代码格式，修复了ListenerAPI无法正常使用的问题，新增随机强化生成功能，上调了怪物的攻击力成长曲线">
+      <created>1718471160170</created>
+      <option name="number" value="00017" />
+      <option name="presentableId" value="LOCAL-00017" />
+      <option name="project" value="LOCAL" />
+      <updated>1718471160170</updated>
+    </task>
+    <task id="LOCAL-00018" summary="优化代码格式，修复了ListenerAPI无法正常使用的问题，新增随机强化生成功能，上调了怪物的攻击力成长曲线">
+      <created>1718471174253</created>
+      <option name="number" value="00018" />
+      <option name="presentableId" value="LOCAL-00018" />
+      <option name="project" value="LOCAL" />
+      <updated>1718471174253</updated>
+    </task>
+    <option name="localTasksCounter" value="19" />
     <servers />
   </component>
   <component name="Vcs.Log.History.Properties">
@@ -439,6 +460,8 @@
     <MESSAGE value="优化代码结构" />
     <MESSAGE value="优化代码结构，修改指令格式" />
     <MESSAGE value="修复查询非LivingEntity的实体属性会报错的问题" />
-    <option name="LAST_COMMIT_MESSAGE" value="修复查询非LivingEntity的实体属性会报错的问题" />
+    <MESSAGE value="修复非创造模式玩家使用火球物品不会减少的问题" />
+    <MESSAGE value="优化代码格式，修复了ListenerAPI无法正常使用的问题，新增随机强化生成功能，上调了怪物的攻击力成长曲线" />
+    <option name="LAST_COMMIT_MESSAGE" value="优化代码格式，修复了ListenerAPI无法正常使用的问题，新增随机强化生成功能，上调了怪物的攻击力成长曲线" />
   </component>
 </project>

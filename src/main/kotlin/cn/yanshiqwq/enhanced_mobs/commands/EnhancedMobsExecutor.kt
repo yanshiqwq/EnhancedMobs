@@ -1,12 +1,11 @@
 package cn.yanshiqwq.enhanced_mobs.commands
 
-import cn.yanshiqwq.enhanced_mobs.EnhancedMob
+import cn.yanshiqwq.enhanced_mobs.EnhancedMob.Companion.asEnhancedMob
 import cn.yanshiqwq.enhanced_mobs.Main
 import cn.yanshiqwq.enhanced_mobs.managers.MobTypeManager
 import net.kyori.adventure.text.Component
 import net.kyori.adventure.text.format.NamedTextColor
 import org.bukkit.Location
-import org.bukkit.attribute.Attribute
 import org.bukkit.command.Command
 import org.bukkit.command.CommandExecutor
 import org.bukkit.command.CommandSender
@@ -36,14 +35,7 @@ class EnhancedMobsExecutor : CommandExecutor {
 
         // 检查命令参数数量
         if (args == null || args.size < 3) {
-            sender.sendMessage(
-                prefix.append(
-                    Component.text(
-                        "用法: /enhancedmobs spawn <怪物类型> <强化类型> [怪物强度] [坐标]",
-                        NamedTextColor.GREEN
-                    )
-                )
-            )
+            sender.sendMessage(prefix.append(Component.text("用法: /enhancedmobs spawn <怪物类型> <强化类型> [怪物强度] [坐标]", NamedTextColor.GREEN)))
             return true
         }
 
@@ -57,7 +49,7 @@ class EnhancedMobsExecutor : CommandExecutor {
         }
 
         // 解析强化类型参数
-        val boostTypeArg = args[2].uppercase(Locale.getDefault())
+        val boostTypeArg = args[2].lowercase(Locale.getDefault())
         val boostTypeId =
             if (boostTypeArg != "DEFAULT") MobTypeManager.TypeId(boostTypeArg)
             else getDefaultBoostId(entityType)
@@ -89,47 +81,32 @@ class EnhancedMobsExecutor : CommandExecutor {
                 val z = zArg.toDouble()
                 Location(sender.world, x, y, z)
             } catch (e: NumberFormatException) {
-                sender.sendMessage(
-                    prefix.append(
-                        Component.text(
-                            "坐标 ($xArg, $yArg, $zArg) 格式错误！",
-                            NamedTextColor.RED
-                        )
-                    )
-                )
+                sender.sendMessage(prefix.append(Component.text("坐标 ($xArg, $yArg, $zArg) 格式错误！", NamedTextColor.RED)))
                 return true
             }
         } else sender.location.toCenterLocation()
 
         // 生成实体
         val entity: Mob = sender.world.spawnEntity(location, entityType, CreatureSpawnEvent.SpawnReason.CUSTOM) as Mob
-        EnhancedMob(multiplier, entity).initBoost(boostTypeId)
-        entity.health = entity.getAttribute(Attribute.GENERIC_MAX_HEALTH)!!.value
-
+        entity.asEnhancedMob(multiplier, boostTypeId)
 
         val percent = String.format("${if (multiplier >= 0.0) "+" else ""}%.2f", multiplier * 100)
-        sender.sendMessage(
-            prefix
-                .append(Component.text("已生成 ${entityType.name} ", NamedTextColor.GREEN))
-                .append(Component.text("(${boostTypeArg} ", NamedTextColor.GRAY))
-                .append(Component.text(percent, NamedTextColor.AQUA))
-                .append(Component.text("%) 于 (${location.x}, ${location.y}, ${location.z}).", NamedTextColor.GRAY))
+        sender.sendMessage(prefix
+            .append(Component.text("已生成 ${entityType.name} ", NamedTextColor.GREEN))
+            .append(Component.text("($boostTypeArg ", NamedTextColor.GRAY))
+            .append(Component.text(percent, NamedTextColor.AQUA))
+            .append(Component.text("%) 于 $location.", NamedTextColor.GRAY))
         )
         return true
     }
 
     private fun getDefaultBoostId(entityType: EntityType): MobTypeManager.TypeId {
         return when (entityType) {
-            in arrayOf(
-                EntityType.ZOMBIE_VILLAGER,
-                EntityType.ZOMBIE,
-                EntityType.HUSK,
-                EntityType.DROWNED
-            ) -> MobTypeManager.TypeId("VANILLA", "ZOMBIE")
-            in arrayOf(EntityType.SKELETON, EntityType.STRAY, EntityType.WITHER_SKELETON) -> MobTypeManager.TypeId("VANILLA", "SKELETON")
-            in arrayOf(EntityType.SPIDER, EntityType.CAVE_SPIDER) -> MobTypeManager.TypeId("VANILLA", "SPIDER")
-            EntityType.CREEPER -> MobTypeManager.TypeId("VANILLA", "CREEPER")
-            else -> MobTypeManager.TypeId("VANILLA", "GENERIC")
+            EntityType.ZOMBIE_VILLAGER, EntityType.ZOMBIE, EntityType.HUSK, EntityType.DROWNED -> MobTypeManager.TypeId("vanilla", "zombie")
+            EntityType.SKELETON, EntityType.STRAY, EntityType.WITHER_SKELETON -> MobTypeManager.TypeId("vanilla", "skeleton")
+            EntityType.SPIDER, EntityType.CAVE_SPIDER -> MobTypeManager.TypeId("vanilla", "spider")
+            EntityType.CREEPER -> MobTypeManager.TypeId("vanilla", "creeper")
+            else -> MobTypeManager.TypeId("vanilla", "generic")
         }
     }
 }
