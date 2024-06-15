@@ -30,18 +30,18 @@ class EnhancedMobsCompleter : TabCompleter {
                 2 -> {
                     for (type in EntityType.entries.filter { it.isSpawnable }) {
                         if (type.name.startsWith(args[1], ignoreCase = true)) {
-                            completions.add(type.name)
+                            completions.add(type.name.uppercase())
                         }
                     }
                 } // 怪物类型
                 3 -> {
-                    val input = args[2].uppercase().split(".")
+                    val input = args[2].lowercase().split(".")
                     val packId = input[0]
                     val mobTypeManager = Main.instance!!.mobTypeManager
                     val packNames = mobTypeManager.listPackIds()
                     val matchingPackages = packNames.filter { it.startsWith(packId) }
-                    matchingPackages.addFirst("DEFAULT")
-                    return if (input.size == 1 || "DEFAULT".startsWith(input[0])) {
+                    matchingPackages.addFirst("default")
+                    return if (input.size == 1 || "default".startsWith(input[0])) {
                         matchingPackages
                     } else {
                         mobTypeManager.listTypeIds(packId).map { it.value() }

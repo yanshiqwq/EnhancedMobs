@@ -2,8 +2,16 @@ package cn.yanshiqwq.enhanced_mobs
 
 import org.bukkit.Location
 import org.bukkit.Material
+import org.bukkit.Particle
+import org.bukkit.Sound
+import org.bukkit.attribute.Attribute
 import org.bukkit.entity.*
 import org.bukkit.event.entity.CreatureSpawnEvent
+import org.bukkit.inventory.EquipmentSlot
+import org.bukkit.inventory.ItemStack
+import org.bukkit.potion.PotionEffect
+import org.bukkit.potion.PotionEffectType
+import org.bukkit.util.Vector
 
 /**
  * enhanced_mobs
@@ -18,6 +26,49 @@ object Utils {
             if (!isReplaceable) return
             setType(type, true)
         }
+    }
+
+    fun Location.playSound(sound: Sound, volume: Float, pitch: Float) {
+        this.world.playSound(this, sound, volume, pitch)
+    }
+
+    fun Location.spawnParticle(
+        particle: Particle,
+        count: Int,
+        size: Vector,
+        speed: Double = 0.0,
+        data: Any? = null,
+        offset: Vector = Vector(0,1,0)
+    ) {
+        val loc = this.clone().add(offset)
+        if (data != null) {
+            this.world.spawnParticle(particle, loc, count, size.x, size.y, size.z, speed, data)
+            return
+        }
+        this.world.spawnParticle(particle, loc, count, size.x, size.y, size.z, speed)
+    }
+
+    fun Entity.setMotionMultiplier(multiplier: Double){
+        velocity = location.direction.multiply(multiplier)
+    }
+
+    fun LivingEntity.heal(percent: Double = 1.0) {
+        if (isDead) return
+        health = getAttribute(Attribute.GENERIC_MAX_HEALTH)!!.value * percent
+    }
+
+    fun Mob.initEquipment(slot: EquipmentSlot, material: Material) {
+        equipment.setItem(slot, ItemStack(material))
+    }
+
+    fun LivingEntity.applyEffect(
+        effectType: PotionEffectType,
+        amplifier: Int = 0,
+        duration: Int = Int.MAX_VALUE,
+        particle: Boolean = true,
+        ambient: Boolean = true
+    ) {
+       addPotionEffect(PotionEffect(effectType, duration, amplifier, ambient, particle))
     }
 
     fun Material.isAxe(): Boolean {

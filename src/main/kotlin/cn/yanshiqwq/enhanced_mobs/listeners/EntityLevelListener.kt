@@ -69,14 +69,15 @@ class EntityLevelListener : Listener {
         if (entity !is LivingEntity) return
 
         val level = entity.getLeveledNameComponent()
+        val boostType = entity.persistentDataContainer.get(EnhancedMob.boostTypeKey, PersistentDataType.STRING) ?: return
         val multiplier = entity.persistentDataContainer.get(EnhancedMob.multiplierKey, PersistentDataType.DOUBLE) ?: 0.0
 
         val multiplierComponent = Component.text(
-            " (${
+            " ($boostType) ${
                 if (multiplier >= 0) "+" else ""
             }${
                 "%.2f".format(multiplier * 100)
-            }%)",
+            }%",
             NamedTextColor.GRAY
         )
         val healthComponent = splitter.append(

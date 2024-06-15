@@ -6,6 +6,7 @@ import cn.yanshiqwq.enhanced_mobs.data.BuiltInPacks
 import cn.yanshiqwq.enhanced_mobs.listeners.EntityLevelListener
 import cn.yanshiqwq.enhanced_mobs.listeners.MobEventListener
 import cn.yanshiqwq.enhanced_mobs.listeners.ModifierListener
+import cn.yanshiqwq.enhanced_mobs.listeners.SpawnListener
 import cn.yanshiqwq.enhanced_mobs.managers.MobManager
 import cn.yanshiqwq.enhanced_mobs.managers.MobTypeManager
 import org.bukkit.Bukkit.getLogger
@@ -38,6 +39,7 @@ class Main : JavaPlugin() {
             registerEvents(EntityLevelListener(), instance!!)
             registerEvents(ModifierListener(), instance!!)
             registerEvents(MobEventListener(), instance!!)
+            registerEvents(SpawnListener(), instance!!)
         }
 
         getCommand("enhancedmobs")!!.apply {
