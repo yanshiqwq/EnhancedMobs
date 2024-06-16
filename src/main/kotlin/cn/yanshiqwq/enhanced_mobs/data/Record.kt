@@ -21,8 +21,7 @@ object Record {
         fun value(base: Double): Number
     }
 
-    data class DoubleFactor(val formula: (Double) -> Double, private val range: ClosedFloatingPointRange<Double>? = null) :
-        Factor {
+    data class DoubleFactor(val formula: (Double) -> Double, private val range: ClosedFloatingPointRange<Double>? = null) : Factor {
         override fun value(base: Double): Double {
             return if (range == null) formula(base) else formula(base).coerceIn(range)
         }
@@ -46,7 +45,9 @@ object Record {
             attribute.forEach {
                 val attribute = it.key
                 val factor = it.value
-                entity.getAttribute(attribute)!!.addModifier(factor.getModifier(multiplier, uuid, name))
+                entity.getAttribute(attribute)!!.runCatching {
+                    addModifier(factor.getModifier(multiplier, uuid, name))
+                }
             }
         }
     }

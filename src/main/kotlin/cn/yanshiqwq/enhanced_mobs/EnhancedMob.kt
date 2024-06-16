@@ -33,11 +33,12 @@ class EnhancedMob(val multiplier: Double, val entity: Mob) {
         val boostTypeKey = NamespacedKey(instance!!, "boost_type")
         val multiplierKey = NamespacedKey(instance!!, "multiplier")
         data class Listener(val eventClass: KClass<out Event>, val function: (Event) -> Unit)
-        fun Mob.asEnhancedMob(multiplier: Double, boostTypeId: MobTypeManager.TypeId): EnhancedMob? {
+        fun Mob.asEnhancedMob(multiplier: Double, boostTypeId: MobTypeManager.TypeId, isReload: Boolean = true): EnhancedMob? {
             val mob = try {
                 EnhancedMob(multiplier, this).apply { initBoost(boostTypeId) }
             } catch (e: NullPointerException) { return null }
-            heal()
+            instance!!.mobManager?.register(this.uniqueId, mob)
+            if (isReload) heal()
             return mob
         }
     }
@@ -84,6 +85,7 @@ class EnhancedMob(val multiplier: Double, val entity: Mob) {
     ): BukkitTask? {
         entity.initEquipment(slot, before)
         val task: EnhancedMob.() -> Boolean = lambda@{
+            if (entity.isDead) return@lambda false
             val target = entity.target ?: return@lambda false
             if (target.location.distance(entity.location) > distance) return@lambda false
             if (entity.equipment.getItem(slot).type != before) return@lambda false
@@ -105,17 +107,21 @@ class EnhancedMob(val multiplier: Double, val entity: Mob) {
         id: UUID = UUID.randomUUID(),
         function: EnhancedMob.(LivingEntity) -> Boolean
     ): BukkitTask? {
-        val task: EnhancedMob.(LivingEntity) -> Boolean = lambda@{
+        val task: EnhancedMob.() -> Boolean = lambda@{
+            if (entity.isDead) return@lambda false
             if (entity.equipment.getItem(slot).type == after) {
                 cancelTask(id)
                 return@lambda false
             }
             val target = entity.target ?: return@lambda false
+            if (target.location.distance(entity.location) > distance) return@lambda false
+            if (entity.equipment.getItem(slot).type != before.type) return@lambda false
+            if (hasLineOfSight && !target.hasLineOfSight(entity)) return@lambda false
             if (!this.function(target)) return@lambda false
-            entity.equipment.getItem(slot).add(-1)
+            entity.equipment.getItem(slot).subtract(1)
             return@lambda true
         }
-        return initRangeItemPeriodTask(distance, before.type, null, slot, period, hasLineOfSight, id, task)
+        return initPeriodTask(period, id = id, function = task)
     }
 
     fun initRangeItemDisposableTask(
@@ -129,6 +135,7 @@ class EnhancedMob(val multiplier: Double, val entity: Mob) {
     ): BukkitTask? {
         entity.initEquipment(slot, before)
         val task: EnhancedMob.() -> Boolean = lambda@{
+            if (entity.isDead) return@lambda false
             val target = entity.target ?: return@lambda false
             if (target.location.distance(entity.location) > distance) return@lambda false
             if (hasLineOfSight && !target.hasLineOfSight(entity)) return@lambda false
@@ -141,6 +148,7 @@ class EnhancedMob(val multiplier: Double, val entity: Mob) {
 
     private fun initDisposableTask(period: Long = 20L, delay: Long = 0L, id: UUID = UUID.randomUUID(), function: EnhancedMob.() -> Boolean): BukkitTask? {
         val func = Runnable {
+            if (entity.isDead) cancelTask(id)
             if (!this.function()) return@Runnable
             cancelTask(id)
         }
@@ -152,8 +160,7 @@ class EnhancedMob(val multiplier: Double, val entity: Mob) {
         val func = Runnable { this.function() }
         tasks[id] = Bukkit.getScheduler().runTaskTimer(instance!!, func, delay, period)
         initListener<EntityDeathEvent> {
-            if(it.entity != entity) return@initListener
-            cancelTask(id)
+            if (entity.isDead) cancelTask(id)
         }
         return tasks[id]
     }
@@ -162,8 +169,7 @@ class EnhancedMob(val multiplier: Double, val entity: Mob) {
         val func = Runnable { this.function() }
         tasks[id] = Bukkit.getScheduler().runTaskLater(instance!!, func, delay)
         initListener<EntityDeathEvent> {
-            if(it.entity != entity) return@initListener
-            cancelTask(id)
+            if (entity.isDead) cancelTask(id)
         }
         return tasks[id]
     }

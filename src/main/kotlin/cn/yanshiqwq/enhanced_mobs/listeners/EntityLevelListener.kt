@@ -61,9 +61,7 @@ class EntityLevelListener : Listener {
     @EventHandler
     fun onPlayerQuery(event: PlayerInteractEntityEvent) {
         delay = !delay
-        if (delay) {
-            return
-        } // ??
+        if (delay) return // ???
         val player = event.player
         val entity = event.rightClicked
         if (entity !is LivingEntity) return
