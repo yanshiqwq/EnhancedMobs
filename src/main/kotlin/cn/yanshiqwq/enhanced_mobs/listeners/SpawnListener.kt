@@ -38,7 +38,8 @@ class SpawnListener: Listener {
     @EventHandler
     fun onEnhancedMobLoad(event: EntityTargetLivingEntityEvent){
         event.entity.persistentDataContainer.run {
-            if (!has(EnhancedMob.multiplierKey) || !has(EnhancedMob.boostTypeKey) || event.entity !is Mob) return
+            if (!has(EnhancedMob.multiplierKey) || !has(EnhancedMob.boostTypeKey) || event.entity !is Mob) return // 之前不是EnhancedMob
+            if (instance!!.mobManager?.get(this as Mob) != null) return // 现在已经是EnhancedMob了
             val multiplier = get(EnhancedMob.multiplierKey, PersistentDataType.DOUBLE) ?: return
             val boostType = try {
                 val typeIdString = get(EnhancedMob.boostTypeKey, PersistentDataType.STRING) ?: return
