@@ -55,10 +55,10 @@ class SpawnListener: Listener {
         if (event.entity !is Mob || event.isCancelled) return
         val entity = event.entity as Mob
         val multiplier = when (val weight = Random.nextDouble()) {
-            in 0.0 .. 0.9 -> weight
-            in 0.9 .. 0.95 -> 22 * weight - 18.9
-            in 0.95 .. 0.99 -> 25 * weight - 21.75
-            in 0.99 .. 1.0 -> 200 * weight - 195
+            in 0.0..0.75 -> 0.0
+            in 0.75 .. 0.9 -> 6 * weight - 4.5
+            in 0.9 .. 0.98 -> 13.75 * weight - 11.475
+            in 0.99 .. 1.0 -> 50 * weight - 17.0
             else -> return // ?
         }
         if (event.entity.entitySpawnReason != CreatureSpawnEvent.SpawnReason.CUSTOM) {
@@ -68,9 +68,9 @@ class SpawnListener: Listener {
             instance!!.mobManager?.register(entity.uniqueId, mob)
         }
         val teamName = when (multiplier) {
-            in 0.9 .. 2.0 -> "strength"
-            in 2.0 .. 3.0 -> "enhanced"
-            in 3.0..114514.0 -> "boss"
+            in 0.75 .. 1.5 -> "strength"
+            in 1.5 .. 2.5 -> "enhanced"
+            in 2.5..114514.0 -> "boss"
             else -> return
         }
         instance!!.server.scoreboardManager.mainScoreboard.getTeam(teamName)?.addEntity(entity)
