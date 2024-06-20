@@ -16,6 +16,7 @@ import org.bukkit.event.world.WorldLoadEvent
 import org.bukkit.persistence.PersistentDataType
 import java.lang.Exception
 import java.lang.IndexOutOfBoundsException
+import kotlin.math.pow
 import kotlin.random.Random
 
 /**
@@ -54,7 +55,8 @@ class SpawnListener: Listener {
     fun onMobSpawn(event: EntitySpawnEvent){
         if (event.entity !is Mob || event.isCancelled) return
         val entity = event.entity as Mob
-        val multiplier = when (val weight = Random.nextDouble()) {
+        val worldDifficultyModifier = 1 + (3 - event.entity.world.difficulty.ordinal) * 0.5
+        val multiplier = when (val weight = Random.nextDouble().pow(worldDifficultyModifier)) {
             in 0.0..0.75 -> 0.0
             in 0.75 .. 0.9 -> 6 * weight - 4.5
             in 0.9 .. 0.98 -> 13.75 * weight - 11.475

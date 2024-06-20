@@ -4,8 +4,10 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="d5ee4be2-1981-48f1-8632-49b4c7636b94" name="更改" comment="修复bug">
+    <list default="true" id="d5ee4be2-1981-48f1-8632-49b4c7636b94" name="更改" comment="下调了怪物高强化系数的概率">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/cn/yanshiqwq/enhanced_mobs/data/BuiltInPacks.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/cn/yanshiqwq/enhanced_mobs/data/BuiltInPacks.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/cn/yanshiqwq/enhanced_mobs/listeners/EntityLevelListener.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/cn/yanshiqwq/enhanced_mobs/listeners/EntityLevelListener.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/kotlin/cn/yanshiqwq/enhanced_mobs/listeners/SpawnListener.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/cn/yanshiqwq/enhanced_mobs/listeners/SpawnListener.kt" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -430,7 +432,14 @@
       <option name="project" value="LOCAL" />
       <updated>1718662750601</updated>
     </task>
-    <option name="localTasksCounter" value="24" />
+    <task id="LOCAL-00024" summary="下调了怪物高强化系数的概率">
+      <created>1718721843384</created>
+      <option name="number" value="00024" />
+      <option name="presentableId" value="LOCAL-00024" />
+      <option name="project" value="LOCAL" />
+      <updated>1718721843384</updated>
+    </task>
+    <option name="localTasksCounter" value="25" />
     <servers />
   </component>
   <component name="Vcs.Log.History.Properties">
@@ -501,6 +510,7 @@
     <MESSAGE value="优化代码格式，修复了ListenerAPI无法正常使用的问题，新增随机强化生成功能，上调了怪物的攻击力成长曲线" />
     <MESSAGE value="上调了骷髅的血量系数, 新增了6种extendPack强化类型" />
     <MESSAGE value="修复bug" />
-    <option name="LAST_COMMIT_MESSAGE" value="修复bug" />
+    <MESSAGE value="下调了怪物高强化系数的概率" />
+    <option name="LAST_COMMIT_MESSAGE" value="下调了怪物高强化系数的概率" />
   </component>
 </project>

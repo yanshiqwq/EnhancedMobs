@@ -61,11 +61,11 @@ object BuiltInPacks {
                         ),
                         Attribute.GENERIC_MOVEMENT_SPEED to Record.AttributeFactor(
                             AttributeModifier.Operation.MULTIPLY_SCALAR_1,
-                            Record.DoubleFactor(logFormula(0.25))
+                            Record.DoubleFactor(logFormula(0.2))
                         ),
                         Attribute.GENERIC_ATTACK_DAMAGE to Record.AttributeFactor(
                             AttributeModifier.Operation.MULTIPLY_SCALAR_1,
-                            Record.DoubleFactor({ it })
+                            Record.DoubleFactor(logFormula(1.5))
                         ),
                         Attribute.GENERIC_KNOCKBACK_RESISTANCE to Record.AttributeFactor(
                             AttributeModifier.Operation.ADD_NUMBER,
@@ -86,11 +86,11 @@ object BuiltInPacks {
                         ),
                         Attribute.GENERIC_ATTACK_DAMAGE to Record.AttributeFactor(
                             AttributeModifier.Operation.MULTIPLY_SCALAR_1,
-                            Record.DoubleFactor({ 3 * it })
+                            Record.DoubleFactor(logFormula(2.0))
                         ),
                         Attribute.GENERIC_MOVEMENT_SPEED to Record.AttributeFactor(
                             AttributeModifier.Operation.MULTIPLY_SCALAR_1,
-                            Record.DoubleFactor(logFormula(0.20))
+                            Record.DoubleFactor(logFormula(0.2))
                         )
                     )
                 )
@@ -98,8 +98,8 @@ object BuiltInPacks {
             initEnchant(
                 EquipmentSlot.HAND, Record.EnchantRecord(
                     mapOf(
-                        Enchantment.ARROW_KNOCKBACK to Record.IntFactor({ 0.5 * it }),
-                        Enchantment.ARROW_FIRE to Record.IntFactor({ 0.5 * it })
+                        Enchantment.ARROW_KNOCKBACK to Record.IntFactor(logFormula(2.0)),
+                        Enchantment.ARROW_FIRE to Record.IntFactor({ if (it >= 2) 1.0 else 0.0})
                     )
                 )
             )
@@ -119,7 +119,7 @@ object BuiltInPacks {
                         ),
                         Attribute.GENERIC_ATTACK_DAMAGE to Record.AttributeFactor(
                             AttributeModifier.Operation.MULTIPLY_SCALAR_1,
-                            Record.DoubleFactor({ 1.5 * it })
+                            Record.DoubleFactor(logFormula(1.5))
                         )
                     )
                 )
@@ -162,11 +162,11 @@ object BuiltInPacks {
                         ),
                         Attribute.GENERIC_MOVEMENT_SPEED to Record.AttributeFactor(
                             AttributeModifier.Operation.MULTIPLY_SCALAR_1,
-                            Record.DoubleFactor(logFormula(0.25))
+                            Record.DoubleFactor(logFormula(0.2))
                         ),
                         Attribute.GENERIC_ATTACK_DAMAGE to Record.AttributeFactor(
                             AttributeModifier.Operation.MULTIPLY_SCALAR_1,
-                            Record.DoubleFactor({ it })
+                            Record.DoubleFactor(logFormula(1.5))
                         )
                     )
                 )

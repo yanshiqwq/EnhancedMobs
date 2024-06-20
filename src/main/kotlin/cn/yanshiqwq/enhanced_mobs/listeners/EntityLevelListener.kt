@@ -153,18 +153,17 @@ class EntityLevelListener : Listener {
     private fun LivingEntity.getDamage(): Double {
         return when (this) {
             is WitherSkeleton, is AbstractSkeleton -> {
-                var damage = getAttribute(Attribute.GENERIC_ATTACK_DAMAGE)?.value ?: 1.0
+                val damage = getAttribute(Attribute.GENERIC_ATTACK_DAMAGE)?.value ?: 1.0
+                var power = 0
                 var knockback = 0
                 var flame = 1.0
-                val mainHand = equipment?.itemInMainHand
-                    ?: return getAttribute(Attribute.GENERIC_ATTACK_DAMAGE)?.value ?: 0.0
+                val mainHand = equipment?.itemInMainHand ?: return getAttribute(Attribute.GENERIC_ATTACK_DAMAGE)?.value ?: 0.0
                 if (mainHand.type in arrayOf(Material.BOW, Material.CROSSBOW)) {
-                    val power = mainHand.enchantments[Enchantment.ARROW_DAMAGE] ?: 0
-                    damage = 4.5 * (1 + 0.15 * power)
+                    power = mainHand.enchantments[Enchantment.ARROW_DAMAGE] ?: 0
                     knockback = mainHand.enchantments[Enchantment.ARROW_KNOCKBACK] ?: 0
                     flame = if ((mainHand.enchantments[Enchantment.ARROW_FIRE] ?: 0) >= 1) 1.25 else 1.0
                 }
-                damage * flame * (1 + 0.15 * knockback) * 0.85
+                damage * (1 + 0.25 * power) * flame * (1 + 0.15 * knockback) * 0.85
             }
 
             is Creeper -> {
