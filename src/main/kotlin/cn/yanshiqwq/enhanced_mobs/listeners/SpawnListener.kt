@@ -6,16 +6,23 @@ import cn.yanshiqwq.enhanced_mobs.Main.Companion.instance
 import cn.yanshiqwq.enhanced_mobs.managers.MobTypeManager
 import cn.yanshiqwq.enhanced_mobs.managers.MobTypeManager.Companion.getRandomTypeId
 import net.kyori.adventure.text.format.NamedTextColor
+import org.bukkit.attribute.Attribute
+import org.bukkit.attribute.AttributeModifier
+import org.bukkit.attribute.AttributeModifier.Operation
 import org.bukkit.entity.Mob
 import org.bukkit.event.EventHandler
 import org.bukkit.event.Listener
 import org.bukkit.event.entity.CreatureSpawnEvent
 import org.bukkit.event.entity.EntitySpawnEvent
 import org.bukkit.event.entity.EntityTargetLivingEntityEvent
+import org.bukkit.event.player.PlayerRespawnEvent
 import org.bukkit.event.world.WorldLoadEvent
 import org.bukkit.persistence.PersistentDataType
+import org.bukkit.potion.PotionEffect
+import org.bukkit.potion.PotionEffectType
 import java.lang.Exception
 import java.lang.IndexOutOfBoundsException
+import java.util.*
 import kotlin.math.pow
 import kotlin.random.Random
 
@@ -37,13 +44,25 @@ class SpawnListener: Listener {
     }
 
     @EventHandler
+    fun onPlayerRespawn(event: PlayerRespawnEvent){
+        event.player.run {
+            val uuid = UUID.fromString("7e993d80-af92-40ed-9097-101b28ae76ca")
+            val modifier = AttributeModifier(uuid, "Player spawn bonus", 20.0, Operation.ADD_NUMBER)
+            if (getAttribute(Attribute.GENERIC_MAX_HEALTH)?.modifiers?.contains(modifier) == true) getAttribute(Attribute.GENERIC_MAX_HEALTH)?.addTransientModifier(modifier)
+            addPotionEffect(PotionEffect(PotionEffectType.NIGHT_VISION, 300 * 20, 0, true, false, false))
+        }
+    }
+
+    @EventHandler
     fun onEnhancedMobLoad(event: EntityTargetLivingEntityEvent){
-        event.entity.persistentDataContainer.run {
-            if (!has(EnhancedMob.multiplierKey) || !has(EnhancedMob.boostTypeKey) || event.entity !is Mob) return // 之前不是EnhancedMob
+        if (event.entity !is Mob) return
+        event.entity.run {
+            val container = persistentDataContainer
+            if (!container.has(EnhancedMob.multiplierKey) || !container.has(EnhancedMob.boostTypeKey)) return // 之前不是EnhancedMob
             if (instance!!.mobManager?.get(this as Mob) != null) return // 现在已经是EnhancedMob了
-            val multiplier = get(EnhancedMob.multiplierKey, PersistentDataType.DOUBLE) ?: return
+            val multiplier = container.get(EnhancedMob.multiplierKey, PersistentDataType.DOUBLE) ?: return
             val boostType = try {
-                val typeIdString = get(EnhancedMob.boostTypeKey, PersistentDataType.STRING) ?: return
+                val typeIdString = container.get(EnhancedMob.boostTypeKey, PersistentDataType.STRING) ?: return
                 MobTypeManager.TypeId(typeIdString)
             } catch (e: IndexOutOfBoundsException) { return }
             val mob = (event.entity as Mob).asEnhancedMob(multiplier, boostType, false) ?: return
@@ -70,9 +89,9 @@ class SpawnListener: Listener {
             instance!!.mobManager?.register(entity.uniqueId, mob)
         }
         val teamName = when (multiplier) {
-            in 0.75 .. 1.5 -> "strength"
-            in 1.5 .. 2.5 -> "enhanced"
-            in 2.5..114514.0 -> "boss"
+            in 1.0 .. 2.0 -> "strength"
+            in 2.0 .. 3.0 -> "enhanced"
+            in 3.0..114514.0 -> "boss"
             else -> return
         }
         instance!!.server.scoreboardManager.mainScoreboard.getTeam(teamName)?.addEntity(entity)
