@@ -32,7 +32,7 @@ class ModifierListener : Listener {
         val damager = arrow.shooter as LivingEntity
         if (damager is Player) return
         val level = damager.equipment?.itemInMainHand?.enchantments?.get(Enchantment.ARROW_DAMAGE) ?: 0
-        event.damage = 3 * (damager.getAttribute(Attribute.GENERIC_ATTACK_DAMAGE)?.value ?: 0.0) * (1 + level * 0.25)
+        event.damage = 2.5 * (damager.getAttribute(Attribute.GENERIC_ATTACK_DAMAGE)?.value ?: 0.0) * (1 + level * 0.25)
     }
 
     @EventHandler
@@ -64,15 +64,21 @@ class ModifierListener : Listener {
 
     private fun Mob.applyVariantBoost() {
         when (this) {
-            is Stray, is WitherSkeleton, is Husk, is Drowned -> {
+            is Stray, is WitherSkeleton -> {
                 getAttribute(Attribute.GENERIC_MAX_HEALTH)?.baseValue = 28.0
                 getAttribute(Attribute.GENERIC_ARMOR)?.baseValue = 4.0
-                getAttribute(Attribute.GENERIC_ATTACK_DAMAGE)?.baseValue = 4.0
+                getAttribute(Attribute.GENERIC_ATTACK_DAMAGE)?.baseValue = 2.5
                 getAttribute(Attribute.GENERIC_FOLLOW_RANGE)?.baseValue = 24.0
             }
 
-            is Creeper -> {
-                if (!isPowered) return
+            is Husk, is Drowned -> {
+                getAttribute(Attribute.GENERIC_MAX_HEALTH)?.baseValue = 28.0
+                getAttribute(Attribute.GENERIC_ARMOR)?.baseValue = 4.0
+                getAttribute(Attribute.GENERIC_ATTACK_DAMAGE)?.baseValue = 4.0
+                getAttribute(Attribute.GENERIC_FOLLOW_RANGE)?.baseValue = 48.0
+            }
+
+            is Creeper -> if (isPowered) {
                 getAttribute(Attribute.GENERIC_MAX_HEALTH)?.baseValue = 24.0
                 getAttribute(Attribute.GENERIC_ARMOR)?.baseValue = 6.0
                 getAttribute(Attribute.GENERIC_FOLLOW_RANGE)?.baseValue = 24.0

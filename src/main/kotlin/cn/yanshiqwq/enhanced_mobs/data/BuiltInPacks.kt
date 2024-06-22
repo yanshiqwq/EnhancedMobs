@@ -57,7 +57,7 @@ object BuiltInPacks {
                     mapOf(
                         Attribute.GENERIC_MAX_HEALTH to Record.AttributeFactor(
                             AttributeModifier.Operation.MULTIPLY_SCALAR_1,
-                            Record.DoubleFactor({ 1.4 * it })
+                            Record.DoubleFactor({ 0.52 * it })
                         ),
                         Attribute.GENERIC_MOVEMENT_SPEED to Record.AttributeFactor(
                             AttributeModifier.Operation.MULTIPLY_SCALAR_1,
@@ -69,7 +69,7 @@ object BuiltInPacks {
                         ),
                         Attribute.GENERIC_KNOCKBACK_RESISTANCE to Record.AttributeFactor(
                             AttributeModifier.Operation.ADD_NUMBER,
-                            Record.DoubleFactor({ 0.065 * it })
+                            Record.DoubleFactor({ 0.045 * it })
                         )
                     )
                 )
@@ -82,7 +82,7 @@ object BuiltInPacks {
                     mapOf(
                         Attribute.GENERIC_MAX_HEALTH to Record.AttributeFactor(
                             AttributeModifier.Operation.MULTIPLY_SCALAR_1,
-                            Record.DoubleFactor({ 0.8 * it })
+                            Record.DoubleFactor({ 0.44 * it })
                         ),
                         Attribute.GENERIC_ATTACK_DAMAGE to Record.AttributeFactor(
                             AttributeModifier.Operation.MULTIPLY_SCALAR_1,
@@ -111,7 +111,7 @@ object BuiltInPacks {
                     mapOf(
                         Attribute.GENERIC_MAX_HEALTH to Record.AttributeFactor(
                             AttributeModifier.Operation.MULTIPLY_SCALAR_1,
-                            Record.DoubleFactor({ 2.0 * it })
+                            Record.DoubleFactor({ 0.6 * it })
                         ),
                         Attribute.GENERIC_MOVEMENT_SPEED to Record.AttributeFactor(
                             AttributeModifier.Operation.MULTIPLY_SCALAR_1,
@@ -133,7 +133,7 @@ object BuiltInPacks {
                     mapOf(
                         Attribute.GENERIC_MAX_HEALTH to Record.AttributeFactor(
                             AttributeModifier.Operation.MULTIPLY_SCALAR_1,
-                            Record.DoubleFactor({ 0.35 * it })
+                            Record.DoubleFactor({ 0.44 * it })
                         ),
                         Attribute.GENERIC_MOVEMENT_SPEED to Record.AttributeFactor(
                             AttributeModifier.Operation.MULTIPLY_SCALAR_1,
@@ -158,7 +158,7 @@ object BuiltInPacks {
                     mapOf(
                         Attribute.GENERIC_MAX_HEALTH to Record.AttributeFactor(
                             AttributeModifier.Operation.MULTIPLY_SCALAR_1,
-                            Record.DoubleFactor({ it })
+                            Record.DoubleFactor({ 0.44 * it })
                         ),
                         Attribute.GENERIC_MOVEMENT_SPEED to Record.AttributeFactor(
                             AttributeModifier.Operation.MULTIPLY_SCALAR_1,

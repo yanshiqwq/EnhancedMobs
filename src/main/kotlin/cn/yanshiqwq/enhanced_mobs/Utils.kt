@@ -1,9 +1,6 @@
 package cn.yanshiqwq.enhanced_mobs
 
-import org.bukkit.Location
-import org.bukkit.Material
-import org.bukkit.Particle
-import org.bukkit.Sound
+import org.bukkit.*
 import org.bukkit.attribute.Attribute
 import org.bukkit.entity.*
 import org.bukkit.event.entity.CreatureSpawnEvent
@@ -21,6 +18,13 @@ import org.bukkit.util.Vector
  * @since 2024/6/11 00:16
  */
 object Utils {
+    fun Boolean.Companion.all(vararg booleans: Boolean): Boolean {
+        return booleans.all { it }
+    }
+    fun Boolean.Companion.any(vararg booleans: Boolean): Boolean {
+        return booleans.any { it }
+    }
+
     fun Location.placeBlock(type: Material) {
         this.block.run {
             if (!isReplaceable) return
@@ -57,6 +61,8 @@ object Utils {
         health = getAttribute(Attribute.GENERIC_MAX_HEALTH)!!.value * percent
     }
 
+    fun Entity.isOnFire() = this.fireTicks > 0
+
     fun Mob.initEquipment(slot: EquipmentSlot, material: Material) {
         equipment.setItem(slot, ItemStack(material))
     }
@@ -80,6 +86,26 @@ object Utils {
             Material.DIAMOND_AXE,
             Material.NETHERITE_AXE
         )
+    }
+
+    fun Location.getNearestPlayer(): Player? {
+        // 获取世界中的所有玩家
+        val players = Bukkit.getOnlinePlayers()
+
+        // 初始化最近的玩家和最小距离
+        var nearestPlayer: Player? = null
+        var minDistance = Double.MAX_VALUE
+
+        // 遍历所有玩家，找到距离怪物最近的玩家
+        for (player in players) {
+            val distance = player.location.distance(this)
+            if (distance < minDistance) {
+                minDistance = distance
+                nearestPlayer = player
+            }
+        }
+
+        return nearestPlayer
     }
 
     inline fun <reified T : Entity> Location.spawnEntity(type: EntityType, function: T.() -> Unit) {

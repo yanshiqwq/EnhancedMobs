@@ -12,6 +12,7 @@ import org.bukkit.event.EventHandler
 import org.bukkit.event.Listener
 import org.bukkit.event.entity.EntityTargetEvent
 import org.bukkit.event.player.PlayerInteractEntityEvent
+import org.bukkit.inventory.EquipmentSlot
 import org.bukkit.persistence.PersistentDataType
 import kotlin.math.floor
 import kotlin.math.ln
@@ -113,9 +114,9 @@ class EntityLevelListener : Listener {
         val levelColor = when (level) {
             in 10..19 -> NamedTextColor.GREEN
             in 20..29 -> NamedTextColor.YELLOW
-            in 30..39 -> NamedTextColor.RED
-            in 40..59 -> NamedTextColor.DARK_PURPLE
-            in 60..Int.MAX_VALUE -> NamedTextColor.DARK_RED
+            in 30..49 -> NamedTextColor.RED
+            in 50..69 -> NamedTextColor.DARK_PURPLE
+            in 70..Int.MAX_VALUE -> NamedTextColor.DARK_RED
             else -> NamedTextColor.GRAY
         }
         val nameColor = if (level >= 10) NamedTextColor.WHITE else NamedTextColor.GRAY
@@ -146,39 +147,45 @@ class EntityLevelListener : Listener {
 
     private fun LivingEntity.getFactorSpeed(): Double {
         return getAttribute(Attribute.GENERIC_MOVEMENT_SPEED)!!.run {
-            (value / baseValue - 1) * 0.35 + 1
+            (value / 0.25 - 1) * 0.35 + 1
         }
     }
 
     private fun LivingEntity.getDamage(): Double {
+        val damage = getAttribute(Attribute.GENERIC_ATTACK_DAMAGE)?.value ?: 1.0
         return when (this) {
             is WitherSkeleton, is AbstractSkeleton -> {
-                val damage = getAttribute(Attribute.GENERIC_ATTACK_DAMAGE)?.value ?: 1.0
-                var power = 0
-                var knockback = 0
-                var flame = 1.0
-                val mainHand = equipment?.itemInMainHand ?: return getAttribute(Attribute.GENERIC_ATTACK_DAMAGE)?.value ?: 0.0
-                if (mainHand.type in arrayOf(Material.BOW, Material.CROSSBOW)) {
-                    power = mainHand.enchantments[Enchantment.ARROW_DAMAGE] ?: 0
-                    knockback = mainHand.enchantments[Enchantment.ARROW_KNOCKBACK] ?: 0
-                    flame = if ((mainHand.enchantments[Enchantment.ARROW_FIRE] ?: 0) >= 1) 1.25 else 1.0
-                }
-                damage * (1 + 0.25 * power) * flame * (1 + 0.15 * knockback) * 0.85
+                if (equipment?.getItem(EquipmentSlot.HAND)?.type == Material.BOW){
+                    var power = 0
+                    var knockback = 0
+                    var flame = 1.0
+                    val mainHand = equipment?.itemInMainHand ?: return getAttribute(Attribute.GENERIC_ATTACK_DAMAGE)?.value ?: 0.0
+                    if (mainHand.type in arrayOf(Material.BOW, Material.CROSSBOW)) {
+                        power = mainHand.enchantments[Enchantment.ARROW_DAMAGE] ?: 0
+                        knockback = mainHand.enchantments[Enchantment.ARROW_KNOCKBACK] ?: 0
+                        flame = if ((mainHand.enchantments[Enchantment.ARROW_FIRE] ?: 0) >= 1) 1.25 else 1.0
+                    }
+                    2.5 * damage * (1 + 0.25 * power) * flame * (1 + 0.15 * knockback)
+                } else damage
             }
 
             is Creeper -> {
                 val factorFuse = 1 - (maxFuseTicks - 40) / 240
-                explosionRadius * factorFuse * 1.15
+                explosionRadius * factorFuse * 1.2
             }
 
-            else -> getAttribute(Attribute.GENERIC_ATTACK_DAMAGE)?.value ?: 1.0
+            is Witch -> 9.0
+
+            is CaveSpider -> damage + 5.0
+
+            else -> damage
         }
     }
 
     private fun LivingEntity.getFactorDamage(): Double {
         val damage = getDamage()
         return if (damage >= 3)
-            7 * ln(damage + 1) - 7.7
+            10 * ln(damage + 1) - 7.7
         else
             damage / 3 + 1
     }

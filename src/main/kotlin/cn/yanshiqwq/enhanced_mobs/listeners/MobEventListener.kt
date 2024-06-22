@@ -26,7 +26,9 @@ class MobEventListener : Listener {
                     it.function.invoke(event)
                 }
             }
-        } catch (e: Exception) {
+        }
+        catch (_: ConcurrentModificationException) {}
+        catch (e: Exception) {
             Main.logger.warning("An unexpected exception occurred while triggering skill.")
             e.printStackTrace()
         }

@@ -16,36 +16,38 @@ import kotlin.random.Random
 
 class MobTypeManager {
     companion object {
+        private fun getWeightMap(type: EntityType) = when (type) {
+            EntityType.ZOMBIE, EntityType.ZOMBIE_VILLAGER, EntityType.HUSK, EntityType.DROWNED, EntityType.ZOMBIFIED_PIGLIN -> mapOf(
+                TypeId("vanilla", "zombie") to 80,
+                TypeId("extend", "zombie_strength_cloud") to 2,
+                TypeId("extend", "zombie_totem") to 2,
+                TypeId("extend", "zombie_tnt") to 2,
+                TypeId("extend", "zombie_lava") to 2,
+                TypeId("extend", "zombie_flint_and_steel") to 2,
+                TypeId("extend", "zombie_ender_pearl") to 2,
+                TypeId("extend", "zombie_shield") to 2,
+            )
+            EntityType.SKELETON, EntityType.STRAY, EntityType.WITHER_SKELETON -> mapOf(
+                TypeId("vanilla", "skeleton") to 80,
+                TypeId("extend", "skeleton_iron_sword") to 10,
+            )
+            EntityType.SPIDER, EntityType.CAVE_SPIDER -> mapOf(
+                TypeId("vanilla", "spider") to 80
+            )
+            EntityType.CREEPER -> mapOf(
+                TypeId("vanilla", "creeper") to 80
+            )
+            else -> mapOf(
+                TypeId("vanilla", "generic") to 80
+            )
+        }
+
         fun getRandomTypeId(type: EntityType): TypeId {
-            val weightMap = when (type) {
-                EntityType.ZOMBIE, EntityType.ZOMBIE_VILLAGER, EntityType.HUSK, EntityType.DROWNED, EntityType.ZOMBIFIED_PIGLIN -> mapOf(
-                    TypeId("vanilla", "zombie") to 80,
-                    TypeId("extend", "zombie_strength_cloud") to 2,
-                    TypeId("extend", "zombie_totem") to 2,
-                    TypeId("extend", "zombie_tnt") to 2,
-                    TypeId("extend", "zombie_lava") to 2,
-                    TypeId("extend", "zombie_flint_and_steel") to 2,
-                    TypeId("extend", "zombie_ender_pearl") to 2,
-                    TypeId("extend", "zombie_shield") to 2,
-                )
-                EntityType.SKELETON, EntityType.STRAY, EntityType.WITHER_SKELETON -> mapOf(
-                    TypeId("vanilla", "skeleton") to 80,
-                    TypeId("extend", "skeleton_iron_sword") to 10,
-                )
-                EntityType.SPIDER, EntityType.CAVE_SPIDER -> mapOf(
-                    TypeId("vanilla", "spider") to 80
-                )
-                EntityType.CREEPER -> mapOf(
-                    TypeId("vanilla", "creeper") to 80
-                )
-                else -> mapOf(
-                    TypeId("vanilla", "generic") to 80
-                )
-            }
-            val totalWeight = weightMap.values.sum()
+            val map = getWeightMap(type)
+            val totalWeight = map.values.sum()
             var randomValue = Random.nextInt(totalWeight)
 
-            for ((typeId, weight) in weightMap) {
+            for ((typeId, weight) in map) {
                 randomValue -= weight
                 if (randomValue < 0) {
                     return typeId

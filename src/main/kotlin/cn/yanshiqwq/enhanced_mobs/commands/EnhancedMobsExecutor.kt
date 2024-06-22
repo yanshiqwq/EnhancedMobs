@@ -2,6 +2,7 @@ package cn.yanshiqwq.enhanced_mobs.commands
 
 import cn.yanshiqwq.enhanced_mobs.EnhancedMob.Companion.asEnhancedMob
 import cn.yanshiqwq.enhanced_mobs.Main
+import cn.yanshiqwq.enhanced_mobs.data.Tags
 import cn.yanshiqwq.enhanced_mobs.managers.MobTypeManager
 import net.kyori.adventure.text.Component
 import net.kyori.adventure.text.format.NamedTextColor
@@ -102,10 +103,10 @@ class EnhancedMobsExecutor : CommandExecutor {
 
     private fun getDefaultBoostId(entityType: EntityType): MobTypeManager.TypeId {
         return when (entityType) {
-            EntityType.ZOMBIE_VILLAGER, EntityType.ZOMBIE, EntityType.HUSK, EntityType.DROWNED -> MobTypeManager.TypeId("vanilla", "zombie")
-            EntityType.SKELETON, EntityType.STRAY, EntityType.WITHER_SKELETON -> MobTypeManager.TypeId("vanilla", "skeleton")
-            EntityType.SPIDER, EntityType.CAVE_SPIDER -> MobTypeManager.TypeId("vanilla", "spider")
-            EntityType.CREEPER -> MobTypeManager.TypeId("vanilla", "creeper")
+            in Tags.Entity.zombies -> MobTypeManager.TypeId("vanilla", "zombie")
+            in Tags.Entity.skeletons -> MobTypeManager.TypeId("vanilla", "skeleton")
+            in Tags.Entity.spiders -> MobTypeManager.TypeId("vanilla", "spider")
+            in Tags.Entity.creepers -> MobTypeManager.TypeId("vanilla", "creeper")
             else -> MobTypeManager.TypeId("vanilla", "generic")
         }
     }

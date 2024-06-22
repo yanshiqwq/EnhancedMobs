@@ -3,9 +3,12 @@ package cn.yanshiqwq.enhanced_mobs.listeners
 import cn.yanshiqwq.enhanced_mobs.EnhancedMob
 import cn.yanshiqwq.enhanced_mobs.EnhancedMob.Companion.asEnhancedMob
 import cn.yanshiqwq.enhanced_mobs.Main.Companion.instance
+import cn.yanshiqwq.enhanced_mobs.Utils.getNearestPlayer
+import cn.yanshiqwq.enhanced_mobs.data.LootTable
 import cn.yanshiqwq.enhanced_mobs.managers.MobTypeManager
 import cn.yanshiqwq.enhanced_mobs.managers.MobTypeManager.Companion.getRandomTypeId
 import net.kyori.adventure.text.format.NamedTextColor
+import org.bukkit.NamespacedKey
 import org.bukkit.attribute.Attribute
 import org.bukkit.attribute.AttributeModifier
 import org.bukkit.attribute.AttributeModifier.Operation
@@ -23,6 +26,7 @@ import org.bukkit.potion.PotionEffectType
 import java.lang.Exception
 import java.lang.IndexOutOfBoundsException
 import java.util.*
+import kotlin.math.ln
 import kotlin.math.pow
 import kotlin.random.Random
 
@@ -74,20 +78,25 @@ class SpawnListener: Listener {
     fun onMobSpawn(event: EntitySpawnEvent){
         if (event.entity !is Mob || event.isCancelled) return
         val entity = event.entity as Mob
+        val playerLevel = entity.location.getNearestPlayer()?.level?.coerceIn(0..233) ?: 0
+        val playerLevelMultiplier = 0.12 * ln(300 - playerLevel.toDouble())
         val worldDifficultyModifier = 1 + (3 - event.entity.world.difficulty.ordinal) * 0.5
         val multiplier = when (val weight = Random.nextDouble().pow(worldDifficultyModifier)) {
-            in 0.0..0.75 -> 0.0
-            in 0.75 .. 0.9 -> 6 * weight - 4.5
-            in 0.9 .. 0.98 -> 13.75 * weight - 11.475
-            in 0.99 .. 1.0 -> 50 * weight - 17.0
-            else -> return // ?
+            in 0.0..playerLevelMultiplier -> 0.0
+            in playerLevelMultiplier .. 1.0 -> 0.65 * (playerLevel + 15) * (weight - playerLevelMultiplier).pow(2)
+            else -> 0.0 // ?
         }
+
+        val playerLevelKey = NamespacedKey(instance!!, "nearest_player_level")
+        entity.persistentDataContainer.set(playerLevelKey, PersistentDataType.INTEGER, playerLevel)
+
         if (event.entity.entitySpawnReason != CreatureSpawnEvent.SpawnReason.CUSTOM) {
             val mob = try {
                 entity.asEnhancedMob(multiplier, getRandomTypeId(entity.type)) ?: return
             } catch (ignored: Exception) { return }
             instance!!.mobManager?.register(entity.uniqueId, mob)
         }
+
         val teamName = when (multiplier) {
             in 1.0 .. 2.0 -> "strength"
             in 2.0 .. 3.0 -> "enhanced"
@@ -95,6 +104,8 @@ class SpawnListener: Listener {
             else -> return
         }
         instance!!.server.scoreboardManager.mainScoreboard.getTeam(teamName)?.addEntity(entity)
+
+        LootTable.apply(entity, multiplier)
         entity.isGlowing = true
     }
 }
