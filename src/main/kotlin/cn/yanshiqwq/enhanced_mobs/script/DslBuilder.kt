@@ -7,15 +7,19 @@ import cn.yanshiqwq.enhanced_mobs.Main.Companion.instance
 import cn.yanshiqwq.enhanced_mobs.data.*
 import cn.yanshiqwq.enhanced_mobs.managers.PackManager
 import cn.yanshiqwq.enhanced_mobs.managers.TypeManager
+import org.bukkit.Bukkit
 import org.bukkit.Material
 import org.bukkit.attribute.Attribute
 import org.bukkit.attribute.AttributeModifier
 import org.bukkit.enchantments.Enchantment
 import org.bukkit.entity.LivingEntity
+import org.bukkit.entity.Mob
 import org.bukkit.event.Event
 import org.bukkit.inventory.EquipmentSlot
 import org.bukkit.inventory.ItemStack
 import org.bukkit.scheduler.BukkitTask
+import java.util.*
+import kotlin.reflect.KClass
 
 /**
  * enhanced_mobs
@@ -40,17 +44,14 @@ object DslBuilder {
             types.add(builder.build())
         }
 
-        fun type(typeId: String, implementation: String, block: TypeBuilder.(EnhancedMob) -> Unit) {
-            TypeId(typeId).implement(TypeManager.TypeKey(implementation), block)
-        }
+        fun type(typeId: String, impl: String, block: TypeBuilder.(EnhancedMob) -> Unit) {
+            val typeKey = TypeManager.TypeKey(impl)
+            val implInstance = instance!!.typeManager.getType(typeKey)
+            val builder = TypeBuilder(TypeManager.TypeKey(packId, typeId))
 
-        data class TypeId(val id: String)
-        private fun TypeId.implement(typeKey: TypeManager.TypeKey, block: TypeBuilder.(EnhancedMob) -> Unit) {
-            val implementation = instance!!.typeManager.getType(typeKey)
-            val builder = TypeBuilder(TypeManager.TypeKey(packId, this.id))
-            types.add(TypeManager.MobType(TypeManager.TypeKey(packId, this.id)){
-                implementation.function.invoke(this)
-                block.invoke(builder, this)
+            types.add(TypeManager.MobType(TypeManager.TypeKey(packId, typeId)) {
+                implInstance.function.invoke(this)
+                builder.block(this)
             })
         }
 
@@ -60,79 +61,133 @@ object DslBuilder {
     }
 
     class TypeBuilder(private val typeKey: TypeManager.TypeKey) {
-        private val attributes = mutableListOf<Record.AttributeRecord>()
         val functions = mutableListOf<EnhancedMob.() -> Unit>()
-        val tasks = mutableMapOf<String, BukkitTask>()
 
+        private val attributes = mutableListOf<Record.AttributeRecord>()
         fun attribute(attribute: Attribute, operation: AttributeModifier.Operation, factor: Record.DoubleFactor) {
             attributes.add(Record.AttributeRecord(attribute, Record.AttributeFactor(operation, factor)))
         }
 
         fun item(slot: EquipmentSlot, type: Material, block: SlotBuilder.() -> Unit = {}) = item(slot, ItemStack(type), block)
-
         fun item(slot: EquipmentSlot, item: ItemStack? = null, block: SlotBuilder.() -> Unit = {}) {
             val builder = SlotBuilder(slot, item)
             block.invoke(builder)
             functions.add(builder.build())
         }
 
-        inline fun <reified T: Event> listener(noinline block: (T) -> Unit) = functions.add { initListener<T>(block) }
-
-        abstract class AbstractTaskDsl {
-            var id: String = "DEFAULT"
-            var delay: Long = 0
-            var period: Long = 0
+        private val tasks = mutableMapOf<String, BukkitTask>()
+        data class TaskId(val id: String = UUID.randomUUID().toString()) {
+            private var switch: () -> Unit = {}
+            fun onSwitch(block: () -> Unit) { switch = block }
+            fun switch() = switch.invoke()
         }
 
-        open class TaskDsl: AbstractTaskDsl() {
-            var function: EnhancedMob.(LivingEntity?) -> Boolean = { true }
-        }
 
-        class ItemTaskDsl: AbstractTaskDsl() {
-            var function: EnhancedMob.(LivingEntity) -> Boolean = { true }
-            var distance: Double = 0.0
-                set(value) {
-                    if (value < 0.0) throw IllegalArgumentException("Distance cannot be less than zero")
-                    field = value
-                }
 
-            var before: ItemStack = ItemStack(Material.AIR)
-            var after: ItemStack = ItemStack(Material.AIR)
-            var slot: EquipmentSlot = EquipmentSlot.OFF_HAND
-            var hasLineOfSight: Boolean = true
+        data class Listener(val eventClass: KClass<out Event>, val function: (Event) -> Unit)
+        val listeners: ArrayList<Listener> = arrayListOf()
+
+        @Suppress("UNCHECKED_CAST")
+        inline fun <reified T: Event> listener(noinline block: (T) -> Unit) = functions.add {
+            if (entity.isDead) return@add
+            val listener = Listener(T::class, block as (Event) -> Unit)
+            listeners.add(listener)
         }
 
         fun run(block: EnhancedMob.() -> Unit) {
             functions.add(block)
         }
 
-        fun task(init: TaskDsl.() -> Unit) {
-            val dsl = TaskDsl().apply(init)
-
+        inline fun <reified T: Mob> property(crossinline block: T.(EnhancedMob) -> Unit) {
             functions.add {
-                cancelTask(dsl.id)
-                if (dsl.delay > 0) {
-                    this@TypeBuilder.tasks[dsl.id] = delayTask(init)
-                }
-                if (dsl.period > 0) {
-                    this@TypeBuilder.tasks[dsl.id] = periodTask(init)
-                }
-                throw IllegalArgumentException("Unknown task type")
+                if (entity !is T) throw IllegalArgumentException("Illegal EntityType: ${entity.type}")
+                entity.block(this)
             }
         }
 
-        fun cancelTask(id: String) = this@TypeBuilder.tasks[id]?.cancel()
-
-        fun itemTask(init: ItemTaskDsl.() -> Unit) {
-            val dsl = ItemTaskDsl().apply(init)
-
+        fun task(taskId: TaskId = TaskId(), delay: Long = 0L, block: Runnable): TaskId {
             functions.add {
-                if (entity.target == null) return@add
-                if (dsl.period > 0) {
-                    this@TypeBuilder.tasks[dsl.id] = periodItemTask(init)
-                    return@add
+                cancelTask(taskId)
+                taskId.switch()
+                val func = mobTask(this) { block.run() }
+                addTask(taskId, Bukkit.getScheduler().runTaskLater(instance!!, func, delay))
+            }
+            return taskId
+        }
+        fun task(taskId: TaskId = TaskId(), delay: Long = 0L, period: Long, block: Runnable): TaskId {
+            functions.add {
+                cancelTask(taskId)
+                taskId.switch()
+                val func = mobTask(this) { block.run() }
+                addTask(taskId, Bukkit.getScheduler().runTaskTimer(instance!!, func, delay, period))
+            }
+            return taskId
+        }
+
+        private fun mobTask(mob: EnhancedMob, block: Runnable): Runnable {
+            return Runnable {
+                if (mob.entity.isDead) return@Runnable
+                block.run()
+            }
+        }
+        private fun addTask(taskId: TaskId, task: BukkitTask) { this@TypeBuilder.tasks[taskId.id] = task }
+        fun cancelTask(taskId: TaskId) {
+            this@TypeBuilder.tasks[taskId.id].run {
+                if (this == null) return@run
+                taskId.switch()
+                cancel()
+            }
+        }
+
+        fun itemTask(
+            distance: Double,
+            before: ItemStack,
+            after: ItemStack? = null,
+            hasLineOfSight: Boolean = true,
+            slot: EquipmentSlot = EquipmentSlot.OFF_HAND,
+            block: EnhancedMob.(LivingEntity) -> Unit
+        ) {
+            functions.add {
+                val task = mobItemTask(this, distance, before, hasLineOfSight, slot) {
+                    this.block(it)
+                    if (after != null) entity.equipment.setItem(slot, ItemStack(after))
                 }
-                this@TypeBuilder.tasks[dsl.id] = disposableItemTask(init)
+                Bukkit.getScheduler().runTask(instance!!, task)
+            }
+        }
+        fun itemTask(
+            distance: Double,
+            delay: Long = 0L,
+            period: Long,
+            before: ItemStack,
+            after: ItemStack? = null,
+            hasLineOfSight: Boolean = true,
+            slot: EquipmentSlot = EquipmentSlot.OFF_HAND,
+            block: EnhancedMob.(LivingEntity) -> Unit
+        ) {
+            functions.add {
+                val task = mobItemTask(this, distance, before, hasLineOfSight, slot) {
+                    this.block(it)
+                    if (after != null) entity.equipment.setItem(slot, ItemStack(after))
+                }
+                Bukkit.getScheduler().runTaskTimer(instance!!, task, delay, period)
+            }
+        }
+        private inline fun mobItemTask(
+            mob: EnhancedMob,
+            distance: Double,
+            before: ItemStack,
+            hasLineOfSight: Boolean,
+            slot: EquipmentSlot = EquipmentSlot.OFF_HAND,
+            crossinline block: EnhancedMob.(LivingEntity) -> Unit
+        ): Runnable {
+            return Runnable {
+                val target = mob.entity.target ?: return@Runnable
+                if (target.location.distance(mob.entity.location) > distance) return@Runnable
+                if (mob.entity.isDead) return@Runnable
+                if (mob.entity.equipment.getItem(slot).type != before.type) return@Runnable
+                if (hasLineOfSight && !target.hasLineOfSight(mob.entity)) return@Runnable
+                block.invoke(mob, mob.entity.target!!)
             }
         }
 
@@ -149,9 +204,7 @@ object DslBuilder {
 
         fun item(type: Material) = item?.withType(type)
 
-        fun enchant(enchant: Enchantment, factor: Record.IntFactor) {
-            enchants.add(Record.EnchantRecord(enchant, factor))
-        }
+        fun enchant(enchant: Enchantment, factor: Record.IntFactor) = enchants.add(Record.EnchantRecord(enchant, factor))
 
         fun build(): EnhancedMob.() -> Unit {
             return {

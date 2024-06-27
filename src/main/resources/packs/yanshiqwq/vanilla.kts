@@ -36,10 +36,9 @@ pack("vanilla") {
         attribute(GENERIC_MAX_HEALTH, MULTIPLY_SCALAR_1, DoubleFactor { 0.44 * it })
         attribute(GENERIC_MOVEMENT_SPEED, MULTIPLY_SCALAR_1, logFormula(0.25))
         attribute(GENERIC_KNOCKBACK_RESISTANCE, MULTIPLY_SCALAR_1, DoubleFactor { 0.035 * it })
-        run {
-            if (entity !is Creeper) throw IllegalArgumentException("Illegal EntityType: ${entity.type}")
-            entity.maxFuseTicks = IntFactor(15..32767) { 30 - 2 * it }.value(multiplier)
-            entity.explosionRadius = IntFactor(0..32) { 3 * it + 3 }.value(multiplier)
+        property<Creeper> { mob ->
+            maxFuseTicks = IntFactor(15..32767) { 30 - 2 * it }.value(mob.multiplier)
+            explosionRadius = IntFactor(0..32) { 3 * it + 3 }.value(mob.multiplier)
         }
     }
     type("fallback") {
