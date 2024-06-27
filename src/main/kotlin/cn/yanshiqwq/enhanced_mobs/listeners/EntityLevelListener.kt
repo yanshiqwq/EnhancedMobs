@@ -1,6 +1,7 @@
 package cn.yanshiqwq.enhanced_mobs.listeners
 
 import cn.yanshiqwq.enhanced_mobs.EnhancedMob
+import cn.yanshiqwq.enhanced_mobs.Utils.getTeam
 import net.kyori.adventure.text.Component
 import net.kyori.adventure.text.TextComponent
 import net.kyori.adventure.text.format.NamedTextColor
@@ -110,7 +111,8 @@ class EntityLevelListener : Listener {
 
     private fun LivingEntity.getLeveledNameComponent(): TextComponent {
         val level = getCommonLevel()
-        val typeKey = type.translationKey()
+
+        // 设定等级颜色
         val levelColor = when (level) {
             in 10..19 -> NamedTextColor.GREEN
             in 20..29 -> NamedTextColor.YELLOW
@@ -121,6 +123,18 @@ class EntityLevelListener : Listener {
         }
         val nameColor = if (level >= 10) NamedTextColor.WHITE else NamedTextColor.GRAY
 
+        // 设定发光颜色
+        val teamName = when (level) {
+            in 30..59 -> SpawnListener.MobTeam.STRENGTH.id
+            in 60..89 -> SpawnListener.MobTeam.ENHANCED.id
+            in 90..Int.MAX_VALUE -> SpawnListener.MobTeam.BOSS.id
+            else -> null
+        }
+        teamName?.let { getTeam(it)?.addEntity(this) }
+        isGlowing = true
+
+        // 返回等级信息
+        val typeKey = type.translationKey()
         return Component.text("[", NamedTextColor.GRAY)
             .append(Component.text("Lv.$level", levelColor))
             .append(Component.text("] ", NamedTextColor.GRAY))
@@ -175,7 +189,6 @@ class EntityLevelListener : Listener {
             }
 
             is Witch -> 9.0
-
             is CaveSpider -> damage + 5.0
 
             else -> damage

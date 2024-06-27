@@ -1,6 +1,5 @@
 package cn.yanshiqwq.enhanced_mobs.listeners
 
-import cn.yanshiqwq.enhanced_mobs.Main
 import cn.yanshiqwq.enhanced_mobs.Main.Companion.instance
 import com.destroystokyo.paper.event.entity.EntityPathfindEvent
 import io.papermc.paper.event.entity.EntityToggleSitEvent
@@ -20,7 +19,7 @@ import org.bukkit.event.entity.*
 class MobEventListener : Listener {
     private fun triggerListeners(event: Event) {
         try {
-            for (mob in instance!!.mobManager!!.map().values) {
+            for (mob in instance!!.mobManager.map().values) {
                 for (it in mob.listeners) {
                     if (it.eventClass != event::class) continue
                     it.function.invoke(event)
@@ -29,12 +28,15 @@ class MobEventListener : Listener {
         }
         catch (_: ConcurrentModificationException) {}
         catch (e: Exception) {
-            Main.logger.warning("An unexpected exception occurred while triggering skill.")
+            instance!!.logger.warning("An unexpected exception occurred while triggering skill.")
             e.printStackTrace()
         }
     }
 
-
+    @EventHandler
+    fun onEnhancedMobDeath(event: EntityDeathEvent){
+        instance!!.mobManager.remove(event.entity.uniqueId)
+    }
 
     // JB BUKKIT API
 //    @EventHandler

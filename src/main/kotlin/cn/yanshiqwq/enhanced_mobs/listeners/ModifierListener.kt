@@ -66,7 +66,7 @@ class ModifierListener : Listener {
         when (this) {
             is Stray, is WitherSkeleton -> {
                 getAttribute(Attribute.GENERIC_MAX_HEALTH)?.baseValue = 28.0
-                getAttribute(Attribute.GENERIC_ARMOR)?.baseValue = 4.0
+                getAttribute(Attribute.GENERIC_ARMOR)?.baseValue = 2.5
                 getAttribute(Attribute.GENERIC_ATTACK_DAMAGE)?.baseValue = 2.5
                 getAttribute(Attribute.GENERIC_FOLLOW_RANGE)?.baseValue = 24.0
             }

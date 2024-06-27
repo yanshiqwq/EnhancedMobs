@@ -24,6 +24,7 @@ import kotlin.random.asKotlinRandom
 typealias EntryFunction = ((item: ItemStack, ctx: LootContext, random: LootTableX.Companion.RandomX) -> Unit)
 typealias EntryCondition = ((ctx: LootContext, random: LootTableX.Companion.RandomX) -> Boolean)
 
+@Suppress("unused", "MemberVisibilityCanBePrivate")
 class LootTableX(private val key: NamespacedKey): LootTable {
     override fun getKey() = key
     override fun populateLoot(random: java.util.Random?, ctx: LootContext): MutableCollection<ItemStack> {

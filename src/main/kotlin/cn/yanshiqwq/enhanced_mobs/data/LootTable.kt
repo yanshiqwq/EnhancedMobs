@@ -16,15 +16,15 @@ import org.bukkit.entity.Mob
  * @since 2024/6/22 16:34
  */
 object LootTable {
-    fun apply(mob: Mob, multiplier: Double) {
-        val lootTable = when (mob.type) {
+    fun Mob.applyLootTableX(multiplier: Double) {
+        val lootTable = when (type) {
             in Tags.Entity.zombies -> zombieLoot(multiplier)
 //            in Tags.Entity.skeletons -> skeletonLoot(multiplier)
 //            in Tags.Entity.spiders -> spiderLoot(multiplier)
 //            in Tags.Entity.creepers -> creeperLoot(multiplier)
             else -> return
         }
-        mob.lootTable = lootTable
+        setLootTable(lootTable)
     }
 
     val zombieLoot: (Double) -> LootTableX = lambda@{

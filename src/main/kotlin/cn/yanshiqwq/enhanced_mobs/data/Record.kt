@@ -1,5 +1,6 @@
 package cn.yanshiqwq.enhanced_mobs.data
 
+import cn.yanshiqwq.enhanced_mobs.Utils.addModifierSafe
 import org.bukkit.attribute.Attribute
 import org.bukkit.attribute.AttributeModifier
 import org.bukkit.enchantments.Enchantment
@@ -7,6 +8,7 @@ import org.bukkit.entity.LivingEntity
 import org.bukkit.inventory.EquipmentSlot
 import java.util.*
 import kotlin.math.floor
+import kotlin.math.ln
 
 /**
  * enhanced_mobs
@@ -21,13 +23,27 @@ object Record {
         fun value(base: Double): Number
     }
 
-    data class DoubleFactor(val formula: (Double) -> Double, private val range: ClosedFloatingPointRange<Double>? = null) : Factor {
+    fun logFormula(scale: Double, range: ClosedFloatingPointRange<Double>? = null) = DoubleFactor(range) {
+        if (it in 0.0..Double.MAX_VALUE) scale * ln(it + 1.0)
+        else it
+    }
+
+    data class DoubleFactor(private val range: ClosedFloatingPointRange<Double>? = null, val formula: (Double) -> Double) : Factor {
         override fun value(base: Double): Double {
-            return if (range == null) formula(base) else formula(base).coerceIn(range)
+            return if (range == null)
+                formula(base)
+            else
+                formula(base).coerceIn(range)
+        }
+        fun asIntFactor(): IntFactor {
+            return if (range == null)
+                IntFactor(formula = formula)
+            else
+                IntFactor(range.start.toInt()..range.endInclusive.toInt(), formula)
         }
     }
 
-    data class IntFactor(val formula: (Double) -> Double, private val range: IntRange? = null) : Factor {
+    data class IntFactor(private val range: IntRange? = null, val formula: (Double) -> Double) : Factor {
         override fun value(base: Double): Int {
             return if (range == null) floor(formula(base)).toInt() else floor(formula(base)).toInt().coerceIn(range)
         }
@@ -40,36 +56,26 @@ object Record {
         }
     }
 
-    data class AttributeRecord(val attribute: Map<Attribute, AttributeFactor>) {
+    data class AttributeRecord(val attribute: Attribute, val factor: AttributeFactor) {
         fun apply(entity: LivingEntity, multiplier: Double, uuid: UUID, name: String) {
-            attribute.forEach {
-                val attribute = it.key
-                val factor = it.value
-                entity.getAttribute(attribute)!!.runCatching {
-                    addModifier(factor.getModifier(multiplier, uuid, name))
-                }
-            }
+            entity.getAttribute(attribute)?.addModifierSafe(factor.getModifier(multiplier, uuid, name))
         }
     }
 
-    data class EnchantRecord(val enchant: Map<Enchantment, IntFactor>) {
+    data class EnchantRecord(val enchant: Enchantment, val factor: IntFactor) {
         fun apply(entity: LivingEntity, multiplier: Double, slot: EquipmentSlot) {
-            enchant.forEach {
-                val enchant = it.key
-                val equipment = entity.equipment ?: return
-                val item = equipment.getItem(slot)
-                if (!enchant.canEnchantItem(item)) return
+            val equipment = entity.equipment ?: return
+            val item = equipment.getItem(slot)
+            if (!enchant.canEnchantItem(item)) return
 
-                val base = item.itemMeta.enchants[enchant] ?: 0
-                val factor = it.value
-                val level = base + factor.value(multiplier)
-                if (level < 1) return
+            val base = item.itemMeta.enchants[enchant] ?: 0
+            val level = base + factor.value(multiplier)
+            if (level < 1) return
 
-                val meta = item.itemMeta
-                meta.addEnchant(enchant, level, true)
-                item.itemMeta = meta
-                equipment.setItem(slot, item)
-            }
+            val meta = item.itemMeta
+            meta.addEnchant(enchant, level, true)
+            item.itemMeta = meta
+            equipment.setItem(slot, item)
         }
     }
 }
