@@ -82,10 +82,7 @@ object DslBuilder {
             fun switch() = switch.invoke()
         }
 
-
-
         data class Listener(val eventClass: KClass<out Event>, val function: (Event) -> Unit)
-        val listeners: ArrayList<Listener> = arrayListOf()
 
         @Suppress("UNCHECKED_CAST")
         inline fun <reified T: Event> listener(noinline block: (T) -> Unit) = functions.add {
@@ -123,7 +120,6 @@ object DslBuilder {
             }
             return taskId
         }
-
         private fun mobTask(mob: EnhancedMob, block: Runnable): Runnable {
             return Runnable {
                 if (mob.entity.isDead) return@Runnable
@@ -138,7 +134,6 @@ object DslBuilder {
                 cancel()
             }
         }
-
         fun itemTask(
             distance: Double,
             before: ItemStack,

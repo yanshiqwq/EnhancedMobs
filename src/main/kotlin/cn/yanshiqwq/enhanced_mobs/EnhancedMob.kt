@@ -3,6 +3,7 @@ package cn.yanshiqwq.enhanced_mobs
 import cn.yanshiqwq.enhanced_mobs.Main.Companion.instance
 import cn.yanshiqwq.enhanced_mobs.Utils.heal
 import cn.yanshiqwq.enhanced_mobs.managers.TypeManager
+import cn.yanshiqwq.enhanced_mobs.script.DslBuilder
 import org.bukkit.NamespacedKey
 import org.bukkit.entity.Entity
 import org.bukkit.entity.Mob
@@ -48,6 +49,7 @@ class EnhancedMob(val multiplier: Double, val entity: Mob) {
             return mob
         }
     }
+    val listeners: ArrayList<DslBuilder.TypeBuilder.Listener> = arrayListOf()
 
     fun boost(boostTypeKey: TypeManager.TypeKey) {
         entity.persistentDataContainer.set(EnhancedMob.boostTypeKey, PersistentDataType.STRING, boostTypeKey.value())
