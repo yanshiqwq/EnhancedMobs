@@ -1,13 +1,13 @@
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
-
 plugins {
-    kotlin("jvm") version "1.9.22"
+    id("com.github.johnrengelman.shadow") version "7.0.0"
+    kotlin("jvm") version "1.9.20"
     application
 }
 
 group = "cn.yanshiqwq"
-version = "1.2.0"
+version = properties["version"] as String
 
 repositories {
     mavenLocal()
@@ -15,10 +15,13 @@ repositories {
     maven("https://repo.papermc.io/repository/maven-public/")
 }
 
+
 dependencies {
-    implementation("io.papermc.paper:paper-api:1.20.2-R0.1-SNAPSHOT")
     implementation(kotlin("stdlib"))
-    implementation(kotlin("reflect"))
+    implementation(kotlin("script-util", "1.8.22"))
+    implementation(kotlin("script-runtime", "2.0.0"))
+    implementation(kotlin("scripting-jsr223", "2.0.0"))
+    implementation("io.papermc.paper:paper-api:1.20.4-R0.1-SNAPSHOT")
 }
 
 java {
@@ -26,12 +29,25 @@ java {
     sourceCompatibility = JavaVersion.VERSION_17
     targetCompatibility = JavaVersion.VERSION_17
 }
-tasks.withType<JavaCompile> {
-    options.encoding = "UTF-8"
-}
-tasks.withType<KotlinCompile> {
-    kotlinOptions {
-        jvmTarget = "1.8"
-        freeCompilerArgs = listOf("-Xjvm-default=all", "-Xextended-compiler-checks")
+
+tasks {
+    shadowJar {
+        archiveBaseName.set(project.name)
+        version = project.version
+        application.mainClass.set("cn.yanshiqwq.enhanced_mobs.Main")
+        dependencies {
+            include(dependency("org.jetbrains.kotlin:kotlin-script-util:1.8.22"))
+            include(dependency("org.jetbrains.kotlin:kotlin-script-runtime"))
+            include(dependency("org.jetbrains.kotlin:kotlin-scripting-jsr223:2.0.0"))
+        }
+    }
+    withType<JavaCompile> {
+        options.encoding = "UTF-8"
+    }
+    withType<KotlinCompile> {
+        kotlinOptions {
+            //jvmTarget = "1.8"
+            freeCompilerArgs = listOf("-Xjvm-default=all", "-Xextended-compiler-checks")
+        }
     }
 }

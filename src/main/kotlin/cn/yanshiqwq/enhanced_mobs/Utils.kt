@@ -1,13 +1,17 @@
 package cn.yanshiqwq.enhanced_mobs
 
+import cn.yanshiqwq.enhanced_mobs.Main.Companion.instance
 import org.bukkit.*
 import org.bukkit.attribute.Attribute
+import org.bukkit.attribute.AttributeInstance
+import org.bukkit.attribute.AttributeModifier
 import org.bukkit.entity.*
 import org.bukkit.event.entity.CreatureSpawnEvent
 import org.bukkit.inventory.EquipmentSlot
 import org.bukkit.inventory.ItemStack
 import org.bukkit.potion.PotionEffect
 import org.bukkit.potion.PotionEffectType
+import org.bukkit.scoreboard.Team
 import org.bukkit.util.Vector
 
 /**
@@ -17,7 +21,19 @@ import org.bukkit.util.Vector
  * @author yanshiqwq
  * @since 2024/6/11 00:16
  */
+@Suppress("unused")
 object Utils {
+    fun getTeam(teamName: String): Team? {
+        return instance!!.server.scoreboardManager.mainScoreboard.runCatching {
+            getTeam(teamName) ?: registerNewTeam(teamName)
+        }.getOrNull()
+    }
+
+    fun AttributeInstance.addModifierSafe(modifier: AttributeModifier){
+        if (modifiers.contains(modifier)) return
+        addModifier(modifier)
+    }
+
     fun Boolean.Companion.all(vararg booleans: Boolean): Boolean {
         return booleans.all { it }
     }
@@ -63,7 +79,7 @@ object Utils {
 
     fun Entity.isOnFire() = this.fireTicks > 0
 
-    fun Mob.initEquipment(slot: EquipmentSlot, material: Material) {
+    fun Mob.equip(slot: EquipmentSlot, material: Material) {
         equipment.setItem(slot, ItemStack(material))
     }
 
@@ -111,7 +127,7 @@ object Utils {
     inline fun <reified T : Entity> Location.spawnEntity(type: EntityType, function: T.() -> Unit) {
         val entity = this.world.spawnEntity(this, type, CreatureSpawnEvent.SpawnReason.REINFORCEMENTS)
         if (type.entityClass == T::class.java)
-            (entity as T).function()
+            function.invoke(entity as T)
         else
             throw IllegalArgumentException("The generic type variable does not match the provided type: $type")
     }

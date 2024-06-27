@@ -2,17 +2,13 @@ package cn.yanshiqwq.enhanced_mobs
 
 import cn.yanshiqwq.enhanced_mobs.Main.Companion.instance
 import cn.yanshiqwq.enhanced_mobs.Utils.heal
-import cn.yanshiqwq.enhanced_mobs.Utils.initEquipment
-import cn.yanshiqwq.enhanced_mobs.data.Record
-import cn.yanshiqwq.enhanced_mobs.managers.MobTypeManager
+import cn.yanshiqwq.enhanced_mobs.managers.TypeManager
+import cn.yanshiqwq.enhanced_mobs.script.DslBuilder
 import org.bukkit.Bukkit
-import org.bukkit.Material
 import org.bukkit.NamespacedKey
-import org.bukkit.entity.LivingEntity
+import org.bukkit.entity.Entity
 import org.bukkit.entity.Mob
 import org.bukkit.event.Event
-import org.bukkit.event.entity.EntityDeathEvent
-import org.bukkit.inventory.EquipmentSlot
 import org.bukkit.inventory.ItemStack
 import org.bukkit.persistence.PersistentDataType
 import org.bukkit.scheduler.BukkitTask
@@ -29,15 +25,28 @@ import kotlin.reflect.KClass
  * @since 2024/6/7 05:29
  */
 class EnhancedMob(val multiplier: Double, val entity: Mob) {
+    data class Listener(val eventClass: KClass<out Event>, val function: (Event) -> Unit)
     companion object {
+        val attributeUUID: UUID = UUID.fromString("a8d0bc44-1534-43f0-a594-f74c7c91bc59")
+        const val attributeName = "EnhancedMob Spawn Boost"
+
         val boostTypeKey = NamespacedKey(instance!!, "boost_type")
         val multiplierKey = NamespacedKey(instance!!, "multiplier")
-        data class Listener(val eventClass: KClass<out Event>, val function: (Event) -> Unit)
-        fun Mob.asEnhancedMob(multiplier: Double, boostTypeId: MobTypeManager.TypeId, isReload: Boolean = true): EnhancedMob? {
+
+        fun Entity.isEnhancedMob(): Boolean {
+            if (this !is Mob) return false
+            return instance!!.mobManager.has(this)
+        }
+        fun Entity.hasEnhancedMobData(): Boolean {
+            if (this !is Mob) return false
+            val container = persistentDataContainer
+            return container.has(multiplierKey) && container.has(boostTypeKey)
+        }
+        fun Mob.asEnhancedMob(multiplier: Double, boostTypeKey: TypeManager.TypeKey, isReload: Boolean = true): EnhancedMob? {
             val mob = try {
-                EnhancedMob(multiplier, this).apply { initBoost(boostTypeId) }
+                EnhancedMob(multiplier, this).apply { applyBoost(boostTypeKey) }
             } catch (e: NullPointerException) { return null }
-            instance!!.mobManager?.register(this.uniqueId, mob)
+            instance!!.mobManager.register(this.uniqueId, mob)
             if (isReload) heal()
             return mob
         }
@@ -45,25 +54,14 @@ class EnhancedMob(val multiplier: Double, val entity: Mob) {
 
     init {
         entity.persistentDataContainer.set(multiplierKey, PersistentDataType.DOUBLE, multiplier)
-        instance!!.mobManager!!.register(entity.uniqueId, this)
+        instance!!.mobManager.register(entity.uniqueId, this)
     }
 
     val listeners: ArrayList<Listener> = arrayListOf()
-    private val tasks: MutableMap<UUID, BukkitTask> = mutableMapOf()
 
-    fun initBoost(boostTypeId: MobTypeManager.TypeId) {
-        entity.persistentDataContainer.set(boostTypeKey, PersistentDataType.STRING, boostTypeId.value())
-        instance!!.mobTypeManager.queryTypeFunction(boostTypeId)?.invoke(this)
-    }
-
-    fun initAttribute(record: Record.AttributeRecord) {
-        val attributeUUID: UUID = UUID.fromString("a8d0bc44-1534-43f0-a594-f74c7c91bc59")
-        val attributeName = "EnhancedMob Spawn Boost"
-        record.apply(entity, multiplier, attributeUUID, attributeName)
-    }
-
-    fun initEnchant(slot: EquipmentSlot, record: Record.EnchantRecord) {
-        record.apply(entity, multiplier, slot)
+    fun applyBoost(boostTypeKey: TypeManager.TypeKey) {
+        entity.persistentDataContainer.set(EnhancedMob.boostTypeKey, PersistentDataType.STRING, boostTypeKey.value())
+        instance!!.typeManager.getType(boostTypeKey).function.invoke(this)
     }
 
     @Suppress("UNCHECKED_CAST")
@@ -73,108 +71,56 @@ class EnhancedMob(val multiplier: Double, val entity: Mob) {
         return listener
     }
 
-    fun initRangeItemPeriodTask(
-        distance: Double,
-        before: Material,
-        after: Material? = null,
-        slot: EquipmentSlot = EquipmentSlot.OFF_HAND,
-        period: Long = 20L,
-        hasLineOfSight: Boolean = true,
-        id: UUID = UUID.randomUUID(),
-        function: EnhancedMob.(LivingEntity) -> Boolean
-    ): BukkitTask? {
-        entity.initEquipment(slot, before)
-        val task: EnhancedMob.() -> Boolean = lambda@{
+    private inline fun task(crossinline action: EnhancedMob.() -> Unit): EnhancedMob.() -> Boolean {
+        return lambda@{
             if (entity.isDead) return@lambda false
-            val target = entity.target ?: return@lambda false
-            if (target.location.distance(entity.location) > distance) return@lambda false
-            if (entity.equipment.getItem(slot).type != before) return@lambda false
-            if (hasLineOfSight && !target.hasLineOfSight(entity)) return@lambda false
-            if (!this.function(target)) return@lambda false
-            if (after != null) entity.initEquipment(slot, after)
+            action()
             return@lambda true
         }
-        return initPeriodTask(period, id = id, function = task)
     }
 
-    fun initRangeItemPeriodTask(
-        distance: Double,
-        before: ItemStack,
-        after: Material = Material.AIR,
-        slot: EquipmentSlot = EquipmentSlot.OFF_HAND,
-        period: Long = 20L,
-        hasLineOfSight: Boolean = true,
-        id: UUID = UUID.randomUUID(),
-        function: EnhancedMob.(LivingEntity) -> Boolean
-    ): BukkitTask? {
-        val task: EnhancedMob.() -> Boolean = lambda@{
-            if (entity.isDead) return@lambda false
-            if (entity.equipment.getItem(slot).type == after) {
-                cancelTask(id)
-                return@lambda false
-            }
+    fun delayTask(init: DslBuilder.TypeBuilder.TaskDsl.() -> Unit): BukkitTask {
+        val dsl = DslBuilder.TypeBuilder.TaskDsl().apply(init)
+        val delay = dsl.delay
+        val task = task { dsl.function }
+        val func = Runnable { task.invoke(this@EnhancedMob) }
+        return Bukkit.getScheduler().runTaskLater(instance!!, func, delay)
+    }
+
+    fun periodTask(init: DslBuilder.TypeBuilder.TaskDsl.() -> Unit): BukkitTask {
+        val dsl = DslBuilder.TypeBuilder.TaskDsl().apply(init)
+        val delay = dsl.delay
+        val period = dsl.period
+        val task = task { dsl.function }
+        val func = Runnable { task.invoke(this) }
+        return Bukkit.getScheduler().runTaskTimer(instance!!, func, delay, period)
+    }
+
+    private inline fun itemTask(dsl: DslBuilder.TypeBuilder.ItemTaskDsl, crossinline action: EnhancedMob.() -> Unit = {}): EnhancedMob.() -> Boolean {
+        return lambda@{
             val target = entity.target ?: return@lambda false
-            if (target.location.distance(entity.location) > distance) return@lambda false
-            if (entity.equipment.getItem(slot).type != before.type) return@lambda false
-            if (hasLineOfSight && !target.hasLineOfSight(entity)) return@lambda false
-            if (!this.function(target)) return@lambda false
-            entity.equipment.getItem(slot).subtract(1)
+            if (target.location.distance(entity.location) > dsl.distance) return@lambda false
+            if (entity.equipment.getItem(dsl.slot).type != dsl.before.type) return@lambda false
+            if (dsl.hasLineOfSight && !target.hasLineOfSight(entity)) return@lambda false
+            if (!dsl.function.invoke(this, target)) return@lambda false
+            task(action)
             return@lambda true
         }
-        return initPeriodTask(period, id = id, function = task)
     }
 
-    fun initRangeItemDisposableTask(
-        distance: Double,
-        before: Material,
-        after: Material = Material.AIR,
-        slot: EquipmentSlot = EquipmentSlot.OFF_HAND,
-        hasLineOfSight: Boolean = true,
-        id: UUID = UUID.randomUUID(),
-        function: EnhancedMob.(LivingEntity) -> Boolean
-    ): BukkitTask? {
-        entity.initEquipment(slot, before)
-        val task: EnhancedMob.() -> Boolean = lambda@{
-            if (entity.isDead) return@lambda false
-            val target = entity.target ?: return@lambda false
-            if (target.location.distance(entity.location) > distance) return@lambda false
-            if (hasLineOfSight && !target.hasLineOfSight(entity)) return@lambda false
-            if (!this.function(target)) return@lambda false
-            entity.initEquipment(slot, after)
-            return@lambda true
-        }
-        return initDisposableTask(id = id, function = task)
+    fun disposableItemTask(init: DslBuilder.TypeBuilder.ItemTaskDsl.() -> Unit): BukkitTask {
+        val dsl = DslBuilder.TypeBuilder.ItemTaskDsl().apply(init)
+        val task = itemTask(dsl) { entity.equipment.setItem(dsl.slot, ItemStack(dsl.after)) }
+        val func = Runnable { task.invoke(this) }
+        return Bukkit.getScheduler().runTask(instance!!, func)
     }
 
-    private fun initDisposableTask(period: Long = 20L, delay: Long = 0L, id: UUID = UUID.randomUUID(), function: EnhancedMob.() -> Boolean): BukkitTask? {
-        val func = Runnable {
-            if (entity.isDead) cancelTask(id)
-            if (!this.function()) return@Runnable
-            cancelTask(id)
-        }
-        tasks[id] = Bukkit.getScheduler().runTaskTimer(instance!!, func, delay, period)
-        return tasks[id]
-    }
-
-    private fun initPeriodTask(period: Long = 20L, delay: Long = 0L, id: UUID = UUID.randomUUID(), function: EnhancedMob.() -> Boolean): BukkitTask? {
-        val func = Runnable { this.function() }
-        tasks[id] = Bukkit.getScheduler().runTaskTimer(instance!!, func, delay, period)
-        initListener<EntityDeathEvent> {
-            if (entity.isDead) cancelTask(id)
-        }
-        return tasks[id]
-    }
-
-    fun initDelayTask(delay: Long = 20L, id: UUID = UUID.randomUUID(), function: EnhancedMob.() -> Unit): BukkitTask? {
-        val func = Runnable { this.function() }
-        tasks[id] = Bukkit.getScheduler().runTaskLater(instance!!, func, delay)
-        initListener<EntityDeathEvent> {
-            if (entity.isDead) cancelTask(id)
-        }
-        return tasks[id]
-    }
-
-    fun cancelTask(id: UUID) {
-        tasks[id]?.cancel()
+    fun periodItemTask(init: DslBuilder.TypeBuilder.ItemTaskDsl.() -> Unit): BukkitTask {
+        val dsl = DslBuilder.TypeBuilder.ItemTaskDsl().apply(init)
+        val delay = dsl.delay
+        val period = dsl.period
+        val task = itemTask(dsl) { entity.equipment.setItem(dsl.slot, ItemStack(dsl.after)) }
+        val func = Runnable { task.invoke(this) }
+        return Bukkit.getScheduler().runTaskTimer(instance!!, func, delay, period)
     }
 }

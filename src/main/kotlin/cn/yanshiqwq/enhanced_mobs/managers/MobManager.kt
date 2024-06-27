@@ -12,29 +12,18 @@ import java.util.*
  * @since 2024/6/8 15:40
  */
 
+@Suppress("unused", "unused")
 class MobManager {
     private val map: MutableMap<UUID, EnhancedMob> = mutableMapOf()
 
-    fun register(uuid: UUID, entity: EnhancedMob) {
-        map[uuid] = entity
-    }
+    fun map(): MutableMap<UUID, EnhancedMob> = map
 
-    fun remove(uuid: UUID) {
-        map.remove(uuid)
-    }
+    fun register(uuid: UUID, entity: EnhancedMob) = map.put(uuid, entity)
+    fun remove(uuid: UUID) = map.remove(uuid)
 
-    fun map(): MutableMap<UUID, EnhancedMob> {
-        return map
-    }
+    fun get(uuid: UUID): EnhancedMob? = map[uuid]
+    fun get(entity: Mob): EnhancedMob? = map.values.find { it.entity == entity }
 
-    fun get(uuid: UUID): EnhancedMob? {
-        return map[uuid]
-    }
-
-    fun get(entity: Mob): EnhancedMob? {
-        map.values.forEach {
-            if (it.entity == entity) return it
-        }
-        return null
-    }
+    fun has(uuid: UUID): Boolean = get(uuid) != null
+    fun has(entity: Mob): Boolean = get(entity) != null
 }

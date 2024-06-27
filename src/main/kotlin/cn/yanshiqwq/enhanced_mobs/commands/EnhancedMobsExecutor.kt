@@ -3,7 +3,7 @@ package cn.yanshiqwq.enhanced_mobs.commands
 import cn.yanshiqwq.enhanced_mobs.EnhancedMob.Companion.asEnhancedMob
 import cn.yanshiqwq.enhanced_mobs.Main
 import cn.yanshiqwq.enhanced_mobs.data.Tags
-import cn.yanshiqwq.enhanced_mobs.managers.MobTypeManager
+import cn.yanshiqwq.enhanced_mobs.managers.TypeManager
 import net.kyori.adventure.text.Component
 import net.kyori.adventure.text.format.NamedTextColor
 import org.bukkit.Location
@@ -51,10 +51,10 @@ class EnhancedMobsExecutor : CommandExecutor {
 
         // 解析强化类型参数
         val boostTypeArg = args[2].lowercase(Locale.getDefault())
-        val boostTypeId =
-            if (boostTypeArg != "DEFAULT") MobTypeManager.TypeId(boostTypeArg)
+        val boostTypeKey =
+            if (boostTypeArg != "DEFAULT") TypeManager.TypeKey(boostTypeArg)
             else getDefaultBoostId(entityType)
-        if (!Main.instance!!.mobTypeManager.hasTypeId(boostTypeId)) {
+        if (!Main.instance!!.typeManager.hasTypeId(boostTypeKey)) {
             sender.sendMessage(prefix.append(Component.text("无效的强化类型 \"$boostTypeArg\" ！", NamedTextColor.RED)))
             return true
         }
@@ -89,7 +89,7 @@ class EnhancedMobsExecutor : CommandExecutor {
 
         // 生成实体
         val entity: Mob = sender.world.spawnEntity(location, entityType, CreatureSpawnEvent.SpawnReason.CUSTOM) as Mob
-        entity.asEnhancedMob(multiplier, boostTypeId)
+        entity.asEnhancedMob(multiplier, boostTypeKey)
 
         val percent = String.format("${if (multiplier >= 0.0) "+" else ""}%.2f", multiplier * 100)
         sender.sendMessage(prefix
@@ -100,14 +100,13 @@ class EnhancedMobsExecutor : CommandExecutor {
         )
         return true
     }
-
-    private fun getDefaultBoostId(entityType: EntityType): MobTypeManager.TypeId {
+    private fun getDefaultBoostId(entityType: EntityType): TypeManager.TypeKey {
         return when (entityType) {
-            in Tags.Entity.zombies -> MobTypeManager.TypeId("vanilla", "zombie")
-            in Tags.Entity.skeletons -> MobTypeManager.TypeId("vanilla", "skeleton")
-            in Tags.Entity.spiders -> MobTypeManager.TypeId("vanilla", "spider")
-            in Tags.Entity.creepers -> MobTypeManager.TypeId("vanilla", "creeper")
-            else -> MobTypeManager.TypeId("vanilla", "generic")
+            in Tags.Entity.zombies -> TypeManager.TypeKey("vanilla", "zombie")
+            in Tags.Entity.skeletons -> TypeManager.TypeKey("vanilla", "skeleton")
+            in Tags.Entity.spiders -> TypeManager.TypeKey("vanilla", "spider")
+            in Tags.Entity.creepers -> TypeManager.TypeKey("vanilla", "creeper")
+            else -> TypeManager.TypeKey("vanilla", "generic")
         }
     }
 }
