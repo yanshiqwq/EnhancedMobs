@@ -39,7 +39,9 @@ class EnhancedMobsCompleter : TabCompleter {
                     val packId = input[0]
                     val mobTypeManager = Main.instance!!.typeManager
                     val packNames = mobTypeManager.listTypeKeys()
-                    return packNames.filter { it.value().startsWith(packId) }.map { it.value() }
+                    return packNames.filter { it.value().startsWith(packId) }
+                        .map { it.value() }
+                        .plus("default")
                 } // 强化类型
                 4 -> completions.addAll(arrayOf("-0.5", "0.0", "1.0", "2.0")) // 怪物强度
                 in 5..7 -> {

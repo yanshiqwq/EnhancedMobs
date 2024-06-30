@@ -103,10 +103,9 @@ class EntityLevelListener : Listener {
                 }", NamedTextColor.AQUA
             )
         )
-        player.sendMessage(
-            level.append(multiplierComponent).append(healthComponent).append(armorComponent).append(attackComponent)
-                .append(speedComponent)
-        )
+        val component = level.append(multiplierComponent).append(healthComponent).append(armorComponent).append(attackComponent)
+            .append(speedComponent)
+        player.sendMessage(component)
     }
 
     private fun LivingEntity.getLeveledNameComponent(): TextComponent {
@@ -159,14 +158,12 @@ class EntityLevelListener : Listener {
         return max(1.0 - 0.04 * armor, 0.2)
     }
 
-    private fun LivingEntity.getFactorSpeed(): Double {
-        return getAttribute(Attribute.GENERIC_MOVEMENT_SPEED)!!.run {
-            (value / 0.25 - 1) * 0.35 + 1
-        }
+    private fun LivingEntity.getFactorSpeed(): Double = getAttribute(Attribute.GENERIC_MOVEMENT_SPEED)!!.run {
+        (value / 0.25 - 1) * 0.35 + 1
     }
 
     private fun LivingEntity.getDamage(): Double {
-        val damage = getAttribute(Attribute.GENERIC_ATTACK_DAMAGE)?.value ?: 1.0
+        val damage = getAttribute(Attribute.GENERIC_ATTACK_DAMAGE)?.value ?: 0.0
         return when (this) {
             is WitherSkeleton, is AbstractSkeleton -> {
                 if (equipment?.getItem(EquipmentSlot.HAND)?.type == Material.BOW){
@@ -203,7 +200,5 @@ class EntityLevelListener : Listener {
             damage / 3 + 1
     }
 
-    private fun LivingEntity.getFactorAge(): Double {
-        return if (this is Ageable && !isAdult) 1.35 else 1.0
-    }
+    private fun LivingEntity.getFactorAge(): Double = if (this is Ageable && !isAdult) 1.35 else 1.0
 }

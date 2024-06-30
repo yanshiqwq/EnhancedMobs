@@ -1,13 +1,14 @@
 package cn.yanshiqwq.enhanced_mobs
 
 import cn.yanshiqwq.enhanced_mobs.Main.Companion.instance
-import cn.yanshiqwq.enhanced_mobs.Utils.heal
+import cn.yanshiqwq.enhanced_mobs.Utils.percentHeal
+import cn.yanshiqwq.enhanced_mobs.api.ListenerApi
 import cn.yanshiqwq.enhanced_mobs.managers.TypeManager
-import cn.yanshiqwq.enhanced_mobs.script.DslBuilder
 import org.bukkit.NamespacedKey
 import org.bukkit.entity.Entity
 import org.bukkit.entity.Mob
 import org.bukkit.persistence.PersistentDataType
+import org.bukkit.scheduler.BukkitTask
 import java.lang.NullPointerException
 import java.util.*
 
@@ -26,7 +27,7 @@ class EnhancedMob(val multiplier: Double, val entity: Mob) {
 
     companion object {
         val attributeUUID: UUID = UUID.fromString("a8d0bc44-1534-43f0-a594-f74c7c91bc59")
-        const val attributeName = "EnhancedMob Spawn Boost"
+        val attributeName = "EnhancedMob Spawn Boost"
 
         val boostTypeKey = NamespacedKey(instance!!, "boost_type")
         val multiplierKey = NamespacedKey(instance!!, "multiplier")
@@ -45,11 +46,13 @@ class EnhancedMob(val multiplier: Double, val entity: Mob) {
                 EnhancedMob(multiplier, this).apply { boost(boostTypeKey) }
             } catch (e: NullPointerException) { return null }
             instance!!.mobManager.register(this.uniqueId, mob)
-            if (isReload) heal()
+            if (isReload) percentHeal()
             return mob
         }
     }
-    val listeners: ArrayList<DslBuilder.TypeBuilder.Listener> = arrayListOf()
+
+    val tasks = mutableMapOf<String, BukkitTask>()
+    val listeners: ArrayList<ListenerApi.Listener> = arrayListOf()
 
     fun boost(boostTypeKey: TypeManager.TypeKey) {
         entity.persistentDataContainer.set(EnhancedMob.boostTypeKey, PersistentDataType.STRING, boostTypeKey.value())

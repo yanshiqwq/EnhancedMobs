@@ -4,13 +4,32 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="d5ee4be2-1981-48f1-8632-49b4c7636b94" name="更改" comment="重构 DSL 解析器, 优化代码逻辑">
+    <list default="true" id="d5ee4be2-1981-48f1-8632-49b4c7636b94" name="更改" comment="重构, 暂时移除 kts 解析器">
+      <change afterPath="$PROJECT_DIR$/src/main/kotlin/cn/yanshiqwq/enhanced_mobs/api/ListenerApi.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/kotlin/cn/yanshiqwq/enhanced_mobs/api/LocationApi.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/kotlin/cn/yanshiqwq/enhanced_mobs/api/MobApi.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/kotlin/cn/yanshiqwq/enhanced_mobs/api/TaskApi.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/kotlin/cn/yanshiqwq/enhanced_mobs/dsl/MobDslBuilder.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/kotlin/cn/yanshiqwq/enhanced_mobs/dsl/WeightDslBuilder.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/kotlin/cn/yanshiqwq/enhanced_mobs/script/Config.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/kotlin/cn/yanshiqwq/enhanced_mobs/script/ExtendPack.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/kotlin/cn/yanshiqwq/enhanced_mobs/script/VanillaPack.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/build.gradle.kts" beforeDir="false" afterPath="$PROJECT_DIR$/build.gradle.kts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/kotlin/cn/yanshiqwq/enhanced_mobs/EnhancedMob.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/cn/yanshiqwq/enhanced_mobs/EnhancedMob.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/cn/yanshiqwq/enhanced_mobs/Main.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/cn/yanshiqwq/enhanced_mobs/Main.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/cn/yanshiqwq/enhanced_mobs/Utils.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/cn/yanshiqwq/enhanced_mobs/Utils.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/cn/yanshiqwq/enhanced_mobs/commands/EnhancedMobsCompleter.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/cn/yanshiqwq/enhanced_mobs/commands/EnhancedMobsCompleter.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/cn/yanshiqwq/enhanced_mobs/commands/EnhancedMobsExecutor.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/cn/yanshiqwq/enhanced_mobs/commands/EnhancedMobsExecutor.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/cn/yanshiqwq/enhanced_mobs/listeners/EntityLevelListener.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/cn/yanshiqwq/enhanced_mobs/listeners/EntityLevelListener.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/cn/yanshiqwq/enhanced_mobs/listeners/ModifierListener.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/cn/yanshiqwq/enhanced_mobs/listeners/ModifierListener.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/cn/yanshiqwq/enhanced_mobs/listeners/SpawnListener.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/cn/yanshiqwq/enhanced_mobs/listeners/SpawnListener.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/kotlin/cn/yanshiqwq/enhanced_mobs/managers/PackManager.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/cn/yanshiqwq/enhanced_mobs/managers/PackManager.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/kotlin/cn/yanshiqwq/enhanced_mobs/managers/TypeManager.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/cn/yanshiqwq/enhanced_mobs/managers/TypeManager.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/kotlin/cn/yanshiqwq/enhanced_mobs/script/DslBuilder.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/cn/yanshiqwq/enhanced_mobs/script/DslBuilder.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/cn/yanshiqwq/enhanced_mobs/managers/WeightManager.kt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/cn/yanshiqwq/enhanced_mobs/script/DslBuilder.kt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/packs/yanshiqwq/extend.kts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/packs/yanshiqwq/vanilla.kts" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -43,19 +62,7 @@
               <path>
                 <item name="" type="6a2764b6:ExternalProjectsStructure$RootNode" />
                 <item name="enhanced_mobs" type="f1a62948:ProjectNode" />
-                <item name="Tasks" type="e4a08cd1:TasksNode" />
-                <item name="shadow" type="c8890929:TasksNode$1" />
-              </path>
-              <path>
-                <item name="" type="6a2764b6:ExternalProjectsStructure$RootNode" />
-                <item name="enhanced_mobs" type="f1a62948:ProjectNode" />
-                <item name="Dependencies" type="6de06a37:ExternalSystemViewDefaultContributor$MyDependenciesNode" />
-              </path>
-              <path>
-                <item name="" type="6a2764b6:ExternalProjectsStructure$RootNode" />
-                <item name="enhanced_mobs" type="f1a62948:ProjectNode" />
-                <item name="Dependencies" type="6de06a37:ExternalSystemViewDefaultContributor$MyDependenciesNode" />
-                <item name="runtimeClasspath" type="62daadca:ExternalSystemViewDefaultContributor$DependencyScopeExternalSystemNode" />
+                <item name="运行配置" type="7b0102dc:RunConfigurationsNode" />
               </path>
             </expand>
             <select />
@@ -67,9 +74,9 @@
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
       <list>
-        <option value="Class" />
         <option value="Kotlin File" />
         <option value="Kotlin Object" />
+        <option value="Class" />
         <option value="Kotlin Class" />
       </list>
     </option>
@@ -112,12 +119,21 @@
       </RecentBranches>
     </option>
   </component>
+  <component name="KotlinScriptingSettings" supportWarning="false">
+    <scriptDefinition className="org.jetbrains.kotlin.idea.core.script.StandardIdeScriptDefinition" definitionName="Kotlin Script">
+      <order>2147483647</order>
+      <autoReloadConfigurations>true</autoReloadConfigurations>
+    </scriptDefinition>
+  </component>
   <component name="MarkdownSettingsMigration">
     <option name="stateVersion" value="1" />
   </component>
   <component name="ProblemsViewState">
     <option name="selectedTabId" value="CurrentFile" />
   </component>
+  <component name="ProjectColorInfo">{
+  &quot;associatedIndex&quot;: 8
+}</component>
   <component name="ProjectId" id="2hByqKRT4BNuIpxSwWRr8IAImSS" />
   <component name="ProjectLevelVcsManager" settingsEditedManually="true">
     <ConfirmationsSetting value="2" id="Add" />
@@ -130,6 +146,14 @@
   &quot;keyToString&quot;: {
     &quot;ASKED_ADD_EXTERNAL_FILES&quot;: &quot;true&quot;,
     &quot;Downloaded.Files.Path.Enabled&quot;: &quot;true&quot;,
+    &quot;Gradle.enhanced_mobs [build].executor&quot;: &quot;Run&quot;,
+    &quot;Gradle.enhanced_mobs [jar].executor&quot;: &quot;Run&quot;,
+    &quot;Gradle.enhanced_mobs [kotlinSourcesJar].executor&quot;: &quot;Run&quot;,
+    &quot;Gradle.enhanced_mobs [shadowJar].executor&quot;: &quot;Run&quot;,
+    &quot;Gradle.下载源代码.executor&quot;: &quot;Run&quot;,
+    &quot;Gradle.构建 enhanced_mobs.executor&quot;: &quot;Run&quot;,
+    &quot;Kotlin 脚本(测试版).vanilla.kts.executor&quot;: &quot;Run&quot;,
+    &quot;Kotlin.PackManagerKt.executor&quot;: &quot;Run&quot;,
     &quot;Repository.Attach.Annotations&quot;: &quot;false&quot;,
     &quot;Repository.Attach.JavaDocs&quot;: &quot;false&quot;,
     &quot;Repository.Attach.Sources&quot;: &quot;true&quot;,
@@ -137,44 +161,50 @@
     &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
     &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
     &quot;dart.analysis.tool.window.visible&quot;: &quot;false&quot;,
+    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
     &quot;last_opened_file_path&quot;: &quot;C:/Program Files/Android/Android Studio/plugins/Kotlin/lib/kotlin-script-runtime.jar&quot;,
     &quot;project.structure.last.edited&quot;: &quot;模块&quot;,
     &quot;project.structure.proportion&quot;: &quot;0.15&quot;,
     &quot;project.structure.side.proportion&quot;: &quot;0.2&quot;,
     &quot;run.code.analysis.last.selected.profile&quot;: &quot;pProject Default&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;Settings.Minecraft&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;vcs.Subversion&quot;,
     &quot;show.migrate.to.gradle.popup&quot;: &quot;false&quot;
+  },
+  &quot;keyToStringList&quot;: {
+    &quot;kotlin-gradle-user-dirs&quot;: [
+      &quot;C:\\Users\\yanshiqwq\\.gradle&quot;
+    ]
   }
 }</component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="F:\yanshiqwq\Project\enhanced_mobs\src\main\kotlin\cn\yanshiqwq\enhanced_mobs\script" />
+      <recent name="F:\yanshiqwq\Project\enhanced_mobs\src\main\resources\packs\yanshiqwq" />
+      <recent name="F:\yanshiqwq\Project\enhanced_mobs\src\main\resources" />
       <recent name="F:\yanshiqwq\Project\enhanced_mobs" />
       <recent name="F:\yanshiqwq\Project\enhanced_mobs\src" />
-      <recent name="F:\yanshiqwq\Project\enhanced_mobs\src\main" />
-      <recent name="F:\yanshiqwq\Project\enhanced_mobs\src\main\resources" />
-      <recent name="F:\yanshiqwq\Project\enhanced_mobs\src\main\resources\packs\yanshiqwq" />
     </key>
     <key name="MoveKotlinTopLevelDeclarationsDialog.RECENTS_KEY">
+      <recent name="cn.yanshiqwq.enhanced_mobs.dsl" />
+      <recent name="cn.yanshiqwq.enhanced_mobs.script.Api" />
       <recent name="cn.yanshiqwq.enhanced_mobs.script" />
       <recent name="cn.yanshiqwq.enhanced_mobs" />
       <recent name="cn.yanshiqwq.enhanced_mobs.data" />
-      <recent name="cn.yanshiqwq.enhanced_mobs.listeners" />
-      <recent name="cn.yanshiqwq.enhanced_mobs.commands" />
     </key>
   </component>
-  <component name="RunManager" selected="Kotlin 脚本(测试版).vanilla.kts">
-    <configuration name="enhanced_mobs [build]" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
+  <component name="RunManager" selected="Gradle.enhanced_mobs [jar]">
+    <configuration name="enhanced_mobs [jar]" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
       <ExternalSystemSettings>
         <option name="executionName" />
         <option name="externalProjectPath" value="$PROJECT_DIR$" />
         <option name="externalSystemIdString" value="GRADLE" />
-        <option name="scriptParameters" value="" />
+        <option name="scriptParameters" />
         <option name="taskDescriptions">
           <list />
         </option>
         <option name="taskNames">
           <list>
-            <option value="build" />
+            <option value="jar" />
           </list>
         </option>
         <option name="vmOptions" />
@@ -182,21 +212,21 @@
       <ExternalSystemDebugServerProcess>true</ExternalSystemDebugServerProcess>
       <ExternalSystemReattachDebugProcess>true</ExternalSystemReattachDebugProcess>
       <DebugAllEnabled>false</DebugAllEnabled>
-      <ForceTestExec>false</ForceTestExec>
+      <RunAsTest>false</RunAsTest>
       <method v="2" />
     </configuration>
-    <configuration name="enhanced_mobs [clean]" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
+    <configuration name="enhanced_mobs [kotlinSourcesJar]" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
       <ExternalSystemSettings>
         <option name="executionName" />
         <option name="externalProjectPath" value="$PROJECT_DIR$" />
         <option name="externalSystemIdString" value="GRADLE" />
-        <option name="scriptParameters" value="" />
+        <option name="scriptParameters" />
         <option name="taskDescriptions">
           <list />
         </option>
         <option name="taskNames">
           <list>
-            <option value="clean" />
+            <option value="kotlinSourcesJar" />
           </list>
         </option>
         <option name="vmOptions" />
@@ -204,7 +234,7 @@
       <ExternalSystemDebugServerProcess>true</ExternalSystemDebugServerProcess>
       <ExternalSystemReattachDebugProcess>true</ExternalSystemReattachDebugProcess>
       <DebugAllEnabled>false</DebugAllEnabled>
-      <ForceTestExec>false</ForceTestExec>
+      <RunAsTest>false</RunAsTest>
       <method v="2" />
     </configuration>
     <configuration name="enhanced_mobs [shadowJar]" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
@@ -226,41 +256,58 @@
       <ExternalSystemDebugServerProcess>true</ExternalSystemDebugServerProcess>
       <ExternalSystemReattachDebugProcess>true</ExternalSystemReattachDebugProcess>
       <DebugAllEnabled>false</DebugAllEnabled>
-      <ForceTestExec>false</ForceTestExec>
+      <RunAsTest>false</RunAsTest>
       <method v="2" />
     </configuration>
-    <configuration name="extend.kts" type="KotlinStandaloneScriptRunConfigurationType" temporary="true" nameIsGenerated="true">
-      <module name="enhanced_mobs" />
-      <option name="filePath" value="$PROJECT_DIR$/src/main/resources/packs/yanshiqwq/extend.kts" />
+    <configuration name="PackManagerKt" type="JetRunConfigurationType" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="cn.yanshiqwq.enhanced_mobs.managers.PackManagerKt" />
+      <module name="enhanced_mobs.main" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
     </configuration>
     <configuration name="vanilla.kts" type="KotlinStandaloneScriptRunConfigurationType" temporary="true" nameIsGenerated="true">
       <module name="enhanced_mobs" />
-      <option name="filePath" value="$PROJECT_DIR$/src/main/resources/packs/yanshiqwq/vanilla.kts" />
+      <shortenClasspath name="NONE" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="cn.yanshiqwq.enhanced_mobs.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="cn.yanshiqwq.enhanced_mobs.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="filePath" value="$PROJECT_DIR$/src/main/kotlin/cn/yanshiqwq/enhanced_mobs/script/vanilla.kts" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
     </configuration>
     <list>
-      <item itemvalue="Gradle.enhanced_mobs [build]" />
-      <item itemvalue="Gradle.enhanced_mobs [clean]" />
+      <item itemvalue="Gradle.enhanced_mobs [kotlinSourcesJar]" />
+      <item itemvalue="Gradle.enhanced_mobs [jar]" />
       <item itemvalue="Gradle.enhanced_mobs [shadowJar]" />
-      <item itemvalue="Kotlin 脚本(测试版).extend.kts" />
+      <item itemvalue="Kotlin.PackManagerKt" />
       <item itemvalue="Kotlin 脚本(测试版).vanilla.kts" />
     </list>
     <recent_temporary>
       <list>
-        <item itemvalue="Kotlin 脚本(测试版).vanilla.kts" />
-        <item itemvalue="Kotlin 脚本(测试版).extend.kts" />
+        <item itemvalue="Gradle.enhanced_mobs [jar]" />
         <item itemvalue="Gradle.enhanced_mobs [shadowJar]" />
-        <item itemvalue="Gradle.enhanced_mobs [build]" />
-        <item itemvalue="Gradle.enhanced_mobs [clean]" />
+        <item itemvalue="Kotlin 脚本(测试版).vanilla.kts" />
+        <item itemvalue="Kotlin.PackManagerKt" />
+        <item itemvalue="Gradle.enhanced_mobs [kotlinSourcesJar]" />
       </list>
     </recent_temporary>
   </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="应用程序级" UseSingleDictionary="true" transferred="true" />
+  <component name="SvnConfiguration">
+    <configuration>C:\Users\yanshiqwq\AppData\Roaming\Subversion</configuration>
+  </component>
   <component name="TaskManager">
     <task active="true" id="Default" summary="默认任务">
       <changelist id="d5ee4be2-1981-48f1-8632-49b4c7636b94" name="更改" comment="" />
@@ -479,7 +526,14 @@
       <option name="project" value="LOCAL" />
       <updated>1719501923242</updated>
     </task>
-    <option name="localTasksCounter" value="31" />
+    <task id="LOCAL-00031" summary="修复 MobEventListener 无法触发 DSL 中 listeners 的 bug">
+      <created>1719503592619</created>
+      <option name="number" value="00031" />
+      <option name="presentableId" value="LOCAL-00031" />
+      <option name="project" value="LOCAL" />
+      <updated>1719503592619</updated>
+    </task>
+    <option name="localTasksCounter" value="32" />
     <servers />
   </component>
   <component name="Vcs.Log.History.Properties">
@@ -515,7 +569,7 @@
                   <entry key="branch">
                     <value>
                       <list>
-                        <option value="main" />
+                        <option value="HEAD" />
                       </list>
                     </value>
                   </entry>
@@ -556,7 +610,9 @@
     <MESSAGE value="下调怪物血量，调整怪物等级计算方法，调整骷髅伤害计算方式，修复了控制台ConcurrentModificationException报错的问题，新增了怪物掉落物（未完成）" />
     <MESSAGE value="重构，新增kts解析器用于自定义怪物行为" />
     <MESSAGE value="重构 DSL 解析器, 优化代码逻辑" />
-    <option name="LAST_COMMIT_MESSAGE" value="重构 DSL 解析器, 优化代码逻辑" />
+    <MESSAGE value="修复 MobEventListener 无法触发 DSL 中 listeners 的 bug" />
+    <MESSAGE value="重构, 暂时移除 kts 解析器" />
+    <option name="LAST_COMMIT_MESSAGE" value="重构, 暂时移除 kts 解析器" />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />

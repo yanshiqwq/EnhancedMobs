@@ -52,7 +52,7 @@ class EnhancedMobsExecutor : CommandExecutor {
         // 解析强化类型参数
         val boostTypeArg = args[2].lowercase(Locale.getDefault())
         val boostTypeKey =
-            if (boostTypeArg != "DEFAULT") TypeManager.TypeKey(boostTypeArg)
+            if (boostTypeArg != "default") TypeManager.TypeKey(boostTypeArg)
             else getDefaultBoostId(entityType)
         if (!Main.instance!!.typeManager.hasTypeId(boostTypeKey)) {
             sender.sendMessage(prefix.append(Component.text("无效的强化类型 \"$boostTypeArg\" ！", NamedTextColor.RED)))

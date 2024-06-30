@@ -7,12 +7,10 @@ import cn.yanshiqwq.enhanced_mobs.listeners.MobEventListener
 import cn.yanshiqwq.enhanced_mobs.listeners.ModifierListener
 import cn.yanshiqwq.enhanced_mobs.listeners.SpawnListener
 import cn.yanshiqwq.enhanced_mobs.managers.MobManager
-import cn.yanshiqwq.enhanced_mobs.managers.TypeManager
 import cn.yanshiqwq.enhanced_mobs.managers.PackManager
-import cn.yanshiqwq.enhanced_mobs.managers.WeightManager
+import cn.yanshiqwq.enhanced_mobs.managers.TypeManager
 import org.bukkit.plugin.PluginLogger
 import org.bukkit.plugin.java.JavaPlugin
-import kotlin.io.path.Path
 
 
 /**
@@ -24,7 +22,7 @@ import kotlin.io.path.Path
  */
 class Main : JavaPlugin() {
     companion object {
-        const val prefix = "[EnhancedMobs]"
+        val prefix = "[EnhancedMobs]"
         var instance: Main? = null
     }
 
@@ -32,12 +30,11 @@ class Main : JavaPlugin() {
     val packManager = PackManager()
     val typeManager = TypeManager()
     val mobManager = MobManager()
-    val weightManager = WeightManager(config)
     override fun onEnable() {
         instance = this
 
         saveDefaultConfig() // 确保配置文件存在，如果不存在则创建默认配置文件
-        packManager.loadPacks(Path(dataFolder.path, "packs"))
+        packManager.loadPacks()
 
         server.pluginManager.run {
             registerEvents(EntityLevelListener(), instance!!)
