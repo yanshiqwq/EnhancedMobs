@@ -17,7 +17,7 @@ import org.bukkit.util.Vector
  * @since 2024/6/30 下午4:06
  */
 object LocationApi {
-    inline fun <reified T : Entity> Location.spawnEntity(type: EntityType, function: T.() -> Unit) {
+    inline fun <reified T: Entity> Location.spawnEntity(type: EntityType, function: T.() -> Unit) {
         val entity = this.world.spawnEntity(this, type, CreatureSpawnEvent.SpawnReason.REINFORCEMENTS)
         if (type.entityClass == T::class.java)
             function.invoke(entity as T)

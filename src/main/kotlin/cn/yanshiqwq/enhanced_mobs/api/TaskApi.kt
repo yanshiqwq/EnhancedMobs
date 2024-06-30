@@ -18,20 +18,24 @@ import java.util.*
  */
 object TaskApi {
     data class TaskId(val id: String = UUID.randomUUID().toString()) {
-        private var switch: () -> Unit = {}
-        fun onSwitch(block: () -> Unit) { switch = block }
-        fun switch() = switch.invoke()
+        private var onCancel: Runnable = Runnable {}
+        fun onCancel(block: Runnable) { onCancel = block }
+        fun cancel() = onCancel.run()
+    }
+
+    fun EnhancedMob.timerTask(taskId: TaskId = TaskId(), delay: Long = 0L, setup: Runnable, run: Runnable): TaskId {
+        setup.run()
+        taskId.onCancel(setup)
+        return task(taskId, delay, run)
     }
     fun EnhancedMob.task(taskId: TaskId = TaskId(), delay: Long = 0L, block: Runnable): TaskId {
         cancelTask(taskId)
-        taskId.switch()
         val func = getRunnable(this) { block.run() }
         addTask(taskId, Bukkit.getScheduler().runTaskLater(instance!!, func, delay))
         return taskId
     }
     fun EnhancedMob.task(taskId: TaskId = TaskId(), delay: Long = 0L, period: Long, block: Runnable): TaskId {
         cancelTask(taskId)
-        taskId.switch()
         val func = getRunnable(this) { block.run() }
         addTask(taskId, Bukkit.getScheduler().runTaskTimer(instance!!, func, delay, period))
         return taskId
@@ -47,7 +51,7 @@ object TaskApi {
     fun EnhancedMob.cancelTask(taskId: TaskId) {
         tasks[taskId.id].run {
             if (this == null) return@run
-            taskId.switch()
+            taskId.cancel()
             cancel()
         }
     }

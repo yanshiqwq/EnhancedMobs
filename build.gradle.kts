@@ -31,10 +31,6 @@ tasks {
         archiveBaseName.set(project.name)
         version = project.version
         application.mainClass.set("cn.yanshiqwq.enhanced_mobs.Main")
-        dependencies {
-            dependency("org.jetbrains.kotlin:kotlin-main-kts:1.8.0")
-            dependency("org.jetbrains.kotlin:kotlin-scripting-jsr223:1.8.0")
-        }
     }
     withType<JavaCompile> {
         options.encoding = "UTF-8"

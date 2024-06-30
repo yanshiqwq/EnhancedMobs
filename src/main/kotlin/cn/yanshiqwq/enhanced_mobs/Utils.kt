@@ -1,12 +1,14 @@
 package cn.yanshiqwq.enhanced_mobs
 
 import cn.yanshiqwq.enhanced_mobs.Main.Companion.instance
+import cn.yanshiqwq.enhanced_mobs.dsl.WeightDslBuilder.WeightList
 import org.bukkit.*
 import org.bukkit.attribute.Attribute
 import org.bukkit.attribute.AttributeInstance
 import org.bukkit.attribute.AttributeModifier
 import org.bukkit.entity.*
 import org.bukkit.scoreboard.Team
+import kotlin.random.Random
 
 /**
  * enhanced_mobs
@@ -17,6 +19,14 @@ import org.bukkit.scoreboard.Team
  */
 @Suppress("unused")
 object Utils {
+    fun <T: Any> weightList(block: WeightList<T>.() -> Unit): WeightList<T> {
+        val weightList = WeightList<T>()
+        weightList.block()
+        return weightList
+    }
+
+    fun <T: Any> T.byChance(chance: Double) = if (Random.nextDouble() <= chance) this else null
+
     fun getTeam(teamName: String): Team? = instance!!.server.scoreboardManager.mainScoreboard.runCatching {
             getTeam(teamName) ?: registerNewTeam(teamName)
         }.getOrNull()

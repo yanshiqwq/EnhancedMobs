@@ -26,6 +26,7 @@ import cn.yanshiqwq.enhanced_mobs.api.TaskApi.TaskId
 import cn.yanshiqwq.enhanced_mobs.api.TaskApi.cancelTask
 import cn.yanshiqwq.enhanced_mobs.api.TaskApi.itemTask
 import cn.yanshiqwq.enhanced_mobs.api.TaskApi.task
+import cn.yanshiqwq.enhanced_mobs.api.TaskApi.timerTask
 import cn.yanshiqwq.enhanced_mobs.dsl.MobDslBuilder.pack
 import org.bukkit.Material
 import org.bukkit.NamespacedKey
@@ -44,20 +45,21 @@ import org.bukkit.util.Vector
 import kotlin.random.Random
 import kotlin.random.nextInt
 
-object ExtendPack {
-    fun get(): PackManager.Pack = pack("extend") {
-        type("skeleton_frost", "vanilla.skeleton") {
+object ExtendPack: PackManager.PackObj {
+    private val manager = instance!!.packManager
+    override fun get(): PackManager.Pack = pack("extend") {
+        type("skeleton_frost", manager.implement(VanillaPack.get(), "skeleton")) {
             onBowShoot { projectile.isGlowing = true }
-            onArrowDamage { entity.freezeTicks = 140 + Random.nextInt(3..5) * 40 } // 冻结 6~10 秒
+            onArrowDamage { target.freezeTicks = 140 + Random.nextInt(3..5) * 40 } // 冻结 6~10 秒
         }
-        type("skeleton_iron_sword", "vanilla.skeleton") {
+        type("skeleton_iron_sword", manager.implement(VanillaPack.get(), "skeleton")) {
             item(EquipmentSlot.HAND, Material.IRON_SWORD)
             attribute(GENERIC_MAX_HEALTH, MULTIPLY_SCALAR_1, DoubleFactor { 0.65 * it })
             attribute(GENERIC_ATTACK_DAMAGE, MULTIPLY_SCALAR_1, logFormula(0.8))
             attribute(GENERIC_MOVEMENT_SPEED, MULTIPLY_SCALAR_1, logFormula(0.1))
         }
 
-        type("spider_cobweb", "vanilla.spider") {
+        type("spider_cobweb", manager.implement(VanillaPack.get(), "spider")) {
             val taskPeriod = (80 - multiplier * 10).toLong().coerceIn(50L..100L)
             itemTask(distance = 5.0, before = ItemStack(Material.COBWEB), period = taskPeriod) {
                 val block = it.location.block
@@ -76,10 +78,10 @@ object ExtendPack {
             }
         }
 
-        type("zombie_reduce_air", "vanilla.zombie") {
+        type("zombie_reduce_air", manager.implement(VanillaPack.get(), "zombie")) {
             onAttack { target.reduceAir(180) }
         }
-        type("zombie_shield", "vanilla.zombie") {
+        type("zombie_shield", manager.implement(VanillaPack.get(), "zombie")) {
             item(EquipmentSlot.OFF_HAND, Material.SHIELD)
             onPreDamage {
                 val shieldKey = NamespacedKey(instance!!, "shield")
@@ -89,13 +91,12 @@ object ExtendPack {
                 if (entity.persistentDataContainer.getOrDefault(shieldKey, PersistentDataType.BYTE, 0) != 1.toByte()) {
                     val onShieldChance = (0.35 * (multiplier + 1)).coerceIn(0.0, 0.85)
                     if (Random.nextDouble() <= onShieldChance) {
-                        // 激活护盾
+                        // 激活护盾并在 100 ticks 之后自动解除
                         entity.location.spawnParticle(Particle.SPELL_INSTANT, 64, Vector(0.3, 0.5, 0.3), 1.0)
-                        task(taskId = onShieldTaskId, delay = 100) {
-                            entity.persistentDataContainer.set(shieldKey, PersistentDataType.BOOLEAN, true)
-                        }.onSwitch {
-                            entity.persistentDataContainer.set(shieldKey, PersistentDataType.BOOLEAN, false)
-                        }
+                        timerTask(taskId = onShieldTaskId, delay = 100,
+                            setup = { entity.persistentDataContainer.set(shieldKey, PersistentDataType.BOOLEAN, true) },
+                            run = { entity.persistentDataContainer.set(shieldKey, PersistentDataType.BOOLEAN, false) }
+                        )
                     }
                     return@onPreDamage
                 }
@@ -104,18 +105,17 @@ object ExtendPack {
                 if (attacker.equipment!!.itemInMainHand.type.isAxe()) {
                     // 取消护盾并暂时禁用 AI
                     cancelTask(onShieldTaskId)
-                    task(delay = 40){
-                        entity.setAI(true)
-                    }.onSwitch {
-                        entity.setAI(false)
-                    }
+                    timerTask(delay = 40,
+                        setup = { entity.setAI(false) },
+                        run = { entity.setAI(true) }
+                    )
 
                     // 攻击力降低 85%, 持续 100 ticks
-                    val modifier = AttributeModifier("Break shield bonus", -0.85, AttributeModifier.Operation.MULTIPLY_SCALAR_1)
-                    entity.getAttribute(GENERIC_ATTACK_DAMAGE)?.addModifierSafe(modifier)
-                    task(delay = 100) {
-                        entity.getAttribute(GENERIC_ATTACK_DAMAGE)?.removeModifier(modifier)
-                    }
+                    val modifier = AttributeModifier("Break shield bonus", -0.85, MULTIPLY_SCALAR_1)
+                    timerTask(delay = 100,
+                        setup = { entity.getAttribute(GENERIC_ATTACK_DAMAGE)?.addModifierSafe(modifier) },
+                        run = { entity.getAttribute(GENERIC_ATTACK_DAMAGE)?.removeModifier(modifier) }
+                    )
 
                     // 破盾后特效
                     entity.location.run {
@@ -131,11 +131,11 @@ object ExtendPack {
                 }
             }
         }
-        type("zombie_leader", "extend.zombie_shield") {
+        type("zombie_leader", manager.implement(VanillaPack.get(), "zombie")) {
             item(EquipmentSlot.HAND, Material.IRON_SWORD)
             attribute(ZOMBIE_SPAWN_REINFORCEMENTS, ADD_NUMBER, DoubleFactor(0.0..0.65) { 0.35 + 0.05 * it })
         }
-        type("zombie_cobweb", "vanilla.zombie") {
+        type("zombie_cobweb", manager.implement(VanillaPack.get(), "zombie")) {
             val taskPeriod = (100 - multiplier * 10).toLong().coerceIn(60L..120L)
             itemTask(distance = 5.0, before = ItemStack(Material.COBWEB), period = taskPeriod) {
                 val block = it.location.block
@@ -152,7 +152,7 @@ object ExtendPack {
                 entity.effect(PotionEffectType.SPEED, 7, 5 * 20)
             }
         }
-        type("zombie_strength_cloud", "vanilla.zombie") {
+        type("zombie_strength_cloud", manager.implement(VanillaPack.get(), "zombie")) {
             onDeath {
                 entity.location.spawnEntity<AreaEffectCloud>(EntityType.AREA_EFFECT_CLOUD) {
                     color = PotionEffectType.INCREASE_DAMAGE.color
@@ -162,14 +162,14 @@ object ExtendPack {
                 }
             }
         }
-        type("zombie_totem", "vanilla.zombie") {
+        type("zombie_totem", manager.implement(VanillaPack.get(), "zombie")) {
             item(EquipmentSlot.OFF_HAND, Material.TOTEM_OF_UNDYING)
             onResurrect {
                 entity.percentHeal(0.5)
                 entity.effect(PotionEffectType.SPEED, 0)
             }
         }
-        type("zombie_tnt", "vanilla.zombie") {
+        type("zombie_tnt", manager.implement(VanillaPack.get(), "zombie")) {
             itemTask(distance = 6.0, before = ItemStack(Material.TNT)) {
                 val loc = it.location
                 loc.run {
@@ -184,7 +184,7 @@ object ExtendPack {
                 entity.effect(PotionEffectType.DAMAGE_RESISTANCE, 1, 50)
             }
         }
-        type("zombie_anvil", "vanilla.zombie") {
+        type("zombie_anvil", manager.implement(VanillaPack.get(), "zombie")) {
             itemTask(distance = 5.0, before = ItemStack(Material.DAMAGED_ANVIL)) {
                 val loc = it.location.clone().apply { y += 3 }
                 if (!loc.block.isReplaceable) return@itemTask
@@ -201,7 +201,7 @@ object ExtendPack {
                 }
             }
         }
-        type("zombie_lava", "vanilla.zombie") {
+        type("zombie_lava", manager.implement(VanillaPack.get(), "zombie")) {
             itemTask(
                 distance = 5.0,
                 before = ItemStack(Material.LAVA_BUCKET),
@@ -223,7 +223,7 @@ object ExtendPack {
                 entity.effect(PotionEffectType.FIRE_RESISTANCE, 0, 72 * 20)
             }
         }
-        type("zombie_fire_charge", "vanilla.zombie") {
+        type("zombie_fire_charge", manager.implement(VanillaPack.get(), "zombie")) {
             val powerFormula = DoubleFactor(0.0..16.0) {1 + it * 0.5}
             itemTask(distance = 16.0, before = ItemStack(Material.FIRE_CHARGE, 4), period = 80L) {
                 entity.location.playSound(Sound.ITEM_FIRECHARGE_USE, 1.0F, 1.0F)
@@ -237,7 +237,7 @@ object ExtendPack {
                 entity.equipment.itemInMainHand.subtract(1)
             }
         }
-        type("zombie_flint_and_steel", "vanilla.zombie") {
+        type("zombie_flint_and_steel", manager.implement(VanillaPack.get(), "zombie")) {
             itemTask(distance = 5.0, before = ItemStack(Material.FLINT_AND_STEEL), period = 80L) {
                 if (it.location.block.isLiquid || it.isInRain) return@itemTask
                 it.location.run {
@@ -252,7 +252,7 @@ object ExtendPack {
                 entity.effect(PotionEffectType.FIRE_RESISTANCE, 0, 12 * 20)
             }
         }
-        type("zombie_ender_pearl", "vanilla.zombie") {
+        type("zombie_ender_pearl", manager.implement(VanillaPack.get(), "zombie")) {
             itemTask(distance = 24.0, before = ItemStack(Material.ENDER_PEARL)) {
                 if (entity.isInLava || entity.health <= 5.0) return@itemTask
                 entity.location.playSound(Sound.ENTITY_ENDER_PEARL_THROW, 1.0F, 1.0F)

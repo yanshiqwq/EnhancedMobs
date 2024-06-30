@@ -4,7 +4,6 @@ import cn.yanshiqwq.enhanced_mobs.EnhancedMob
 import cn.yanshiqwq.enhanced_mobs.Main.Companion.instance
 import cn.yanshiqwq.enhanced_mobs.dsl.WeightDslBuilder
 import org.bukkit.entity.EntityType
-import kotlin.random.Random
 
 /**
  * enhanced_mobs
@@ -15,31 +14,14 @@ import kotlin.random.Random
  */
 class TypeManager {
     companion object {
-        fun getRandomTypeKey(entityType: EntityType, weightMapList: List<WeightDslBuilder.WeightMap>): TypeKey {
-            val weightMap = weightMapList.filter { entityType in it.types }.map { it.weight }
-            if (weightMap.isEmpty()) throw IllegalArgumentException("MatchedKeys is empty")
-
-            // 计算总权重
-            val totalWeight = weightMap.sumOf { it.values.sum() }
-
-            // 随机选择一个 id
-            val rand = Random.nextInt(totalWeight)
-            val mergedMap = weightMap
+        fun getRandomTypeKey(entityType: EntityType, weightMapGroupList: List<WeightDslBuilder.WeightMapGroup>): TypeKey {
+            val weightMap = weightMapGroupList
+                .filter { entityType in it.types }
+                .map { it.weight.toMap() }
                 .flatMap { it.entries }
-                .associate { it.key to it.value }
-
-            return selectWeightedKey(mergedMap, rand)
-        }
-
-        private fun selectWeightedKey(weights: Map<String, Int>, rand: Int): TypeKey {
-            var cumulativeWeight = 0
-            for ((key, weight) in weights) {
-                cumulativeWeight += weight
-                if (rand <= cumulativeWeight) {
-                    return TypeKey(key)
-                }
-            }
-            return TypeKey("vanilla", "fallback")
+                .associate { it.value to it.key }
+            val weightList = WeightDslBuilder.WeightList(weightMap)
+            return TypeKey(weightList.getRandomByWeightList())
         }
     }
 

@@ -13,6 +13,10 @@ import cn.yanshiqwq.enhanced_mobs.script.VanillaPack
  */
 
 class PackManager {
+    interface PackObj {
+        fun get(): Pack
+    }
+
     data class Pack(val id: String, val typeMap: List<TypeManager.MobType> = listOf())
 
     private val packs = mutableListOf<Pack>()
@@ -20,6 +24,10 @@ class PackManager {
     fun loadPacks() {
         register(VanillaPack.get())
         register(ExtendPack.get())
+    }
+
+    fun implement(pack: Pack, typeId: String): TypeManager.MobType {
+        return pack.typeMap.first { it.typeKey.typeId == typeId }
     }
 
     private fun register(pack: Pack) {

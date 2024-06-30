@@ -52,7 +52,7 @@ class EnhancedMob(val multiplier: Double, val entity: Mob) {
     }
 
     val tasks = mutableMapOf<String, BukkitTask>()
-    val listeners: ArrayList<ListenerApi.Listener> = arrayListOf()
+    val listeners = mutableListOf<ListenerApi.Listener>()
 
     fun boost(boostTypeKey: TypeManager.TypeKey) {
         entity.persistentDataContainer.set(EnhancedMob.boostTypeKey, PersistentDataType.STRING, boostTypeKey.value())

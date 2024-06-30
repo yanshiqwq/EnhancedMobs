@@ -46,29 +46,23 @@ object MobDslBuilder {
             })
         }
 
-        fun build(): PackManager.Pack {
-            return PackManager.Pack(packId, types)
-        }
+        fun build() = PackManager.Pack(packId, types)
     }
 
     class TypeBuilder(private val typeKey: TypeManager.TypeKey) {
-        fun build(block: EnhancedMob.() -> Unit): TypeManager.MobType {
-            return TypeManager.MobType(typeKey) { block() }
-        }
+        fun build(block: EnhancedMob.() -> Unit): TypeManager.MobType = TypeManager.MobType(typeKey) { block() }
     }
 
-    class SlotBuilder(private val slot: EquipmentSlot, private val item: ItemStack? = null) {
+    class SlotBuilder(private val slot: EquipmentSlot, val item: ItemStack) {
         private val enchants = mutableListOf<Record.EnchantRecord>()
 
-        fun item(type: Material) = item?.withType(type)
+        fun item(type: Material) = item.withType(type)
 
         fun enchant(enchant: Enchantment, factor: Record.IntFactor) = enchants.add(Record.EnchantRecord(enchant, factor))
 
-        fun build(): EnhancedMob.() -> Unit {
-            return {
-                if (item != null) entity.equipment.setItem(slot, item)
-                enchants.forEach { it.apply(this.entity, this.multiplier, slot) }
-            }
+        fun build(): EnhancedMob.() -> Unit = {
+            entity.equipment.setItem(slot, item)
+            enchants.forEach { it.apply(this.entity, this.multiplier, slot) }
         }
     }
 }

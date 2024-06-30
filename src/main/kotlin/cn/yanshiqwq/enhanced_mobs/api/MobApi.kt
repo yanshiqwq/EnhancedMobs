@@ -11,8 +11,11 @@ import org.bukkit.attribute.AttributeModifier
 import org.bukkit.entity.*
 import org.bukkit.inventory.EquipmentSlot
 import org.bukkit.inventory.ItemStack
+import org.bukkit.inventory.meta.FireworkMeta
+import org.bukkit.inventory.meta.PotionMeta
 import org.bukkit.potion.PotionEffect
 import org.bukkit.potion.PotionEffectType
+import org.bukkit.potion.PotionType
 
 /**
  * enhanced_mobs
@@ -44,12 +47,36 @@ object MobApi {
     }
     fun EnhancedMob.attribute(attribute: Attribute, operation: AttributeModifier.Operation, factor: Record.DoubleFactor) =
         Record.AttributeRecord(attribute, Record.AttributeFactor(operation, factor)).apply(this.entity, multiplier, attributeUUID, attributeName)
+    fun potionItem(type: Material, potion: PotionType): ItemStack {
+        val item = ItemStack(type)
+        (item.itemMeta as? PotionMeta)?.basePotionType = potion
+        return item
+    }
+    fun fireworkItem(): ItemStack {
+        val itemStack = ItemStack(Material.FIREWORK_ROCKET)
+        val meta = itemStack.itemMeta as FireworkMeta
 
-    fun item(slot: EquipmentSlot, type: Material, block: SlotBuilder.() -> Unit = {}) = item(slot, ItemStack(type), block)
-    fun item(slot: EquipmentSlot, item: ItemStack? = null, block: SlotBuilder.() -> Unit = {}) {
+        meta.power = 3 // 设置火箭的飞行持续时间
+
+        // 添加一个爆炸效果
+        val effect = FireworkEffect.builder()
+            .flicker(true)
+            .withColor(Color.fromRGB(11743532)) // 设置颜色
+            .with(FireworkEffect.Type.BURST) // 设置爆炸形状
+            .trail(true)
+            .build()
+
+        meta.addEffect(effect)
+
+        itemStack.itemMeta = meta
+
+        return itemStack
+    }
+    fun EnhancedMob.item(slot: EquipmentSlot, type: Material, block: SlotBuilder.() -> Unit = {}) = item(slot, ItemStack(type), block)
+    fun EnhancedMob.item(slot: EquipmentSlot, item: ItemStack, block: SlotBuilder.() -> Unit = {}) {
         val builder = SlotBuilder(slot, item)
+        builder.build().invoke(this)
         block.invoke(builder)
-        builder.build()
     }
 
     inline fun <reified T: Mob> EnhancedMob.property(crossinline block: T.() -> Unit) {

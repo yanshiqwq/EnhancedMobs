@@ -1,6 +1,7 @@
 package cn.yanshiqwq.enhanced_mobs.dsl
 
 import org.bukkit.entity.EntityType
+import kotlin.random.Random
 
 /**
  * enhanced_mobs
@@ -10,31 +11,49 @@ import org.bukkit.entity.EntityType
  * @since 2024/6/30 上午2:16
  */
 class WeightDslBuilder {
-    data class WeightMap(
+    class WeightList<T : Any>(private val weights: MutableList<Weight<T>> = mutableListOf()) {
+        constructor(map: Map<T, Int>): this(map.entries.map { Weight<T>(it.key, it.value) }.toMutableList())
+
+        data class Weight<T>(val key: T, val weight: Int)
+        fun weight(key: T, weight: Int) = weights.add(Weight(key, weight))
+        fun weight(vararg entry: Pair<T, Int>) = entry
+            .toMap().forEach {
+                weight(it.key, it.value)
+            }
+
+        fun getRandomByWeightList(): T {
+            val totalWeight = weights.sumOf { it.weight }
+            val rand = Random.nextInt(totalWeight)
+            var cumulativeWeight = 0
+            for ((key, weight) in weights) {
+                cumulativeWeight += weight
+                if (rand <= cumulativeWeight) {
+                    return key
+                }
+            }
+            throw IllegalStateException("Unknown error in randomByWeight")
+        }
+
+        fun toMap() = weights.associate { it.weight to it.key }
+    }
+
+    data class WeightMapGroup(
         val types: List<EntityType>,
-        val weight: Map<String, Int>
+        val weight: WeightList<String>
     )
 
-    fun loadWeightMap(block: EntityPropertiesBuilder.() -> Unit): List<WeightMap> {
+    fun loadWeightMap(block: EntityPropertiesBuilder.() -> Unit): List<WeightMapGroup> {
         val builder = EntityPropertiesBuilder()
         builder.block()
         return builder.properties.toList()
     }
 
     class EntityPropertiesBuilder {
-        val properties = mutableListOf<WeightMap>()
-        fun entity(vararg types: EntityType, block: MobWeights.() -> Unit) {
-            val props = MobWeights()
+        val properties = mutableListOf<WeightMapGroup>()
+        fun entity(vararg types: EntityType, block: WeightList<String>.() -> Unit) {
+            val props = WeightList<String>()
             props.block()
-            properties.add(WeightMap(types.asList(), props.weights))
-        }
-    }
-
-    class MobWeights {
-        val weights = mutableMapOf<String, Int>()
-
-        fun weights(block: MutableMap<String, Int>.() -> Unit) {
-            weights.block()
+            properties.add(WeightMapGroup(types.asList(), props))
         }
     }
 }
