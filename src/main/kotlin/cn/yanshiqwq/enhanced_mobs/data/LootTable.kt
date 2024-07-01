@@ -3,7 +3,6 @@ package cn.yanshiqwq.enhanced_mobs.data
 import cn.yanshiqwq.enhanced_mobs.LootTableX
 import cn.yanshiqwq.enhanced_mobs.Main.Companion.instance
 import cn.yanshiqwq.enhanced_mobs.Utils.all
-import cn.yanshiqwq.enhanced_mobs.Utils.isOnFire
 import org.bukkit.Material
 import org.bukkit.NamespacedKey
 import org.bukkit.entity.Mob
@@ -48,7 +47,7 @@ object LootTable {
                         item.setFurnaceSmelt()
                     }
                     condition = { ctx, _ ->
-                        ctx.lootedEntity?.isOnFire() == true
+                        ctx.lootedEntity?.isVisualFire == true
                     }
                 })
                 .apply {

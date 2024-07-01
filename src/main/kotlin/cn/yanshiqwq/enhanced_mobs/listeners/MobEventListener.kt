@@ -1,12 +1,15 @@
 package cn.yanshiqwq.enhanced_mobs.listeners
 
 import cn.yanshiqwq.enhanced_mobs.Main.Companion.instance
+import cn.yanshiqwq.enhanced_mobs.api.TaskApi.cancelTask
 import com.destroystokyo.paper.event.entity.EntityPathfindEvent
 import io.papermc.paper.event.entity.EntityToggleSitEvent
 import org.bukkit.event.Event
 import org.bukkit.event.EventHandler
 import org.bukkit.event.Listener
 import org.bukkit.event.entity.*
+import java.util.*
+import kotlin.ConcurrentModificationException
 
 /**
  * enhanced_mobs
@@ -25,9 +28,8 @@ class MobEventListener : Listener {
                     it.function.invoke(event)
                 }
             }
-        }
-        catch (_: ConcurrentModificationException) {}
-        catch (e: Exception) {
+        } catch (_: ConcurrentModificationException) {
+        } catch (e: Exception) {
             instance!!.logger.warning("An unexpected exception occurred while triggering skill.")
             e.printStackTrace()
         }
@@ -35,8 +37,15 @@ class MobEventListener : Listener {
 
     @EventHandler
     fun onEnhancedMobDeath(event: EntityDeathEvent){
-        instance!!.mobManager.remove(event.entity.uniqueId)
+        val mob = instance!!.mobManager.get(event.entity.uniqueId)
+        if (mob == null) {
+            removeEnhancedMob(event.entity.uniqueId)
+            return
+        }
+        mob.tasks.forEach { mob.cancelTask(it.key) }
     }
+
+    fun removeEnhancedMob(uuid: UUID) = instance!!.mobManager.remove(uuid)
 
     // JB BUKKIT API
 //    @EventHandler

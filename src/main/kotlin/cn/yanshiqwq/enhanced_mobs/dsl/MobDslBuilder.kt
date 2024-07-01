@@ -29,7 +29,7 @@ object MobDslBuilder {
 
         fun type(typeId: String, block: EnhancedMob.() -> Unit) {
             val builder = TypeBuilder(TypeManager.TypeKey(packId, typeId))
-            types.add(builder.build() {
+            types.add(builder.build {
                 this.block()
             })
         }

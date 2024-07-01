@@ -14,11 +14,11 @@ import org.bukkit.entity.EntityType
  */
 class TypeManager {
     companion object {
-        fun getRandomTypeKey(entityType: EntityType, weightMapGroupList: List<WeightDslBuilder.WeightMapGroup>): TypeKey {
+        fun getRandomTypeKey(entityType: EntityType, weightMapGroupList: List<WeightDslBuilder.WeightMapGroup>): TypeKey? {
             val weightMap = weightMapGroupList
                 .filter { entityType in it.types }
-                .map { it.weight.toMap() }
-                .flatMap { it.entries }
+                .ifEmpty { return null }
+                .flatMap { it.weightList.toMap().entries }
                 .associate { it.value to it.key }
             val weightList = WeightDslBuilder.WeightList(weightMap)
             return TypeKey(weightList.getRandomByWeightList())

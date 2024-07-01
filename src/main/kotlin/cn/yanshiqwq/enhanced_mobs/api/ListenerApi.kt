@@ -1,7 +1,10 @@
+@file:Suppress("unused")
+
 package cn.yanshiqwq.enhanced_mobs.api
 
 import cn.yanshiqwq.enhanced_mobs.EnhancedMob
 import cn.yanshiqwq.enhanced_mobs.data.Record
+import io.papermc.paper.event.entity.EntityMoveEvent
 import org.bukkit.Material
 import org.bukkit.entity.*
 import org.bukkit.event.Event
@@ -102,7 +105,7 @@ object ListenerApi {
     }
 
     data class PotionThrownDsl(
-        val mob: EnhancedMob,
+        private val mob: EnhancedMob,
         val potion: ThrownPotion,
         val target: ProjectileSource
     ) {
@@ -114,21 +117,31 @@ object ListenerApi {
                 color = type.color
             }
         }
-        fun potion(type: PotionType): Runnable = Runnable {
+        fun potion(type: PotionType) = Runnable {
             potion.potionMeta.basePotionType = type
         }
-        fun toLingering(): Runnable = Runnable {
+        fun lingering() = Runnable {
             potion.item.withType(Material.LINGERING_POTION)
+        }
+        fun splash() = Runnable {
+            potion.item.withType(Material.SPLASH_POTION)
         }
     }
     inline fun EnhancedMob.onPotionThrown(crossinline block: PotionThrownDsl.(EntitySpawnEvent) -> Unit) {
-        listener<EntitySpawnEvent> {
+        listener<ProjectileLaunchEvent> {
             val potion = it.entity as? ThrownPotion ?: return@listener
-            val shooter = potion.shooter ?: return@listener
-            val entity = shooter as? Mob ?: return@listener
+            val entity = potion.shooter as? Mob ?: return@listener
+            if (entity != this.entity) return@listener
             val target = entity.target ?: return@listener
             val dsl = PotionThrownDsl(this, potion, target)
             dsl.block(it)
+        }
+    }
+
+    inline fun EnhancedMob.onMove(crossinline block: EntityMoveEvent.() -> Unit) {
+        listener<EntityMoveEvent> {
+            if (it.entity != entity) return@listener
+            it.block()
         }
     }
 }

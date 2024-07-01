@@ -2,15 +2,15 @@ package cn.yanshiqwq.enhanced_mobs.listeners
 
 import cn.yanshiqwq.enhanced_mobs.EnhancedMob
 import cn.yanshiqwq.enhanced_mobs.EnhancedMob.Companion.asEnhancedMob
-import cn.yanshiqwq.enhanced_mobs.EnhancedMob.Companion.isEnhancedMob
 import cn.yanshiqwq.enhanced_mobs.EnhancedMob.Companion.hasEnhancedMobData
+import cn.yanshiqwq.enhanced_mobs.EnhancedMob.Companion.isEnhancedMob
 import cn.yanshiqwq.enhanced_mobs.Main.Companion.instance
 import cn.yanshiqwq.enhanced_mobs.Utils.addModifierSafe
 import cn.yanshiqwq.enhanced_mobs.Utils.getNearestPlayer
 import cn.yanshiqwq.enhanced_mobs.Utils.getTeam
 import cn.yanshiqwq.enhanced_mobs.Utils.percentHeal
-import cn.yanshiqwq.enhanced_mobs.api.MobApi.effect
 import cn.yanshiqwq.enhanced_mobs.api.MobApi.attribute
+import cn.yanshiqwq.enhanced_mobs.api.MobApi.effect
 import cn.yanshiqwq.enhanced_mobs.data.LootTable.applyLootTableX
 import cn.yanshiqwq.enhanced_mobs.managers.TypeManager
 import cn.yanshiqwq.enhanced_mobs.managers.TypeManager.Companion.getRandomTypeKey
@@ -19,7 +19,6 @@ import net.kyori.adventure.text.format.NamedTextColor
 import org.bukkit.NamespacedKey
 import org.bukkit.attribute.Attribute.*
 import org.bukkit.attribute.AttributeModifier
-import org.bukkit.attribute.AttributeModifier.Operation
 import org.bukkit.attribute.AttributeModifier.Operation.ADD_NUMBER
 import org.bukkit.entity.*
 import org.bukkit.event.EventHandler
@@ -28,12 +27,10 @@ import org.bukkit.event.entity.CreatureSpawnEvent
 import org.bukkit.event.entity.EntitySpawnEvent
 import org.bukkit.event.entity.EntityTargetLivingEntityEvent
 import org.bukkit.event.player.PlayerRespawnEvent
-import org.bukkit.event.world.WorldLoadEvent
+import org.bukkit.event.server.ServerLoadEvent
 import org.bukkit.persistence.PersistentDataType
 import org.bukkit.potion.PotionEffect
 import org.bukkit.potion.PotionEffectType
-import java.lang.Exception
-import java.lang.IndexOutOfBoundsException
 import java.util.*
 import kotlin.math.ln
 import kotlin.math.pow
@@ -54,8 +51,7 @@ class SpawnListener: Listener {
     }
 
     @EventHandler
-    @SuppressWarnings("unused")
-    fun onWorldLoad(event: WorldLoadEvent){
+    fun onServerLoad(event: ServerLoadEvent){
         getTeam(MobTeam.STRENGTH.id)?.color(NamedTextColor.AQUA)
         getTeam(MobTeam.ENHANCED.id)?.color(NamedTextColor.LIGHT_PURPLE)
         getTeam(MobTeam.BOSS.id)?.color(NamedTextColor.RED)
@@ -75,30 +71,25 @@ class SpawnListener: Listener {
 
     @EventHandler
     fun onEnhancedMobLoad(event: EntityTargetLivingEntityEvent){
-        val entity = event.entity
-        if (entity !is Mob) return
+        val entity = event.entity as? Mob ?: return
         entity.run {
-            // 获取 container
-            val container = persistentDataContainer
-
             // 仅在有 EnhancedMob 数据且实体未标记于 manager 时继续执行
-            if (!entity.hasEnhancedMobData() || entity.isEnhancedMob()) return
+            if (!hasEnhancedMobData() || isEnhancedMob()) return
 
             // 从 container 中恢复数据并添加至 manager
-            val multiplier = container.get(EnhancedMob.multiplierKey, PersistentDataType.DOUBLE) ?: return
+            val multiplier = persistentDataContainer.get(EnhancedMob.multiplierKey, PersistentDataType.DOUBLE) ?: return
             val boostType = try {
-                val typeIdString = container.get(EnhancedMob.boostTypeKey, PersistentDataType.STRING) ?: return
+                val typeIdString = persistentDataContainer.get(EnhancedMob.boostTypeKey, PersistentDataType.STRING) ?: return
                 TypeManager.TypeKey(typeIdString)
             } catch (e: IndexOutOfBoundsException) { return }
-            val mob = (event.entity as Mob).asEnhancedMob(multiplier, boostType, false) ?: return
+            val mob = asEnhancedMob(multiplier, boostType, false) ?: return
             instance!!.mobManager.register(event.entity.uniqueId, mob)
         }
     }
 
     @EventHandler
     fun onMobSpawn(event: EntitySpawnEvent){
-        val entity = event.entity
-        if (entity !is Mob) return
+        val entity = event.entity as? Mob ?: return
         entity.run {
             // 获取与玩家等级相关的乘数
             val playerLevelKey = NamespacedKey(instance!!, "nearest_player_level")
@@ -117,13 +108,10 @@ class SpawnListener: Listener {
             }
 
             // 设为 EnhancedMob
-            val boostTypeKey = getRandomTypeKey(type, Config.getWeightMapList())
-            if (event.entity.entitySpawnReason == CreatureSpawnEvent.SpawnReason.CUSTOM) return
-            val mob = try {
-                asEnhancedMob(multiplier, boostTypeKey) ?: return
-            } catch (ignored: Exception) { return }
+            val boostTypeKey = getRandomTypeKey(type, Config.weightMap) ?: return
+            if (event.entity.entitySpawnReason == CreatureSpawnEvent.SpawnReason.CUSTOM) return // 忽略插件指令生成情况
+            val mob = asEnhancedMob(multiplier, boostTypeKey) ?: return
             instance!!.mobManager.register(uniqueId, mob)
-
 
             // 根据变种修改属性
             mob.applyVariantBoost()
@@ -132,7 +120,7 @@ class SpawnListener: Listener {
             applyLootTableX(multiplier)
 
             // 血量回满
-            entity.percentHeal(1.0)
+            percentHeal(1.0)
         }
     }
 

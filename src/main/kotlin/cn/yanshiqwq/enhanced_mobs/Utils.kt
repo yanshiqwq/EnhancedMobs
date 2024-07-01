@@ -28,13 +28,12 @@ object Utils {
     fun <T: Any> T.byChance(chance: Double) = if (Random.nextDouble() <= chance) this else null
 
     fun getTeam(teamName: String): Team? = instance!!.server.scoreboardManager.mainScoreboard.runCatching {
-            getTeam(teamName) ?: registerNewTeam(teamName)
-        }.getOrNull()
+        getTeam(teamName) ?: registerNewTeam(teamName)
+    }.getOrNull()
 
-    fun AttributeInstance.addModifierSafe(modifier: AttributeModifier){
-        if (modifiers.contains(modifier)) return
+    fun AttributeInstance.addModifierSafe(modifier: AttributeModifier) = try {
         addModifier(modifier)
-    }
+    } catch (_: IllegalArgumentException) {}
 
     fun Boolean.Companion.all(vararg booleans: Boolean): Boolean = booleans.all { it }
     fun Boolean.Companion.any(vararg booleans: Boolean): Boolean = booleans.any { it }
@@ -44,7 +43,10 @@ object Utils {
         health = getAttribute(Attribute.GENERIC_MAX_HEALTH)!!.value * percent
     }
 
-    fun Entity.isOnFire() = this.fireTicks > 0
+    fun LivingEntity.addModifier(attribute: Attribute, modifier: AttributeModifier) =
+        getAttribute(attribute)?.addModifier(modifier)
+    fun LivingEntity.removeModifier(attribute: Attribute, modifier: AttributeModifier?) =
+        modifier?.let { getAttribute(attribute)?.removeModifier(it) }
 
     fun Material.isAxe(): Boolean = this.name.endsWith("_AXE")
     fun Material.isSword(): Boolean = this.name.endsWith("_SWORD")

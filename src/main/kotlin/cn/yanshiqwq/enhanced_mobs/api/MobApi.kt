@@ -1,3 +1,5 @@
+@file:Suppress("MemberVisibilityCanBePrivate")
+
 package cn.yanshiqwq.enhanced_mobs.api
 
 import cn.yanshiqwq.enhanced_mobs.EnhancedMob
@@ -25,7 +27,7 @@ import org.bukkit.potion.PotionType
  * @since 2024/6/30 下午3:59
  */
 object MobApi {
-    fun LivingEntity.knockBack(strength: Double, directionX: Double = 0.0, directionZ: Double = 0.0): Unit = knockback(strength, directionX, directionZ)
+    fun Entity.knockBack(multiplier: Double): Unit = setMotionMultiplier(-multiplier)
     fun Entity.setMotionMultiplier(multiplier: Double) {
         velocity = location.direction.multiply(multiplier)
     }
@@ -34,30 +36,31 @@ object MobApi {
         amplifier: Int = 0,
         duration: Int = Int.MAX_VALUE,
         particle: Boolean = true,
-        ambient: Boolean = true
+        ambient: Boolean = false
     ) = addPotionEffect(PotionEffect(effectType, duration, amplifier, ambient, particle))
 
     fun LivingEntity.addAir(amount: Int) {
         remainingAir = (remainingAir + amount).coerceAtLeast(0)
     }
+    fun LivingEntity.reduceAir(amount: Double) = reduceAir(amount.toInt())
     fun LivingEntity.reduceAir(amount: Int) = addAir(-amount)
 
-    fun EnhancedMob.attribute(attribute: Attribute, operation: AttributeModifier.Operation, factor: Double) {
+    fun EnhancedMob.attribute(attribute: Attribute, operation: AttributeModifier.Operation, factor: Double) =
         this.attribute(attribute, operation, Record.DoubleFactor(formula = {factor}))
-    }
     fun EnhancedMob.attribute(attribute: Attribute, operation: AttributeModifier.Operation, factor: Record.DoubleFactor) =
         Record.AttributeRecord(attribute, Record.AttributeFactor(operation, factor)).apply(this.entity, multiplier, attributeUUID, attributeName)
-    fun potionItem(type: Material, potion: PotionType): ItemStack {
-        val item = ItemStack(type)
-        (item.itemMeta as? PotionMeta)?.basePotionType = potion
+
+    fun potionItem(type: Material, potion: PotionType, count: Int = 64): ItemStack {
+        val item = ItemStack(type, count)
+        val meta = item.itemMeta as? PotionMeta ?: return item
+        meta.basePotionType = potion
+        item.setItemMeta(meta)
         return item
     }
     fun fireworkItem(): ItemStack {
         val itemStack = ItemStack(Material.FIREWORK_ROCKET)
         val meta = itemStack.itemMeta as FireworkMeta
-
         meta.power = 3 // 设置火箭的飞行持续时间
-
         // 添加一个爆炸效果
         val effect = FireworkEffect.builder()
             .flicker(true)
@@ -65,19 +68,18 @@ object MobApi {
             .with(FireworkEffect.Type.BURST) // 设置爆炸形状
             .trail(true)
             .build()
-
         meta.addEffect(effect)
-
         itemStack.itemMeta = meta
-
         return itemStack
     }
     fun EnhancedMob.item(slot: EquipmentSlot, type: Material, block: SlotBuilder.() -> Unit = {}) = item(slot, ItemStack(type), block)
     fun EnhancedMob.item(slot: EquipmentSlot, item: ItemStack, block: SlotBuilder.() -> Unit = {}) {
         val builder = SlotBuilder(slot, item)
-        builder.build().invoke(this)
         block.invoke(builder)
+        builder.build().invoke(this)
     }
+
+    fun EnhancedMob.glowing() { entity.isGlowing = true }
 
     inline fun <reified T: Mob> EnhancedMob.property(crossinline block: T.() -> Unit) {
         if (entity !is T) throw IllegalArgumentException("Illegal EntityType: ${entity.type}")

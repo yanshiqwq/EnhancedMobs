@@ -2,6 +2,7 @@ package cn.yanshiqwq.enhanced_mobs.api
 
 import cn.yanshiqwq.enhanced_mobs.EnhancedMob
 import cn.yanshiqwq.enhanced_mobs.Main.Companion.instance
+import cn.yanshiqwq.enhanced_mobs.api.MobApi.item
 import org.bukkit.Bukkit
 import org.bukkit.entity.LivingEntity
 import org.bukkit.inventory.EquipmentSlot
@@ -30,27 +31,27 @@ object TaskApi {
     }
     fun EnhancedMob.task(taskId: TaskId = TaskId(), delay: Long = 0L, block: Runnable): TaskId {
         cancelTask(taskId)
-        val func = getRunnable(this) { block.run() }
-        addTask(taskId, Bukkit.getScheduler().runTaskLater(instance!!, func, delay))
-        return taskId
+        val func = getRunnable { block.run() }
+        return addTask(taskId, Bukkit.getScheduler().runTaskLater(instance!!, func, delay))
     }
     fun EnhancedMob.task(taskId: TaskId = TaskId(), delay: Long = 0L, period: Long, block: Runnable): TaskId {
         cancelTask(taskId)
-        val func = getRunnable(this) { block.run() }
-        addTask(taskId, Bukkit.getScheduler().runTaskTimer(instance!!, func, delay, period))
-        return taskId
+        val func = getRunnable { block.run() }
+        return addTask(taskId, Bukkit.getScheduler().runTaskTimer(instance!!, func, delay, period))
     }
 
-    private fun getRunnable(mob: EnhancedMob, block: Runnable): Runnable {
+    private fun EnhancedMob.getRunnable(block: Runnable): Runnable {
         return Runnable {
-            if (mob.entity.isDead) return@Runnable
+            if (entity.isDead) return@Runnable
             block.run()
         }
     }
-    private fun EnhancedMob.addTask(taskId: TaskId, task: BukkitTask) { tasks[taskId.id] = task }
+    private fun EnhancedMob.addTask(taskId: TaskId, task: BukkitTask): TaskId {
+        tasks[taskId] = task
+        return taskId
+    }
     fun EnhancedMob.cancelTask(taskId: TaskId) {
-        tasks[taskId.id].run {
-            if (this == null) return@run
+        tasks[taskId]?.run {
             taskId.cancel()
             cancel()
         }
@@ -61,11 +62,12 @@ object TaskApi {
         after: ItemStack? = null,
         hasLineOfSight: Boolean = true,
         slot: EquipmentSlot = EquipmentSlot.OFF_HAND,
-        block: EnhancedMob.(LivingEntity) -> Unit
+        block: (LivingEntity) -> Unit
     ) {
+        item(slot, ItemStack(before))
         val task = mobItemTask(distance, before, hasLineOfSight, slot) {
-            this.block(it)
-            if (after != null) entity.equipment.setItem(slot, ItemStack(after))
+            block(it)
+            if (after != null) item(slot, ItemStack(after))
         }
         Bukkit.getScheduler().runTask(instance!!, task)
     }
@@ -77,11 +79,12 @@ object TaskApi {
         after: ItemStack? = null,
         hasLineOfSight: Boolean = true,
         slot: EquipmentSlot = EquipmentSlot.OFF_HAND,
-        block: EnhancedMob.(LivingEntity) -> Unit
+        block: (LivingEntity) -> Unit
     ) {
+        item(slot, ItemStack(before))
         val task = mobItemTask(distance, before, hasLineOfSight, slot) {
-            this.block(it)
-            if (after != null) entity.equipment.setItem(slot, ItemStack(after))
+            block(it)
+            if (after != null) item(slot, ItemStack(after))
         }
         Bukkit.getScheduler().runTaskTimer(instance!!, task, delay, period)
     }

@@ -1,8 +1,11 @@
+@file:Suppress("MayBeConstant", "MayBeConstant")
+
 package cn.yanshiqwq.enhanced_mobs
 
 import cn.yanshiqwq.enhanced_mobs.Main.Companion.instance
 import cn.yanshiqwq.enhanced_mobs.Utils.percentHeal
 import cn.yanshiqwq.enhanced_mobs.api.ListenerApi
+import cn.yanshiqwq.enhanced_mobs.api.TaskApi
 import cn.yanshiqwq.enhanced_mobs.managers.TypeManager
 import org.bukkit.NamespacedKey
 import org.bukkit.entity.Entity
@@ -51,7 +54,7 @@ class EnhancedMob(val multiplier: Double, val entity: Mob) {
         }
     }
 
-    val tasks = mutableMapOf<String, BukkitTask>()
+    val tasks = mutableMapOf<TaskApi.TaskId, BukkitTask>()
     val listeners = mutableListOf<ListenerApi.Listener>()
 
     fun boost(boostTypeKey: TypeManager.TypeKey) {

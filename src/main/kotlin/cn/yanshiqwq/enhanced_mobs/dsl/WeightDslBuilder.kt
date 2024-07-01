@@ -16,13 +16,13 @@ class WeightDslBuilder {
 
         data class Weight<T>(val key: T, val weight: Int)
         fun weight(key: T, weight: Int) = weights.add(Weight(key, weight))
-        fun weight(vararg entry: Pair<T, Int>) = entry
-            .toMap().forEach {
-                weight(it.key, it.value)
-            }
+        fun weight(vararg entry: Pair<T, Int>) = entry.toMap().forEach {
+            weight(it.key, it.value)
+        }
 
         fun getRandomByWeightList(): T {
             val totalWeight = weights.sumOf { it.weight }
+            if (totalWeight <= 0) throw IllegalStateException("totalWeight must be positive")
             val rand = Random.nextInt(totalWeight)
             var cumulativeWeight = 0
             for ((key, weight) in weights) {
@@ -31,7 +31,7 @@ class WeightDslBuilder {
                     return key
                 }
             }
-            throw IllegalStateException("Unknown error in randomByWeight")
+            throw IllegalStateException("Unknown error in getRandomByWeightList()")
         }
 
         fun toMap() = weights.associate { it.weight to it.key }
@@ -39,7 +39,7 @@ class WeightDslBuilder {
 
     data class WeightMapGroup(
         val types: List<EntityType>,
-        val weight: WeightList<String>
+        val weightList: WeightList<String>
     )
 
     fun loadWeightMap(block: EntityPropertiesBuilder.() -> Unit): List<WeightMapGroup> {

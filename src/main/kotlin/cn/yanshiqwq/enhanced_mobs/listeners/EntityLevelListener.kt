@@ -129,8 +129,10 @@ class EntityLevelListener : Listener {
             in 90..Int.MAX_VALUE -> SpawnListener.MobTeam.BOSS.id
             else -> null
         }
-        teamName?.let { getTeam(it)?.addEntity(this) }
-        isGlowing = true
+        if (teamName != null) {
+            getTeam(teamName)?.addEntity(this)
+            isGlowing = true
+        }
 
         // 返回等级信息
         val typeKey = type.translationKey()
@@ -185,7 +187,7 @@ class EntityLevelListener : Listener {
                 explosionRadius * factorFuse * 1.2
             }
 
-            is Witch -> 9.0
+            is Witch -> damage + 5.0
             is CaveSpider -> damage + 5.0
 
             else -> damage

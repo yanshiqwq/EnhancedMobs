@@ -78,9 +78,9 @@ object VanillaPack: PackManager.PackObj {
                     weight(potion(PotionType.LONG_TURTLE_MASTER), 3)
                     weight(potion(PotionType.STRONG_SLOWNESS), 3)
                 }.getRandomByWeightList().byChance(
-                    DoubleFactor(0.0..0.3) { 0.2 * it }.value(multiplier))?.run()
-                toLingering().byChance(
-                    DoubleFactor(0.0..0.5) { 0.15 * it }.value(multiplier))?.run()
+                    DoubleFactor(0.0..0.5) { 0.2 * it }.value(multiplier))?.run()
+                lingering().byChance(
+                    DoubleFactor(0.0..0.65) { 0.15 * it }.value(multiplier))?.run()
             }
         }
         type("pillager") {
