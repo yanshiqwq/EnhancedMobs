@@ -3,16 +3,17 @@
 package cn.yanshiqwq.enhanced_mobs.api
 
 import cn.yanshiqwq.enhanced_mobs.EnhancedMob
+import cn.yanshiqwq.enhanced_mobs.Main.Companion.instance
 import cn.yanshiqwq.enhanced_mobs.data.Record
 import io.papermc.paper.event.entity.EntityMoveEvent
 import org.bukkit.Material
 import org.bukkit.entity.*
 import org.bukkit.event.Event
 import org.bukkit.event.entity.*
+import org.bukkit.inventory.ItemStack
 import org.bukkit.potion.PotionEffect
 import org.bukkit.potion.PotionEffectType
 import org.bukkit.potion.PotionType
-import org.bukkit.projectiles.ProjectileSource
 import kotlin.reflect.KClass
 
 /**
@@ -53,7 +54,7 @@ object ListenerApi {
     inline fun EnhancedMob.onArrowDamage(crossinline block: ArrowDamageEventDsl.(event: EntityDamageByEntityEvent) -> Unit) {
         listener<EntityDamageByEntityEvent> {
             if (it.damager !is Arrow || it.entity !is LivingEntity)
-            if (it.entity is Player && (it.entity as Player).isBlocking) return@listener
+            if (it.entity is Player && (it.entity as Player).isBlocking) return@listener // TODO 测试it.isCancelled是否与此行效果一致
             val arrow = it.damager as? Arrow ?: return@listener
             if (arrow.shooter != entity) return@listener
             val target = it.entity as? LivingEntity ?: return@listener
@@ -107,33 +108,44 @@ object ListenerApi {
     data class PotionThrownDsl(
         private val mob: EnhancedMob,
         val potion: ThrownPotion,
-        val target: ProjectileSource
+        val target: LivingEntity
     ) {
         fun effect(type: PotionEffectType, duration: Record.IntFactor, amplifier: Int): Runnable = Runnable {
-            potion.potionMeta.apply {
+            val meta = potion.potionMeta
+            meta.apply {
                 basePotionType = PotionType.UNCRAFTABLE
                 clearCustomEffects()
                 addCustomEffect(PotionEffect(type, duration.value(mob.multiplier), amplifier), true)
                 color = type.color
             }
+            potion.potionMeta = meta
         }
         fun potion(type: PotionType) = Runnable {
-            potion.potionMeta.basePotionType = type
+            val meta = potion.potionMeta
+            meta.basePotionType = type
+            potion.potionMeta = meta
         }
         fun lingering() = Runnable {
-            potion.item.withType(Material.LINGERING_POTION)
+            val meta = potion.item.itemMeta
+            val item = ItemStack(Material.LINGERING_POTION)
+            item.setItemMeta(meta)
+            potion.item = item
         }
         fun splash() = Runnable {
-            potion.item.withType(Material.SPLASH_POTION)
+            val meta = potion.item.itemMeta
+            val item = ItemStack(Material.SPLASH_POTION)
+            item.setItemMeta(meta)
+            potion.item = item
         }
     }
-    inline fun EnhancedMob.onPotionThrown(crossinline block: PotionThrownDsl.(EntitySpawnEvent) -> Unit) {
+    inline fun EnhancedMob.onPotionThrown(crossinline block: PotionThrownDsl.(ProjectileLaunchEvent) -> Unit) {
         listener<ProjectileLaunchEvent> {
             val potion = it.entity as? ThrownPotion ?: return@listener
             val entity = potion.shooter as? Mob ?: return@listener
             if (entity != this.entity) return@listener
             val target = entity.target ?: return@listener
             val dsl = PotionThrownDsl(this, potion, target)
+            instance!!.logger.info(potion.potionMeta.toString())
             dsl.block(it)
         }
     }

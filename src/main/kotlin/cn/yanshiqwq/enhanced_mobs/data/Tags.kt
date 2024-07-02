@@ -15,5 +15,6 @@ object Tags {
         val skeletons = listOf(EntityType.SKELETON, EntityType.STRAY, EntityType.WITHER_SKELETON)
         val spiders = listOf(EntityType.SPIDER, EntityType.CAVE_SPIDER)
         val creepers = listOf(EntityType.CREEPER)
+        val undeads = listOf(zombies, skeletons).flatten() // TODO
     }
 }

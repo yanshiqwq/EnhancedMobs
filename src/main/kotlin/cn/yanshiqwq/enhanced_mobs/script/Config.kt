@@ -13,8 +13,8 @@ import org.bukkit.entity.EntityType
 object Config {
     val weightMap = WeightDslBuilder().loadWeightMap {
         entity(EntityType.ZOMBIE, EntityType.ZOMBIE_VILLAGER, EntityType.HUSK, EntityType.DROWNED, EntityType.ZOMBIFIED_PIGLIN) {
-            weight (
-                "vanilla.zombie" to 80,
+            weight(
+                "vanilla.zombie" to 60,
                 "extend.zombie_leader" to 2,
                 "extend.zombie_strength_cloud" to 1,
                 "extend.zombie_totem" to 2,
@@ -33,20 +33,20 @@ object Config {
             )
         }
         entity(EntityType.SKELETON, EntityType.STRAY, EntityType.WITHER_SKELETON) {
-            weight (
-                "vanilla.skeleton" to 80,
+            weight(
+                "vanilla.skeleton" to 60,
                 "extend.skeleton_iron_sword" to 10,
                 "extend.skeleton_frost" to 2
             )
         }
         entity(EntityType.SPIDER, EntityType.CAVE_SPIDER) {
-            weight (
+            weight(
                 "vanilla.spider" to 80,
                 "extend.spider_cobweb" to 2
             )
         }
         entity(EntityType.CREEPER) {
-            weight (
+            weight(
                 "vanilla.creeper" to 80
             )
         }

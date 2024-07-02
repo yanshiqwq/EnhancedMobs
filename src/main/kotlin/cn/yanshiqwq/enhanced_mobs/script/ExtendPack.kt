@@ -130,7 +130,7 @@ object ExtendPack: PackManager.PackObj {
         type("zombie_leader", manager.implement(VanillaPack.get(), "zombie")) {
             item(EquipmentSlot.HAND, Material.IRON_SWORD)
             item(EquipmentSlot.HEAD, Material.IRON_HELMET)
-            attribute(ZOMBIE_SPAWN_REINFORCEMENTS, ADD_NUMBER, DoubleFactor(0.0..1.0) { 0.5 + 0.05 * it })
+            attribute(ZOMBIE_SPAWN_REINFORCEMENTS, ADD_NUMBER, DoubleFactor(0.0..1.0) { 0.5 + 0.1 * it })
             glowing()
             onAttack { target.effect(PotionEffectType.WEAKNESS, 0, 12 * 20) }
         }
@@ -177,7 +177,7 @@ object ExtendPack: PackManager.PackObj {
                 }
             }
         }
-        type("zombie_totem", manager.implement(VanillaPack.get(), "zombie")) {
+        type("zombie_totem", manager.implement(VanillaPack.get(), "zombie")) { // TODO fix percentHeal
             item(EquipmentSlot.OFF_HAND, Material.TOTEM_OF_UNDYING)
             onResurrect {
                 entity.percentHeal(0.5)
@@ -204,7 +204,7 @@ object ExtendPack: PackManager.PackObj {
                 entity.effect(PotionEffectType.DAMAGE_RESISTANCE, 1, 50)
             }
         }
-        type("zombie_anvil", manager.implement(VanillaPack.get(), "zombie")) {
+        type("zombie_anvil", manager.implement(VanillaPack.get(), "zombie")) { // TODO fix placeAnvil
             itemTask(
                 distance = 5.0,
                 before = ItemStack(Material.DAMAGED_ANVIL),
@@ -293,7 +293,7 @@ object ExtendPack: PackManager.PackObj {
                 entity.effect(PotionEffectType.FIRE_RESISTANCE, 0, 12 * 20)
             }
         }
-        type("zombie_ender_pearl", manager.implement(VanillaPack.get(), "zombie")) {
+        type("zombie_ender_pearl", manager.implement(VanillaPack.get(), "zombie")) { // TODO fix throwPearl
             itemTask(
                 distance = 24.0,
                 before = ItemStack(Material.ENDER_PEARL),

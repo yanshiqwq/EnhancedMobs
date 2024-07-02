@@ -4,24 +4,15 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="d5ee4be2-1981-48f1-8632-49b4c7636b94" name="更改" comment="重构, 修改 API, 新增女巫和掠夺者的默认强化">
+    <list default="true" id="d5ee4be2-1981-48f1-8632-49b4c7636b94" name="更改" comment="修复：插件无法正常加载, 骷髅的弓无法正常附魔, 多种 MobType 的效果无法正常触发">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/kotlin/cn/yanshiqwq/enhanced_mobs/EnhancedMob.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/cn/yanshiqwq/enhanced_mobs/EnhancedMob.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/kotlin/cn/yanshiqwq/enhanced_mobs/Utils.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/cn/yanshiqwq/enhanced_mobs/Utils.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/kotlin/cn/yanshiqwq/enhanced_mobs/api/ListenerApi.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/cn/yanshiqwq/enhanced_mobs/api/ListenerApi.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/kotlin/cn/yanshiqwq/enhanced_mobs/api/MobApi.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/cn/yanshiqwq/enhanced_mobs/api/MobApi.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/kotlin/cn/yanshiqwq/enhanced_mobs/api/TaskApi.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/cn/yanshiqwq/enhanced_mobs/api/TaskApi.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/kotlin/cn/yanshiqwq/enhanced_mobs/data/LootTable.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/cn/yanshiqwq/enhanced_mobs/data/LootTable.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/kotlin/cn/yanshiqwq/enhanced_mobs/dsl/MobDslBuilder.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/cn/yanshiqwq/enhanced_mobs/dsl/MobDslBuilder.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/kotlin/cn/yanshiqwq/enhanced_mobs/dsl/WeightDslBuilder.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/cn/yanshiqwq/enhanced_mobs/dsl/WeightDslBuilder.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/kotlin/cn/yanshiqwq/enhanced_mobs/listeners/EntityLevelListener.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/cn/yanshiqwq/enhanced_mobs/listeners/EntityLevelListener.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/kotlin/cn/yanshiqwq/enhanced_mobs/listeners/MobEventListener.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/cn/yanshiqwq/enhanced_mobs/listeners/MobEventListener.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/kotlin/cn/yanshiqwq/enhanced_mobs/listeners/SpawnListener.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/cn/yanshiqwq/enhanced_mobs/listeners/SpawnListener.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/kotlin/cn/yanshiqwq/enhanced_mobs/managers/TypeManager.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/cn/yanshiqwq/enhanced_mobs/managers/TypeManager.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/cn/yanshiqwq/enhanced_mobs/data/Tags.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/cn/yanshiqwq/enhanced_mobs/data/Tags.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/cn/yanshiqwq/enhanced_mobs/listeners/ModifierListener.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/cn/yanshiqwq/enhanced_mobs/listeners/ModifierListener.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/kotlin/cn/yanshiqwq/enhanced_mobs/script/Config.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/cn/yanshiqwq/enhanced_mobs/script/Config.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/kotlin/cn/yanshiqwq/enhanced_mobs/script/ExtendPack.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/cn/yanshiqwq/enhanced_mobs/script/ExtendPack.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/kotlin/cn/yanshiqwq/enhanced_mobs/script/VanillaPack.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/cn/yanshiqwq/enhanced_mobs/script/VanillaPack.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/config.yml" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -541,7 +532,15 @@
       <option name="project" value="LOCAL" />
       <updated>1719760638504</updated>
     </task>
-    <option name="localTasksCounter" value="34" />
+    <task id="LOCAL-00034" summary="修复：插件无法正常加载, 骷髅的弓无法正常附魔, 多种 MobType 的效果无法正常触发">
+      <option name="closed" value="true" />
+      <created>1719849963101</created>
+      <option name="number" value="00034" />
+      <option name="presentableId" value="LOCAL-00034" />
+      <option name="project" value="LOCAL" />
+      <updated>1719849963101</updated>
+    </task>
+    <option name="localTasksCounter" value="35" />
     <servers />
   </component>
   <component name="Vcs.Log.History.Properties">
@@ -596,7 +595,6 @@
   </component>
   <component name="VcsManagerConfiguration">
     <option name="ADD_EXTERNAL_FILES_SILENTLY" value="true" />
-    <MESSAGE value="重构" />
     <MESSAGE value="新增: 根据距离提高怪物属性&#10;新增: 自定义怪物强度指令&#10;修改: 等级计算模块" />
     <MESSAGE value="重构怪物强化逻辑" />
     <MESSAGE value="修复逻辑错误" />
@@ -621,7 +619,8 @@
     <MESSAGE value="修复 MobEventListener 无法触发 DSL 中 listeners 的 bug" />
     <MESSAGE value="重构, 暂时移除 kts 解析器" />
     <MESSAGE value="重构, 修改 API, 新增女巫和掠夺者的默认强化" />
-    <option name="LAST_COMMIT_MESSAGE" value="重构, 修改 API, 新增女巫和掠夺者的默认强化" />
+    <MESSAGE value="修复：插件无法正常加载, 骷髅的弓无法正常附魔, 多种 MobType 的效果无法正常触发" />
+    <option name="LAST_COMMIT_MESSAGE" value="修复：插件无法正常加载, 骷髅的弓无法正常附魔, 多种 MobType 的效果无法正常触发" />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />

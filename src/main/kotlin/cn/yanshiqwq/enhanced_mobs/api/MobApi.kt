@@ -60,19 +60,18 @@ object MobApi {
     fun fireworkItem(): ItemStack {
         val itemStack = ItemStack(Material.FIREWORK_ROCKET)
         val meta = itemStack.itemMeta as FireworkMeta
-        meta.power = 3 // 设置火箭的飞行持续时间
+        meta.power = 1 // 设置火箭的飞行持续时间
         // 添加一个爆炸效果
         val effect = FireworkEffect.builder()
             .flicker(true)
-            .withColor(Color.fromRGB(11743532)) // 设置颜色
+            .withColor(Color.WHITE) // 设置颜色
             .with(FireworkEffect.Type.BURST) // 设置爆炸形状
-            .trail(true)
             .build()
         meta.addEffect(effect)
         itemStack.itemMeta = meta
         return itemStack
     }
-    fun EnhancedMob.item(slot: EquipmentSlot, type: Material, block: SlotBuilder.() -> Unit = {}) = item(slot, ItemStack(type), block)
+    fun EnhancedMob.item(slot: EquipmentSlot, type: Material, count: Int = 1, block: SlotBuilder.() -> Unit = {}) = item(slot, ItemStack(type, count), block)
     fun EnhancedMob.item(slot: EquipmentSlot, item: ItemStack, block: SlotBuilder.() -> Unit = {}) {
         val builder = SlotBuilder(slot, item)
         block.invoke(builder)
