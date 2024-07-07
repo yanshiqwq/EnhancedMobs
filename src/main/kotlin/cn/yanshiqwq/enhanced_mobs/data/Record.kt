@@ -52,7 +52,8 @@ object Record {
     data class AttributeFactor(val operation: AttributeModifier.Operation, val factor: DoubleFactor) {
         fun getModifier(multiplier: Double, uuid: UUID, name: String): AttributeModifier {
             val amount = factor.value(multiplier)
-            return AttributeModifier(uuid, name, amount, operation)
+            return if (amount <= 0.0) AttributeModifier(uuid, name, multiplier, operation)
+            else AttributeModifier(uuid, name, amount, operation)
         }
     }
 

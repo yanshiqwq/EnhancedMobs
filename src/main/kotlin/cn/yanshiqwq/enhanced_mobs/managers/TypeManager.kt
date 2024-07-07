@@ -14,14 +14,14 @@ import org.bukkit.entity.EntityType
  */
 class TypeManager {
     companion object {
-        fun getRandomTypeKey(entityType: EntityType, weightMapGroupList: List<WeightDslBuilder.WeightMapGroup>): TypeKey? {
+        fun getRandomTypeKey(entityType: EntityType, weightMapGroupList: List<WeightDslBuilder.WeightMapGroup>): TypeKey {
             val weightMap = weightMapGroupList
                 .filter { entityType in it.types }
-                .ifEmpty { return null }
                 .flatMap { it.weightList.toMap().entries }
                 .associate { it.value to it.key }
+            weightMap.ifEmpty { return TypeKey.subDefault }
             val weightList = WeightDslBuilder.WeightList(weightMap)
-            return TypeKey(weightList.getRandomByWeightList())
+            return TypeKey(weightList.getRandom())
         }
     }
 
@@ -30,9 +30,17 @@ class TypeManager {
     data class TypeKey(val packId: String, val typeId: String) {
         constructor(id: String) : this(id.split(".")[0], id.split(".")[1])
 
+        companion object {
+            val mainDefault = TypeKey("vanilla", "fallback")
+            val subDefault = TypeKey("vanilla", "none")
+        }
+
         fun value(): String {
             return "$packId.$typeId"
         }
+
+        fun pack() = instance!!.packManager.getPack(this)
+        fun type() = instance!!.typeManager.getType(this)
     }
 
     private val typeMap: MutableList<MobType> = mutableListOf()
@@ -43,11 +51,12 @@ class TypeManager {
         }
     }
 
-    fun hasTypeId(key: TypeKey): Boolean = !typeMap.none { it.typeKey == key }
-
     fun getType(key: TypeKey): MobType =
         typeMap.firstOrNull { it.typeKey == key }
             ?: typeMap.first { it.typeKey == TypeKey("vanilla", "fallback") }
 
-    fun listTypeKeys(): List<TypeKey> = typeMap.map { it.typeKey }
+    fun listTypeKeys(type: PackManager.PackType): List<TypeKey> = instance!!.packManager
+        .getPacks(type)
+        .flatMap { it.typeMap }
+        .map { it.typeKey }
 }

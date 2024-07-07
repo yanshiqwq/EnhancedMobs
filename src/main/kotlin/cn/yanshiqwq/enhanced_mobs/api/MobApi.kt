@@ -39,12 +39,23 @@ object MobApi {
         ambient: Boolean = false
     ) = addPotionEffect(PotionEffect(effectType, duration, amplifier, ambient, particle))
 
-    fun LivingEntity.addAir(amount: Int) {
-        remainingAir = (remainingAir + amount).coerceAtLeast(0)
+    fun LivingEntity.addAir(amount: Int, range: IntRange = -20..300) {
+        remainingAir = (remainingAir + amount).coerceIn(range)
     }
     fun LivingEntity.reduceAir(amount: Double) = reduceAir(amount.toInt())
     fun LivingEntity.reduceAir(amount: Int) = addAir(-amount)
 
+    fun LivingEntity.freeze(ticks: Int, range: IntRange = 140..440) {
+        freezeTicks = (freezeTicks + ticks).coerceIn(range)
+    }
+
+    fun LivingEntity.fire(ticks: Int, range: IntRange = -20..300) {
+        fireTicks = (fireTicks + ticks).coerceIn(range)
+    }
+
+    fun EnhancedMob.baseAttribute(attribute: Attribute, base: Double) {
+        entity.getAttribute(attribute)?.baseValue = base
+    }
     fun EnhancedMob.attribute(attribute: Attribute, operation: AttributeModifier.Operation, factor: Double) =
         this.attribute(attribute, operation, Record.DoubleFactor(formula = {factor}))
     fun EnhancedMob.attribute(attribute: Attribute, operation: AttributeModifier.Operation, factor: Record.DoubleFactor) =

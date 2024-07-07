@@ -18,13 +18,13 @@ import org.bukkit.inventory.ItemStack
  * @since 2024/6/25 22:15
  */
 object MobDslBuilder {
-    fun pack(name: String, block: PackBuilder.() -> Unit): PackManager.Pack {
-        val builder = PackBuilder(name)
+    fun pack(name: String, type: PackManager.PackType, block: PackBuilder.() -> Unit): PackManager.Pack {
+        val builder = PackBuilder(name, type)
         builder.block()
         return builder.build()
     }
 
-    class PackBuilder(private val packId: String) {
+    class PackBuilder(private val packId: String, private val packType: PackManager.PackType) {
         private val types = mutableListOf<TypeManager.MobType>()
 
         fun type(typeId: String, block: EnhancedMob.() -> Unit) {
@@ -46,7 +46,7 @@ object MobDslBuilder {
             })
         }
 
-        fun build() = PackManager.Pack(packId, types)
+        fun build() = PackManager.Pack(packId, packType, types)
     }
 
     class TypeBuilder(private val typeKey: TypeManager.TypeKey) {

@@ -29,7 +29,7 @@ class ModifierListener : Listener {
         val damager = arrow.shooter as LivingEntity
         if (damager is Player || !damager.isEnhancedMob()) return
         val level = damager.equipment?.itemInMainHand?.enchantments?.get(Enchantment.ARROW_DAMAGE) ?: 0
-        event.damage = 2 * (damager.getAttribute(GENERIC_ATTACK_DAMAGE)?.value ?: 0.0) * (1 + level * 0.25)
+        event.damage = 1.5 * (damager.getAttribute(GENERIC_ATTACK_DAMAGE)?.value ?: 0.0) * (1 + level * 0.25)
     }
 
     @EventHandler

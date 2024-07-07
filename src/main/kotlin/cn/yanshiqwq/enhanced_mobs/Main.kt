@@ -5,11 +5,10 @@ import cn.yanshiqwq.enhanced_mobs.commands.EnhancedMobsExecutor
 import cn.yanshiqwq.enhanced_mobs.listeners.EntityLevelListener
 import cn.yanshiqwq.enhanced_mobs.listeners.MobEventListener
 import cn.yanshiqwq.enhanced_mobs.listeners.ModifierListener
-import cn.yanshiqwq.enhanced_mobs.listeners.SpawnListener
+import cn.yanshiqwq.enhanced_mobs.listeners.InitListener
 import cn.yanshiqwq.enhanced_mobs.managers.MobManager
 import cn.yanshiqwq.enhanced_mobs.managers.PackManager
 import cn.yanshiqwq.enhanced_mobs.managers.TypeManager
-import org.bukkit.plugin.PluginLogger
 import org.bukkit.plugin.java.JavaPlugin
 
 
@@ -22,11 +21,10 @@ import org.bukkit.plugin.java.JavaPlugin
  */
 class Main : JavaPlugin() {
     companion object {
-        val prefix = "[EnhancedMobs]"
+        const val PREFIX = "[EnhancedMobs]"
         var instance: Main? = null
     }
 
-    val logger = PluginLogger(this)
     val packManager = PackManager()
     val typeManager = TypeManager()
     val mobManager = MobManager()
@@ -40,7 +38,7 @@ class Main : JavaPlugin() {
             registerEvents(EntityLevelListener(), instance!!)
             registerEvents(ModifierListener(), instance!!)
             registerEvents(MobEventListener(), instance!!)
-            registerEvents(SpawnListener(), instance!!)
+            registerEvents(InitListener(), instance!!)
         }
 
         getCommand("enhancedmobs")!!.run {

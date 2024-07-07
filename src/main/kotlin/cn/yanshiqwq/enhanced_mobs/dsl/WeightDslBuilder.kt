@@ -20,7 +20,7 @@ class WeightDslBuilder {
             weight(it.key, it.value)
         }
 
-        fun getRandomByWeightList(): T {
+        fun getRandom(): T {
             val totalWeight = weights.sumOf { it.weight }
             if (totalWeight <= 0) throw IllegalStateException("totalWeight must be positive")
             val rand = Random.nextInt(totalWeight)

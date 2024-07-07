@@ -3,6 +3,7 @@ package cn.yanshiqwq.enhanced_mobs.commands
 import cn.yanshiqwq.enhanced_mobs.EnhancedMob.Companion.asEnhancedMob
 import cn.yanshiqwq.enhanced_mobs.Main
 import cn.yanshiqwq.enhanced_mobs.data.Tags
+import cn.yanshiqwq.enhanced_mobs.managers.PackManager
 import cn.yanshiqwq.enhanced_mobs.managers.TypeManager
 import net.kyori.adventure.text.Component
 import net.kyori.adventure.text.format.NamedTextColor
@@ -26,7 +27,7 @@ import java.util.*
  */
 
 class EnhancedMobsExecutor : CommandExecutor {
-    private val prefix = Component.text(Main.prefix + " ", NamedTextColor.GRAY)
+    private val prefix = Component.text(Main.PREFIX + " ", NamedTextColor.GRAY)
     override fun onCommand(sender: CommandSender, command: Command, label: String, args: Array<out String>?): Boolean {
         // 检查命令发送者是否是玩家
         if (sender !is Player) {
@@ -36,7 +37,7 @@ class EnhancedMobsExecutor : CommandExecutor {
 
         // 检查命令参数数量
         if (args == null || args.size < 3) {
-            sender.sendMessage(prefix.append(Component.text("用法: /enhancedmobs spawn <怪物类型> <强化类型> [怪物强度] [坐标]", NamedTextColor.GREEN)))
+            sender.sendMessage(prefix.append(Component.text("用法: /enhancedmobs spawn <怪物类型> <主强化类型> <次强化类型> [怪物强度] [坐标]", NamedTextColor.GREEN)))
             return true
         }
 
@@ -49,19 +50,31 @@ class EnhancedMobsExecutor : CommandExecutor {
             return true
         }
 
-        // 解析强化类型参数
-        val boostTypeArg = args[2].lowercase(Locale.getDefault())
-        val boostTypeKey =
-            if (boostTypeArg != "default") TypeManager.TypeKey(boostTypeArg)
+        // 解析主强化类型参数
+        val mainBoostTypeArg = args[2].lowercase(Locale.getDefault())
+        val mainBoostTypeKey =
+            if (mainBoostTypeArg != "default") TypeManager.TypeKey(mainBoostTypeArg)
             else getDefaultBoostId(entityType)
-        if (!Main.instance!!.typeManager.hasTypeId(boostTypeKey)) {
-            sender.sendMessage(prefix.append(Component.text("无效的强化类型 \"$boostTypeArg\" ！", NamedTextColor.RED)))
+        if (mainBoostTypeKey.pack().type != PackManager.PackType.MAIN) {
+            sender.sendMessage(prefix.append(Component.text("无效的主强化类型 \"$mainBoostTypeArg\" ！", NamedTextColor.RED)))
             return true
         }
 
+        // 解析次强化类型参数
+        val subBoostTypeArg = args[3].lowercase(Locale.getDefault())
+        val subBoostTypeKey =
+            if (subBoostTypeArg != "none") TypeManager.TypeKey(subBoostTypeArg)
+            else null
+        if (subBoostTypeKey != null) {
+            if (subBoostTypeKey.pack().type != PackManager.PackType.SUB) {
+                sender.sendMessage(prefix.append(Component.text("无效的次强化类型 \"$subBoostTypeArg\" ！", NamedTextColor.RED)))
+                return true
+            }
+        }
+
         // 解析倍数参数
-        val multiplier = if (args.size >= 4) {
-            val multiplierArg = args[3]
+        val multiplier = if (args.size >= 5) {
+            val multiplierArg = args[4]
             try {
                 multiplierArg.toDouble()
             } catch (e: NumberFormatException) {
@@ -70,12 +83,11 @@ class EnhancedMobsExecutor : CommandExecutor {
             }
         } else 0.0
 
-
         // 解析坐标参数
-        val location: Location = if (args.size >= 7) {
-            val xArg = args[4]
-            val yArg = args[5]
-            val zArg = args[6]
+        val location: Location = if (args.size >= 8) {
+            val xArg = args[5]
+            val yArg = args[6]
+            val zArg = args[7]
             try {
                 val x = xArg.toDouble()
                 val y = yArg.toDouble()
@@ -89,12 +101,12 @@ class EnhancedMobsExecutor : CommandExecutor {
 
         // 生成实体
         val entity: Mob = sender.world.spawnEntity(location, entityType, CreatureSpawnEvent.SpawnReason.CUSTOM) as Mob
-        entity.asEnhancedMob(multiplier, boostTypeKey)
+        entity.asEnhancedMob(multiplier, mainBoostTypeKey, subBoostTypeKey)
 
         val percent = String.format("${if (multiplier >= 0.0) "+" else ""}%.2f", multiplier * 100)
         sender.sendMessage(prefix
             .append(Component.text("已生成 ${entityType.name} ", NamedTextColor.GREEN))
-            .append(Component.text("($boostTypeArg ", NamedTextColor.GRAY))
+            .append(Component.text("($mainBoostTypeArg:$subBoostTypeArg ", NamedTextColor.GRAY))
             .append(Component.text(percent, NamedTextColor.AQUA))
             .append(Component.text("%) 于 $location.", NamedTextColor.GRAY))
         )

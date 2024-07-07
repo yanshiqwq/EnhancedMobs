@@ -26,6 +26,7 @@ object Utils {
     }
 
     fun <T: Any> T.byChance(chance: Double) = if (Random.nextDouble() <= chance) this else null
+    fun chance(chance: Double) = if (Random.nextDouble() <= chance) true else false
 
     fun getTeam(teamName: String): Team? = instance!!.server.scoreboardManager.mainScoreboard.runCatching {
         getTeam(teamName) ?: registerNewTeam(teamName)
@@ -39,7 +40,6 @@ object Utils {
     fun Boolean.Companion.any(vararg booleans: Boolean): Boolean = booleans.any { it }
 
     fun LivingEntity.percentHeal(percent: Double = 1.0) {
-        if (isDead) return
         health = getAttribute(Attribute.GENERIC_MAX_HEALTH)!!.value * percent
     }
 
@@ -57,6 +57,7 @@ object Utils {
     fun Location.getNearestPlayer(): Player? {
         // 获取世界中的所有玩家
         val players = Bukkit.getOnlinePlayers()
+            .filter { it.world == world }
 
         // 初始化最近的玩家和最小距离
         var nearestPlayer: Player? = null

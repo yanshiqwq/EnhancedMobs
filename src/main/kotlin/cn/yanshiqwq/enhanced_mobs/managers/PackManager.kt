@@ -1,8 +1,8 @@
 package cn.yanshiqwq.enhanced_mobs.managers
 
 import cn.yanshiqwq.enhanced_mobs.Main.Companion.instance
-import cn.yanshiqwq.enhanced_mobs.script.ExtendPack
-import cn.yanshiqwq.enhanced_mobs.script.VanillaPack
+import cn.yanshiqwq.enhanced_mobs.script.SubPack
+import cn.yanshiqwq.enhanced_mobs.script.MainPack
 
 /**
  * enhanced_mobs
@@ -17,13 +17,16 @@ class PackManager {
         fun get(): Pack
     }
 
-    data class Pack(val id: String, val typeMap: List<TypeManager.MobType> = listOf())
+    data class Pack(val id: String, val type: PackType, val typeMap: List<TypeManager.MobType> = listOf())
+    enum class PackType {
+        MAIN, SUB
+    }
 
     private val packs = mutableListOf<Pack>()
 
     fun loadPacks() {
-        register(VanillaPack.get())
-        register(ExtendPack.get())
+        register(MainPack.get())
+        register(SubPack.get())
     }
 
     fun implement(pack: Pack, typeId: String): TypeManager.MobType {
@@ -35,4 +38,7 @@ class PackManager {
         instance!!.logger.info("Registering pack: ${pack.id} (${pack.typeMap.size} types) ...")
         instance!!.typeManager.loadTypes(pack)
     }
+
+    fun getPacks(type: PackType) = packs.filter { it.type == type }
+    fun getPack(key: TypeManager.TypeKey) = packs.first { it.id == key.packId }
 }

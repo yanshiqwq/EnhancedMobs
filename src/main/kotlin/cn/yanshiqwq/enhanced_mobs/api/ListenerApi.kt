@@ -53,11 +53,11 @@ object ListenerApi {
     )
     inline fun EnhancedMob.onArrowDamage(crossinline block: ArrowDamageEventDsl.(event: EntityDamageByEntityEvent) -> Unit) {
         listener<EntityDamageByEntityEvent> {
-            if (it.damager !is Arrow || it.entity !is LivingEntity)
-            if (it.entity is Player && (it.entity as Player).isBlocking) return@listener // TODO 测试it.isCancelled是否与此行效果一致
+            if (it.damager !is Arrow || it.entity !is LivingEntity) return@listener
             val arrow = it.damager as? Arrow ?: return@listener
             if (arrow.shooter != entity) return@listener
             val target = it.entity as? LivingEntity ?: return@listener
+            if (target is Player && target.isBlocking) return@listener
             val dsl = ArrowDamageEventDsl(arrow, target)
             dsl.block(it)
         }
@@ -99,7 +99,7 @@ object ListenerApi {
 
     inline fun EnhancedMob.onResurrect(crossinline block: EntityResurrectEvent.() -> Unit) {
         listener<EntityResurrectEvent> {
-            if (!it.isCancelled) return@listener
+            if (it.isCancelled) return@listener
             if (it.entity != entity) return@listener
             it.block()
         }
