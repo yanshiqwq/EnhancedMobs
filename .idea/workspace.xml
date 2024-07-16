@@ -4,30 +4,8 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="d5ee4be2-1981-48f1-8632-49b4c7636b94" name="更改" comment="重构了 itemTask&#10;调整了等级计算公式&#10;修复了 extend.anvil 无法正常放置铁砧&#10;修复了 extend.ender_pearl 无法正常传送&#10;修复了 &quot;Cannot measure distance between ...&quot;报错">
-      <change afterPath="$PROJECT_DIR$/src/main/kotlin/cn/yanshiqwq/enhanced_mobs/listeners/InitListener.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+    <list default="true" id="d5ee4be2-1981-48f1-8632-49b4c7636b94" name="更改" comment="修复 - EnhancedMob 在被自然移除后未及时从 manager 类移除导致的内存泄漏&#10;调整 - 部分生物的基础攻击力下调&#10;调整 - 限制怪物的等级在 0 ~ 100 之间">
       <change beforePath="$PROJECT_DIR$/gradle.properties" beforeDir="false" afterPath="$PROJECT_DIR$/gradle.properties" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/kotlin/cn/yanshiqwq/enhanced_mobs/EnhancedMob.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/cn/yanshiqwq/enhanced_mobs/EnhancedMob.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/kotlin/cn/yanshiqwq/enhanced_mobs/Main.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/cn/yanshiqwq/enhanced_mobs/Main.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/kotlin/cn/yanshiqwq/enhanced_mobs/Utils.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/cn/yanshiqwq/enhanced_mobs/Utils.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/kotlin/cn/yanshiqwq/enhanced_mobs/api/ListenerApi.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/cn/yanshiqwq/enhanced_mobs/api/ListenerApi.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/kotlin/cn/yanshiqwq/enhanced_mobs/api/MobApi.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/cn/yanshiqwq/enhanced_mobs/api/MobApi.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/kotlin/cn/yanshiqwq/enhanced_mobs/api/TaskApi.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/cn/yanshiqwq/enhanced_mobs/api/TaskApi.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/kotlin/cn/yanshiqwq/enhanced_mobs/commands/EnhancedMobsCompleter.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/cn/yanshiqwq/enhanced_mobs/commands/EnhancedMobsCompleter.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/kotlin/cn/yanshiqwq/enhanced_mobs/commands/EnhancedMobsExecutor.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/cn/yanshiqwq/enhanced_mobs/commands/EnhancedMobsExecutor.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/kotlin/cn/yanshiqwq/enhanced_mobs/data/Record.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/cn/yanshiqwq/enhanced_mobs/data/Record.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/kotlin/cn/yanshiqwq/enhanced_mobs/dsl/MobDslBuilder.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/cn/yanshiqwq/enhanced_mobs/dsl/MobDslBuilder.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/kotlin/cn/yanshiqwq/enhanced_mobs/dsl/WeightDslBuilder.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/cn/yanshiqwq/enhanced_mobs/dsl/WeightDslBuilder.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/kotlin/cn/yanshiqwq/enhanced_mobs/listeners/EntityLevelListener.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/cn/yanshiqwq/enhanced_mobs/listeners/EntityLevelListener.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/kotlin/cn/yanshiqwq/enhanced_mobs/listeners/ModifierListener.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/cn/yanshiqwq/enhanced_mobs/listeners/ModifierListener.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/kotlin/cn/yanshiqwq/enhanced_mobs/listeners/SpawnListener.kt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/kotlin/cn/yanshiqwq/enhanced_mobs/managers/PackManager.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/cn/yanshiqwq/enhanced_mobs/managers/PackManager.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/kotlin/cn/yanshiqwq/enhanced_mobs/managers/TypeManager.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/cn/yanshiqwq/enhanced_mobs/managers/TypeManager.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/kotlin/cn/yanshiqwq/enhanced_mobs/script/Config.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/cn/yanshiqwq/enhanced_mobs/script/Config.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/kotlin/cn/yanshiqwq/enhanced_mobs/script/ExtendPack.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/cn/yanshiqwq/enhanced_mobs/script/SubPack.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/kotlin/cn/yanshiqwq/enhanced_mobs/script/VanillaPack.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/cn/yanshiqwq/enhanced_mobs/script/MainPack.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/plugin.yml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/plugin.yml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -289,8 +267,8 @@
       </method>
     </configuration>
     <list>
-      <item itemvalue="Gradle.enhanced_mobs [kotlinSourcesJar]" />
       <item itemvalue="Gradle.enhanced_mobs [jar]" />
+      <item itemvalue="Gradle.enhanced_mobs [kotlinSourcesJar]" />
       <item itemvalue="Gradle.enhanced_mobs [shadowJar]" />
       <item itemvalue="Kotlin.PackManagerKt" />
       <item itemvalue="Kotlin 脚本(测试版).vanilla.kts" />
@@ -566,7 +544,23 @@
       <option name="project" value="LOCAL" />
       <updated>1719938073581</updated>
     </task>
-    <option name="localTasksCounter" value="36" />
+    <task id="LOCAL-00036" summary="重构 - itemTask&#10;调整 - 等级计算公式&#10;调整 - extend.frost 的冻结时间&#10;修复 - extend.anvil 无法正常放置铁砧&#10;修复 - extend.ender_pearl 无法正常传送&#10;修复 - &quot;Cannot measure distance between ...&quot; 报错">
+      <option name="closed" value="true" />
+      <created>1720356628639</created>
+      <option name="number" value="00036" />
+      <option name="presentableId" value="LOCAL-00036" />
+      <option name="project" value="LOCAL" />
+      <updated>1720356628639</updated>
+    </task>
+    <task id="LOCAL-00037" summary="修复 - EnhancedMob 在被自然移除后未及时从 manager 类移除导致的内存泄漏&#10;调整 - 部分生物的基础攻击力下调&#10;调整 - 限制怪物的等级在 0 ~ 100 之间">
+      <option name="closed" value="true" />
+      <created>1721124188839</created>
+      <option name="number" value="00037" />
+      <option name="presentableId" value="LOCAL-00037" />
+      <option name="project" value="LOCAL" />
+      <updated>1721124188839</updated>
+    </task>
+    <option name="localTasksCounter" value="38" />
     <servers />
   </component>
   <component name="Vcs.Log.History.Properties">
@@ -621,9 +615,6 @@
   </component>
   <component name="VcsManagerConfiguration">
     <option name="ADD_EXTERNAL_FILES_SILENTLY" value="true" />
-    <MESSAGE value="修复逻辑错误" />
-    <MESSAGE value="修复猪比bug" />
-    <MESSAGE value="重构, 优化Tab补全, 回滚实体等级计算方法" />
     <MESSAGE value="修改版本号, 修正插件信息文件" />
     <MESSAGE value="重构Pack类结构&#10;新增ListenerAPI&#10;新增7个使用了ListenerAPI的示例type (位于extendPack)&#10;新增右键发射火焰弹功能&#10;&#10;暂时删除MobManager的保存功能 (EnhancedMob无法Serialize)" />
     <MESSAGE value="格式化代码" />
@@ -646,7 +637,10 @@
     <MESSAGE value="修复：插件无法正常加载, 骷髅的弓无法正常附魔, 多种 MobType 的效果无法正常触发" />
     <MESSAGE value="修复女巫无法正常投掷特殊药水的bug" />
     <MESSAGE value="重构了 itemTask&#10;调整了等级计算公式&#10;修复了 extend.anvil 无法正常放置铁砧&#10;修复了 extend.ender_pearl 无法正常传送&#10;修复了 &quot;Cannot measure distance between ...&quot;报错" />
-    <option name="LAST_COMMIT_MESSAGE" value="重构了 itemTask&#10;调整了等级计算公式&#10;修复了 extend.anvil 无法正常放置铁砧&#10;修复了 extend.ender_pearl 无法正常传送&#10;修复了 &quot;Cannot measure distance between ...&quot;报错" />
+    <MESSAGE value="重构 - itemTask&#10;调整 - 等级计算公式&#10;调整 - extend.frost 的冻结时间&#10;修复 - extend.anvil 无法正常放置铁砧&#10;修复 - extend.ender_pearl 无法正常传送&#10;修复 - &quot;Cannot measure distance between ...&quot; 报错" />
+    <MESSAGE value="修复 - EnhancedMob 在被自然移除后未及时从 manager 类移除导致的内存泄漏" />
+    <MESSAGE value="修复 - EnhancedMob 在被自然移除后未及时从 manager 类移除导致的内存泄漏&#10;调整 - 部分生物的基础攻击力下调&#10;调整 - 限制怪物的等级在 0 ~ 100 之间" />
+    <option name="LAST_COMMIT_MESSAGE" value="修复 - EnhancedMob 在被自然移除后未及时从 manager 类移除导致的内存泄漏&#10;调整 - 部分生物的基础攻击力下调&#10;调整 - 限制怪物的等级在 0 ~ 100 之间" />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />

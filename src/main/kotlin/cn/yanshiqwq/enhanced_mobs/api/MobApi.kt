@@ -82,7 +82,11 @@ object MobApi {
         itemStack.itemMeta = meta
         return itemStack
     }
-    fun EnhancedMob.item(slot: EquipmentSlot, type: Material, count: Int = 1, block: SlotBuilder.() -> Unit = {}) = item(slot, ItemStack(type, count), block)
+    fun EnhancedMob.item(slot: EquipmentSlot, type: Material, count: Int = 1, dropChance: Float = 0.085F, block: SlotBuilder.() -> Unit = {}) {
+        val item = ItemStack(type, count)
+        item(slot, item, block)
+        entity.equipment.setDropChance(slot, dropChance)
+    }
     fun EnhancedMob.item(slot: EquipmentSlot, item: ItemStack, block: SlotBuilder.() -> Unit = {}) {
         val builder = SlotBuilder(slot, item)
         block.invoke(builder)

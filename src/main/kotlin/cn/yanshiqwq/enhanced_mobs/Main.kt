@@ -5,7 +5,7 @@ import cn.yanshiqwq.enhanced_mobs.commands.EnhancedMobsExecutor
 import cn.yanshiqwq.enhanced_mobs.listeners.EntityLevelListener
 import cn.yanshiqwq.enhanced_mobs.listeners.MobEventListener
 import cn.yanshiqwq.enhanced_mobs.listeners.ModifierListener
-import cn.yanshiqwq.enhanced_mobs.listeners.InitListener
+import cn.yanshiqwq.enhanced_mobs.listeners.MobInitListener
 import cn.yanshiqwq.enhanced_mobs.managers.MobManager
 import cn.yanshiqwq.enhanced_mobs.managers.PackManager
 import cn.yanshiqwq.enhanced_mobs.managers.TypeManager
@@ -38,7 +38,7 @@ class Main : JavaPlugin() {
             registerEvents(EntityLevelListener(), instance!!)
             registerEvents(ModifierListener(), instance!!)
             registerEvents(MobEventListener(), instance!!)
-            registerEvents(InitListener(), instance!!)
+            registerEvents(MobInitListener(), instance!!)
         }
 
         getCommand("enhancedmobs")!!.run {
