@@ -21,6 +21,7 @@ import cn.yanshiqwq.enhanced_mobs.api.LocationApi.spawnEntity
 import cn.yanshiqwq.enhanced_mobs.api.LocationApi.spawnParticle
 import cn.yanshiqwq.enhanced_mobs.api.MobApi.effect
 import cn.yanshiqwq.enhanced_mobs.api.MobApi.attribute
+import cn.yanshiqwq.enhanced_mobs.api.MobApi.baseAttribute
 import cn.yanshiqwq.enhanced_mobs.api.MobApi.freeze
 import cn.yanshiqwq.enhanced_mobs.api.MobApi.glowing
 import cn.yanshiqwq.enhanced_mobs.api.MobApi.item
@@ -57,7 +58,7 @@ object SubPack: PackManager.PackObj {
             }
         }
         type("iron_sword") {
-            item(EquipmentSlot.HAND, Material.IRON_SWORD) {
+            item(EquipmentSlot.HAND, Material.IRON_SWORD, dropChance = 0F) {
                 val meta = item.itemMeta ?: return@item
                 val modifier = AttributeModifier(
                     UUID.fromString("8ee84e93-7c40-4159-8089-57a32907c432"), "Random spawn bonus", 2.0, ADD_NUMBER)
@@ -112,7 +113,7 @@ object SubPack: PackManager.PackObj {
             }
         }
         type("shield") {
-            item(EquipmentSlot.OFF_HAND, Material.SHIELD)
+            item(EquipmentSlot.OFF_HAND, Material.SHIELD, dropChance = 0.085F)
             onPreDamage {
                 val shieldKey = NamespacedKey(instance!!, "shield")
                 val armorModifier = AttributeModifier(UUID.fromString("1a4d8dc1-bd9d-4663-a6f0-0ec079fd4ef3"), "Shield bonus", 20.0, ADD_NUMBER)
@@ -166,12 +167,11 @@ object SubPack: PackManager.PackObj {
         type("zombie_leader") {
             item(EquipmentSlot.HAND, Material.IRON_SWORD)
             item(EquipmentSlot.HEAD, Material.IRON_HELMET)
-            attribute(GENERIC_MAX_HEALTH, MULTIPLY_SCALAR_1, 1.4)
-            attribute(ZOMBIE_SPAWN_REINFORCEMENTS, ADD_NUMBER, DoubleFactor(0.0..1.0) { 0.5 + 0.1 * it })
+            baseAttribute(GENERIC_MAX_HEALTH, 48.0)
+            baseAttribute(ZOMBIE_SPAWN_REINFORCEMENTS, DoubleFactor(0.0..1.0) { 0.5 + 0.1 * it }.value(multiplier))
             glowing()
             onAttack {
-                target.effect(PotionEffectType.WEAKNESS, 0, 12 * 20)
-                target.effect(PotionEffectType.SLOW, 1, 12 * 20)
+                target.effect(PotionEffectType.WEAKNESS, 0, 7 * 20)
             }
         }
         type("cobweb") {

@@ -2,9 +2,9 @@ package cn.yanshiqwq.enhanced_mobs.commands
 
 import cn.yanshiqwq.enhanced_mobs.EnhancedMob.Companion.asEnhancedMob
 import cn.yanshiqwq.enhanced_mobs.Main
-import cn.yanshiqwq.enhanced_mobs.data.Tags
 import cn.yanshiqwq.enhanced_mobs.managers.PackManager
 import cn.yanshiqwq.enhanced_mobs.managers.TypeManager
+import cn.yanshiqwq.enhanced_mobs.script.Config.getMainTypeKey
 import net.kyori.adventure.text.Component
 import net.kyori.adventure.text.format.NamedTextColor
 import org.bukkit.Location
@@ -54,7 +54,7 @@ class EnhancedMobsExecutor : CommandExecutor {
         val mainBoostTypeArg = args[2].lowercase(Locale.getDefault())
         val mainBoostTypeKey =
             if (mainBoostTypeArg != "default") TypeManager.TypeKey(mainBoostTypeArg)
-            else getDefaultBoostId(entityType)
+            else getMainTypeKey(entityType)
         if (mainBoostTypeKey.pack().type != PackManager.PackType.MAIN) {
             sender.sendMessage(prefix.append(Component.text("无效的主强化类型 \"$mainBoostTypeArg\" ！", NamedTextColor.RED)))
             return true
@@ -111,14 +111,5 @@ class EnhancedMobsExecutor : CommandExecutor {
             .append(Component.text("%) 于 $location.", NamedTextColor.GRAY))
         )
         return true
-    }
-    private fun getDefaultBoostId(entityType: EntityType): TypeManager.TypeKey {
-        return when (entityType) {
-            in Tags.Entity.zombies -> TypeManager.TypeKey("vanilla", "zombie")
-            in Tags.Entity.skeletons -> TypeManager.TypeKey("vanilla", "skeleton")
-            in Tags.Entity.spiders -> TypeManager.TypeKey("vanilla", "spider")
-            in Tags.Entity.creepers -> TypeManager.TypeKey("vanilla", "creeper")
-            else -> TypeManager.TypeKey("vanilla", "generic")
-        }
     }
 }

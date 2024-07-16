@@ -134,9 +134,9 @@ class EntityLevelListener : Listener {
 
         // 设定发光颜色
         val teamName = when (level) {
-            in 85..90 -> InitListener.MobTeam.STRENGTH.id
-            in 90..95 -> InitListener.MobTeam.ENHANCED.id
-            in 95..Int.MAX_VALUE -> InitListener.MobTeam.BOSS.id
+            in 85..90 -> MobInitListener.MobTeam.STRENGTH.id
+            in 90..95 -> MobInitListener.MobTeam.ENHANCED.id
+            in 95..Int.MAX_VALUE -> MobInitListener.MobTeam.BOSS.id
             else -> null
         }
         if (teamName != null) {
@@ -154,7 +154,7 @@ class EntityLevelListener : Listener {
 
     private fun LivingEntity.getCommonLevel(): Int {
         val level = getFactorHealth() * getFactorDamage() * getFactorSpeed()
-        return floor(level).toInt()
+        return floor(level).toInt().coerceIn(0, 100)
     }
 
     private fun LivingEntity.getFactorHealth(): Double {

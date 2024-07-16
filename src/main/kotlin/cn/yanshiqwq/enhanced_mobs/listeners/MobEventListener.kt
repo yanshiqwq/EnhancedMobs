@@ -3,6 +3,7 @@ package cn.yanshiqwq.enhanced_mobs.listeners
 import cn.yanshiqwq.enhanced_mobs.Main.Companion.instance
 import cn.yanshiqwq.enhanced_mobs.api.TaskApi.cancelTask
 import com.destroystokyo.paper.event.entity.EntityPathfindEvent
+import com.destroystokyo.paper.event.entity.EntityRemoveFromWorldEvent
 import io.papermc.paper.event.entity.EntityToggleSitEvent
 import org.bukkit.event.Event
 import org.bukkit.event.EventHandler
@@ -36,7 +37,7 @@ class MobEventListener : Listener {
     }
 
     @EventHandler
-    fun onEnhancedMobDeath(event: EntityDeathEvent){
+    fun onEnhancedMobRemove(event: EntityRemoveFromWorldEvent){
         val mob = instance!!.mobManager.get(event.entity.uniqueId)
         if (mob == null) {
             removeEnhancedMob(event.entity.uniqueId)

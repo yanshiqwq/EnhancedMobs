@@ -66,6 +66,15 @@ object Config {
                 baseAttribute(GENERIC_KNOCKBACK_RESISTANCE, 0.35)
                 entity.isImmuneToZombification = true
             }
+
+            is Vindicator -> baseAttribute(GENERIC_ATTACK_DAMAGE, -2.0)
+
+            is Ravager -> baseAttribute(GENERIC_ATTACK_DAMAGE, 7.0)
+
+            is Vex -> {
+                baseAttribute(GENERIC_MAX_HEALTH, 5.0)
+                baseAttribute(GENERIC_ATTACK_DAMAGE, 2.0)
+            }
         }
     }
     private val block: WeightDslBuilder.EntityPropertiesBuilder.() -> Unit = {
@@ -75,12 +84,12 @@ object Config {
                 "extend.strength_cloud" to 1,
                 "extend.totem" to 3,
                 "extend.tnt" to 3,
-                "extend.lava" to 5,
-                "extend.flint_and_steel" to 5,
+                "extend.lava" to 3,
+                "extend.flint_and_steel" to 3,
                 "extend.ender_pearl" to 3,
                 "extend.anvil" to 2,
                 "extend.fire_charge" to 3,
-                "extend.shield" to 5
+                "extend.shield" to 1
             )
         }
         entity(EntityType.DROWNED) {
@@ -105,7 +114,7 @@ object Config {
             )
         }
     }
-    private const val BOOST_CHANCE = 0.25
+    private const val BOOST_CHANCE = 0.1
     fun getWeightMap() = WeightDslBuilder().loadWeightMap(block).byChance(BOOST_CHANCE)
     fun getMainTypeKey(type: EntityType) = when (type) {
         in Tags.Entity.zombies -> TypeManager.TypeKey("vanilla", "zombie")
@@ -114,6 +123,9 @@ object Config {
         in Tags.Entity.creepers -> TypeManager.TypeKey("vanilla", "creeper")
         EntityType.WITCH -> TypeManager.TypeKey("vanilla", "witch")
         EntityType.PILLAGER -> TypeManager.TypeKey("vanilla", "pillager")
+        EntityType.VINDICATOR -> TypeManager.TypeKey("vanilla", "vindicator")
+        EntityType.RAVAGER -> TypeManager.TypeKey("vanilla", "ravager")
+        EntityType.ENDERMAN -> TypeManager.TypeKey("vanilla", "enderman")
         else -> TypeManager.TypeKey.mainDefault
     }
 }

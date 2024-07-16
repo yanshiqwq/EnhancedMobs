@@ -40,7 +40,7 @@ import java.util.*
  * @author yanshiqwq
  * @since 2024/6/15 18:09
  */
-class InitListener: Listener {
+class MobInitListener: Listener {
     enum class MobTeam(val id: String) {
         STRENGTH("enhancedmobs.strength"),
         ENHANCED("enhancedmobs.enhanced"),
@@ -61,9 +61,10 @@ class InitListener: Listener {
         event.player.run {
             // 添加重生增益
             val uuid = UUID.fromString("7e993d80-af92-40ed-9097-101b28ae76ca")
-            val modifier = AttributeModifier(uuid, "Player spawn bonus", 20.0, ADD_NUMBER)
-            getAttribute(GENERIC_MAX_HEALTH)?.addModifierSafe(modifier)
-            effect(PotionEffectType.DAMAGE_RESISTANCE, 0, 5 * 60 * 20)
+            val healthModifier = AttributeModifier(uuid, "Player spawn bonus", 20.0, ADD_NUMBER)
+            val toughnessModifier = AttributeModifier(uuid, "Player spawn bonus", 8.0, ADD_NUMBER)
+            getAttribute(GENERIC_MAX_HEALTH)?.addModifierSafe(healthModifier)
+            getAttribute(GENERIC_ARMOR_TOUGHNESS)?.addModifierSafe(toughnessModifier)
             effect(PotionEffectType.NIGHT_VISION, 0, 5 * 60 * 20)
         }
     }
