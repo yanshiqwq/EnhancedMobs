@@ -12,7 +12,6 @@ import cn.yanshiqwq.enhanced_mobs.data.LootTable.applyLootTableX
 import cn.yanshiqwq.enhanced_mobs.managers.TypeManager
 import cn.yanshiqwq.enhanced_mobs.managers.TypeManager.Companion.getRandomTypeKey
 import cn.yanshiqwq.enhanced_mobs.script.Config
-import cn.yanshiqwq.enhanced_mobs.script.Config.applyVariantBoost
 import net.kyori.adventure.text.format.NamedTextColor
 import org.bukkit.NamespacedKey
 import org.bukkit.entity.*
@@ -100,11 +99,11 @@ class MobInitListener: Listener {
         val multiplier = when (playerLevel) {
             in 0..10 -> -0.2 // 8 级
             in 10..20 -> 0.25 // 16 级
-            in 20..30 -> 0.56 // 24 级
-            in 30..40 -> 0.95 // 33 级
+            in 20..30 -> 0.55 // 23 级
+            in 30..40 -> 1.0 // 35 级
             in 40..50 -> 1.4 // 45 级
             in 50..60 -> 1.85 // 56 级
-            in 60..70 -> 2.7 // 67 级
+            in 60..70 -> 2.4 // 64 级
             in 70..80 -> 3.5 // 75 级
             in 80..Int.MAX_VALUE -> 4.2 // 82 级
             else -> 0.0
@@ -118,9 +117,6 @@ class MobInitListener: Listener {
         if (entitySpawnReason == CreatureSpawnEvent.SpawnReason.CUSTOM) return // 忽略 /enhancedmobs 生成的情况
         val mob = asEnhancedMob(multiplier, mainBoostTypeKey, subBoostTypeKey)
         instance!!.mobManager.register(uniqueId, mob)
-
-        // 根据变种修改属性
-        mob.applyVariantBoost()
 
         // 修改 LootTable
         applyLootTableX(multiplier)

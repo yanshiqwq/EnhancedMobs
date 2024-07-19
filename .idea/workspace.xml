@@ -7,19 +7,11 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="d5ee4be2-1981-48f1-8632-49b4c7636b94" name="更改" comment="修复 - EnhancedMob 在被自然移除后未及时从 manager 类移除导致的内存泄漏&#10;调整 - 部分生物的基础攻击力下调&#10;调整 - 限制怪物的等级在 0 ~ 100 之间">
-      <change afterPath="$PROJECT_DIR$/src/main/kotlin/cn/yanshiqwq/enhanced_mobs/listeners/PlayerListener.kt" afterDir="false" />
+    <list default="true" id="d5ee4be2-1981-48f1-8632-49b4c7636b94" name="更改" comment="调整 - 等级计算方式">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build.gradle.kts" beforeDir="false" afterPath="$PROJECT_DIR$/build.gradle.kts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/kotlin/cn/yanshiqwq/enhanced_mobs/EnhancedMob.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/cn/yanshiqwq/enhanced_mobs/EnhancedMob.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/kotlin/cn/yanshiqwq/enhanced_mobs/Main.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/cn/yanshiqwq/enhanced_mobs/Main.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/kotlin/cn/yanshiqwq/enhanced_mobs/api/MobApi.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/cn/yanshiqwq/enhanced_mobs/api/MobApi.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/kotlin/cn/yanshiqwq/enhanced_mobs/listeners/EntityLevelListener.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/cn/yanshiqwq/enhanced_mobs/listeners/EntityLevelListener.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/kotlin/cn/yanshiqwq/enhanced_mobs/listeners/MobEventListener.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/cn/yanshiqwq/enhanced_mobs/listeners/MobEventListener.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/kotlin/cn/yanshiqwq/enhanced_mobs/listeners/MobInitListener.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/cn/yanshiqwq/enhanced_mobs/listeners/MobInitListener.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/kotlin/cn/yanshiqwq/enhanced_mobs/listeners/ModifierListener.kt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/kotlin/cn/yanshiqwq/enhanced_mobs/managers/MobManager.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/cn/yanshiqwq/enhanced_mobs/managers/MobManager.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/kotlin/cn/yanshiqwq/enhanced_mobs/script/SubPack.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/cn/yanshiqwq/enhanced_mobs/script/SubPack.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/cn/yanshiqwq/enhanced_mobs/script/Config.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/cn/yanshiqwq/enhanced_mobs/script/Config.kt" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -578,7 +570,15 @@
       <option name="project" value="LOCAL" />
       <updated>1721124301802</updated>
     </task>
-    <option name="localTasksCounter" value="39" />
+    <task id="LOCAL-00039" summary="调整 - 等级计算方式">
+      <option name="closed" value="true" />
+      <created>1721374724975</created>
+      <option name="number" value="00039" />
+      <option name="presentableId" value="LOCAL-00039" />
+      <option name="project" value="LOCAL" />
+      <updated>1721374724975</updated>
+    </task>
+    <option name="localTasksCounter" value="40" />
     <servers />
   </component>
   <component name="Vcs.Log.History.Properties">
@@ -633,7 +633,6 @@
   </component>
   <component name="VcsManagerConfiguration">
     <option name="ADD_EXTERNAL_FILES_SILENTLY" value="true" />
-    <MESSAGE value="修改版本号, 修正插件信息文件" />
     <MESSAGE value="重构Pack类结构&#10;新增ListenerAPI&#10;新增7个使用了ListenerAPI的示例type (位于extendPack)&#10;新增右键发射火焰弹功能&#10;&#10;暂时删除MobManager的保存功能 (EnhancedMob无法Serialize)" />
     <MESSAGE value="格式化代码" />
     <MESSAGE value="优化代码结构" />
@@ -658,7 +657,8 @@
     <MESSAGE value="重构 - itemTask&#10;调整 - 等级计算公式&#10;调整 - extend.frost 的冻结时间&#10;修复 - extend.anvil 无法正常放置铁砧&#10;修复 - extend.ender_pearl 无法正常传送&#10;修复 - &quot;Cannot measure distance between ...&quot; 报错" />
     <MESSAGE value="修复 - EnhancedMob 在被自然移除后未及时从 manager 类移除导致的内存泄漏" />
     <MESSAGE value="修复 - EnhancedMob 在被自然移除后未及时从 manager 类移除导致的内存泄漏&#10;调整 - 部分生物的基础攻击力下调&#10;调整 - 限制怪物的等级在 0 ~ 100 之间" />
-    <option name="LAST_COMMIT_MESSAGE" value="修复 - EnhancedMob 在被自然移除后未及时从 manager 类移除导致的内存泄漏&#10;调整 - 部分生物的基础攻击力下调&#10;调整 - 限制怪物的等级在 0 ~ 100 之间" />
+    <MESSAGE value="调整 - 等级计算方式" />
+    <option name="LAST_COMMIT_MESSAGE" value="调整 - 等级计算方式" />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />

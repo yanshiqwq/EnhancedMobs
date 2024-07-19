@@ -54,15 +54,14 @@ object Config {
             }
 
             is Piglin -> {
-                baseAttribute(GENERIC_MAX_HEALTH, 24.0)
                 baseAttribute(GENERIC_ARMOR, 2.0)
-                entity.isImmuneToZombification = true
             }
 
             is PiglinBrute -> {
-                baseAttribute(GENERIC_MAX_HEALTH, 72.0)
-                baseAttribute(GENERIC_ARMOR, 6.0)
+                baseAttribute(GENERIC_MAX_HEALTH, 48.0)
+                baseAttribute(GENERIC_ARMOR, 4.0)
                 baseAttribute(GENERIC_ATTACK_KNOCKBACK, 0.35)
+                baseAttribute(GENERIC_ATTACK_DAMAGE, -1.0)
                 baseAttribute(GENERIC_KNOCKBACK_RESISTANCE, 0.35)
                 entity.isImmuneToZombification = true
             }
