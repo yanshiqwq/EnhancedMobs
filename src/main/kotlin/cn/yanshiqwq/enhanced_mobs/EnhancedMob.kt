@@ -1,4 +1,4 @@
-@file:Suppress("MayBeConstant", "MayBeConstant")
+@file:Suppress("MayBeConstant")
 
 package cn.yanshiqwq.enhanced_mobs
 

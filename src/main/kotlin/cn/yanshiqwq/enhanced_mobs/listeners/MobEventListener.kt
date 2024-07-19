@@ -1,10 +1,16 @@
 package cn.yanshiqwq.enhanced_mobs.listeners
 
+import cn.yanshiqwq.enhanced_mobs.EnhancedMob.Companion.isEnhancedMob
 import cn.yanshiqwq.enhanced_mobs.Main.Companion.instance
 import cn.yanshiqwq.enhanced_mobs.api.TaskApi.cancelTask
 import com.destroystokyo.paper.event.entity.EntityPathfindEvent
 import com.destroystokyo.paper.event.entity.EntityRemoveFromWorldEvent
 import io.papermc.paper.event.entity.EntityToggleSitEvent
+import org.bukkit.attribute.Attribute.GENERIC_ATTACK_DAMAGE
+import org.bukkit.enchantments.Enchantment
+import org.bukkit.entity.Arrow
+import org.bukkit.entity.LivingEntity
+import org.bukkit.entity.Player
 import org.bukkit.event.Event
 import org.bukkit.event.EventHandler
 import org.bukkit.event.Listener
@@ -21,6 +27,33 @@ import kotlin.ConcurrentModificationException
  */
 
 class MobEventListener : Listener {
+    @EventHandler
+    fun onEnhancedMobArrowDamage(event: EntityDamageByEntityEvent) {
+        if (event.damager !is Arrow) return
+
+        val arrow = event.damager as Arrow
+        val damager = arrow.shooter as LivingEntity
+        if (damager is Player || !damager.isEnhancedMob()) return
+        val level = damager.equipment?.itemInMainHand?.enchantments?.get(Enchantment.ARROW_DAMAGE) ?: 0
+        event.damage = 1.5 * (damager.getAttribute(GENERIC_ATTACK_DAMAGE)?.value ?: 0.0) * (1 + level * 0.25)
+    }
+
+    @EventHandler
+    fun onEnhancedMobRemove(event: EntityRemoveFromWorldEvent){
+        val mob = instance!!.mobManager.get(event.entity.uniqueId)
+        if (mob == null) {
+            removeEnhancedMob(event.entity.uniqueId)
+            return
+        }
+        mob.tasks.forEach { mob.cancelTask(it.key) }
+    }
+
+    private fun removeEnhancedMob(uuid: UUID) = instance!!.mobManager.remove(uuid)
+
+    // JB BUKKIT API
+//    @EventHandler
+//    fun onEntityEvent(event: EntityEvent) { triggerListeners(event) }
+
     private fun triggerListeners(event: Event) {
         try {
             for (mob in instance!!.mobManager.map().values) {
@@ -35,22 +68,6 @@ class MobEventListener : Listener {
             e.printStackTrace()
         }
     }
-
-    @EventHandler
-    fun onEnhancedMobRemove(event: EntityRemoveFromWorldEvent){
-        val mob = instance!!.mobManager.get(event.entity.uniqueId)
-        if (mob == null) {
-            removeEnhancedMob(event.entity.uniqueId)
-            return
-        }
-        mob.tasks.forEach { mob.cancelTask(it.key) }
-    }
-
-    fun removeEnhancedMob(uuid: UUID) = instance!!.mobManager.remove(uuid)
-
-    // JB BUKKIT API
-//    @EventHandler
-//    fun onEntityEvent(event: EntityEvent) { triggerListeners(event) }
 
     @EventHandler
     fun onEvent(event: EntityCombustEvent) {

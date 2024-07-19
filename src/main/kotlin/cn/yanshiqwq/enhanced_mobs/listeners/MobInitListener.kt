@@ -5,11 +5,9 @@ import cn.yanshiqwq.enhanced_mobs.EnhancedMob.Companion.asEnhancedMob
 import cn.yanshiqwq.enhanced_mobs.EnhancedMob.Companion.hasEnhancedMobData
 import cn.yanshiqwq.enhanced_mobs.EnhancedMob.Companion.isEnhancedMob
 import cn.yanshiqwq.enhanced_mobs.Main.Companion.instance
-import cn.yanshiqwq.enhanced_mobs.Utils.addModifierSafe
 import cn.yanshiqwq.enhanced_mobs.Utils.getNearestPlayer
 import cn.yanshiqwq.enhanced_mobs.Utils.getTeam
 import cn.yanshiqwq.enhanced_mobs.Utils.percentHeal
-import cn.yanshiqwq.enhanced_mobs.api.MobApi.effect
 import cn.yanshiqwq.enhanced_mobs.data.LootTable.applyLootTableX
 import cn.yanshiqwq.enhanced_mobs.managers.TypeManager
 import cn.yanshiqwq.enhanced_mobs.managers.TypeManager.Companion.getRandomTypeKey
@@ -17,9 +15,6 @@ import cn.yanshiqwq.enhanced_mobs.script.Config
 import cn.yanshiqwq.enhanced_mobs.script.Config.applyVariantBoost
 import net.kyori.adventure.text.format.NamedTextColor
 import org.bukkit.NamespacedKey
-import org.bukkit.attribute.Attribute.*
-import org.bukkit.attribute.AttributeModifier
-import org.bukkit.attribute.AttributeModifier.Operation.ADD_NUMBER
 import org.bukkit.entity.*
 import org.bukkit.event.EventHandler
 import org.bukkit.event.Listener
@@ -27,11 +22,8 @@ import org.bukkit.event.entity.CreatureSpawnEvent
 import org.bukkit.event.entity.EntitySpawnEvent
 import org.bukkit.event.entity.EntityTargetEvent
 import org.bukkit.event.entity.EntityTargetLivingEntityEvent
-import org.bukkit.event.player.PlayerRespawnEvent
 import org.bukkit.event.server.ServerLoadEvent
 import org.bukkit.persistence.PersistentDataType
-import org.bukkit.potion.PotionEffectType
-import java.util.*
 
 /**
  * enhanced_mobs
@@ -54,19 +46,6 @@ class MobInitListener: Listener {
         getTeam(MobTeam.ENHANCED.id)?.color(NamedTextColor.LIGHT_PURPLE)
         getTeam(MobTeam.BOSS.id)?.color(NamedTextColor.RED)
 
-    }
-
-    @EventHandler
-    fun onPlayerRespawn(event: PlayerRespawnEvent){
-        event.player.run {
-            // 添加重生增益
-            val uuid = UUID.fromString("7e993d80-af92-40ed-9097-101b28ae76ca")
-            val healthModifier = AttributeModifier(uuid, "Player spawn bonus", 20.0, ADD_NUMBER)
-            val toughnessModifier = AttributeModifier(uuid, "Player spawn bonus", 8.0, ADD_NUMBER)
-            getAttribute(GENERIC_MAX_HEALTH)?.addModifierSafe(healthModifier)
-            getAttribute(GENERIC_ARMOR_TOUGHNESS)?.addModifierSafe(toughnessModifier)
-            effect(PotionEffectType.NIGHT_VISION, 0, 5 * 60 * 20)
-        }
     }
 
     @EventHandler
@@ -119,15 +98,15 @@ class MobInitListener: Listener {
 
         // 获取最终乘数
         val multiplier = when (playerLevel) {
-            in 0..10 -> -0.1 // 5 级
-            in 10..20 -> 0.125 // 16 级
-            in 20..30 -> 0.4 // 24 级
-            in 30..40 -> 0.75 // 33 级
-            in 40..50 -> 1.35 // 45 级
-            in 50..60 -> 2.0 // 56 级
-            in 60..70 -> 2.75 // 67 级
-            in 70..80 -> 3.4 // 75 级
-            in 80..Int.MAX_VALUE -> 4.1 // 82 级
+            in 0..10 -> -0.2 // 8 级
+            in 10..20 -> 0.25 // 16 级
+            in 20..30 -> 0.56 // 24 级
+            in 30..40 -> 0.95 // 33 级
+            in 40..50 -> 1.4 // 45 级
+            in 50..60 -> 1.85 // 56 级
+            in 60..70 -> 2.7 // 67 级
+            in 70..80 -> 3.5 // 75 级
+            in 80..Int.MAX_VALUE -> 4.2 // 82 级
             else -> 0.0
         } * worldDifficultyMultiplier
 

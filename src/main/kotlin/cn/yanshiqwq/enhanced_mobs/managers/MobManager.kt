@@ -12,7 +12,7 @@ import java.util.*
  * @since 2024/6/8 15:40
  */
 
-@Suppress("unused", "unused")
+@Suppress("unused")
 class MobManager {
     private val map: MutableMap<UUID, EnhancedMob> = mutableMapOf()
 

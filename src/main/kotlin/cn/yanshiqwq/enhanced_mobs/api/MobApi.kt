@@ -37,7 +37,7 @@ object MobApi {
         duration: Int = Int.MAX_VALUE,
         particle: Boolean = true,
         ambient: Boolean = false
-    ) = addPotionEffect(PotionEffect(effectType, duration, amplifier, ambient, particle))
+    ) = this.addPotionEffect(PotionEffect(effectType, duration, amplifier, ambient, particle))
 
     fun LivingEntity.addAir(amount: Int, range: IntRange = -20..300) {
         remainingAir = (remainingAir + amount).coerceIn(range)

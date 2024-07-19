@@ -2,10 +2,7 @@ package cn.yanshiqwq.enhanced_mobs
 
 import cn.yanshiqwq.enhanced_mobs.commands.EnhancedMobsCompleter
 import cn.yanshiqwq.enhanced_mobs.commands.EnhancedMobsExecutor
-import cn.yanshiqwq.enhanced_mobs.listeners.EntityLevelListener
-import cn.yanshiqwq.enhanced_mobs.listeners.MobEventListener
-import cn.yanshiqwq.enhanced_mobs.listeners.ModifierListener
-import cn.yanshiqwq.enhanced_mobs.listeners.MobInitListener
+import cn.yanshiqwq.enhanced_mobs.listeners.*
 import cn.yanshiqwq.enhanced_mobs.managers.MobManager
 import cn.yanshiqwq.enhanced_mobs.managers.PackManager
 import cn.yanshiqwq.enhanced_mobs.managers.TypeManager
@@ -36,7 +33,7 @@ class Main : JavaPlugin() {
 
         server.pluginManager.run {
             registerEvents(EntityLevelListener(), instance!!)
-            registerEvents(ModifierListener(), instance!!)
+            registerEvents(PlayerListener(), instance!!)
             registerEvents(MobEventListener(), instance!!)
             registerEvents(MobInitListener(), instance!!)
         }
@@ -50,6 +47,7 @@ class Main : JavaPlugin() {
     }
 
     override fun onDisable() {
+        PlayerListener.removeRespawnModifier(instance!!.server.onlinePlayers.toList())
         instance = null
         logger.info("Plugin disabled")
     }
