@@ -43,11 +43,13 @@ class Main : JavaPlugin() {
             tabCompleter = EnhancedMobsCompleter()
         }
 
+        PlayerListener.addPlayerModifier(instance!!.server.onlinePlayers.toList())
+
         logger.info("Plugin enabled")
     }
 
     override fun onDisable() {
-        PlayerListener.removeRespawnModifier(instance!!.server.onlinePlayers.toList())
+        PlayerListener.removePlayerModifier(instance!!.server.onlinePlayers.toList())
         instance = null
         logger.info("Plugin disabled")
     }

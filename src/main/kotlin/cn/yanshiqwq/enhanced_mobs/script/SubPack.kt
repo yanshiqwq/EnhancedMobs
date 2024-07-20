@@ -43,8 +43,6 @@ import org.bukkit.potion.PotionEffectType
 import org.bukkit.attribute.Attribute.*
 import org.bukkit.attribute.AttributeModifier
 import org.bukkit.attribute.AttributeModifier.Operation.*
-import org.bukkit.damage.DamageSource
-import org.bukkit.damage.DamageType
 import org.bukkit.util.Vector
 import java.util.*
 
@@ -349,15 +347,14 @@ object SubPack: PackManager.PackObj {
             }
         }
         type("ender_pearl") {
-            @Suppress("UnstableApiUsage")
             itemTask(
                 type = TaskApi.TaskType.DISPOSABLE,
-                distance = 3.0..24.0,
+                distance = 3.0..16.0,
                 before = ItemStack(Material.ENDER_PEARL),
                 after = ItemStack(Material.AIR)
             ) {
                 if (it.isInLava) return@itemTask
-                if (multiplier >= 2.0 && entity.health <= 5.0) return@itemTask
+                if (entity.health <= 5.0) return@itemTask
                 entity.location.playSound(Sound.ENTITY_ENDER_PEARL_THROW, 1.0F, 1.0F)
                 entity.teleport(it)
                 it.damage(0.0, entity)
@@ -365,8 +362,7 @@ object SubPack: PackManager.PackObj {
                     playSound(Sound.ENTITY_GENERIC_BIG_FALL, 1.0F, 1.0F)
                     spawnParticle(Particle.PORTAL, 64, Vector(0.0, 0.0, 0.0),0.6)
                 }
-                val source = DamageSource.builder(DamageType.FALL).build()
-                entity.damage(5.0, source)
+                entity.damage(5.0)
             }
         }
     }

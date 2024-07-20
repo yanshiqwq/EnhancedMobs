@@ -1,7 +1,7 @@
 package cn.yanshiqwq.enhanced_mobs.listeners
 
 import cn.yanshiqwq.enhanced_mobs.Utils.addModifierSafe
-import cn.yanshiqwq.enhanced_mobs.api.MobApi.effect
+import cn.yanshiqwq.enhanced_mobs.Utils.chance
 import org.bukkit.GameMode
 import org.bukkit.Material
 import org.bukkit.attribute.Attribute.*
@@ -13,12 +13,9 @@ import org.bukkit.event.EventHandler
 import org.bukkit.event.Listener
 import org.bukkit.event.player.PlayerInteractEvent
 import org.bukkit.event.player.PlayerItemDamageEvent
-import org.bukkit.event.player.PlayerRespawnEvent
 import org.bukkit.inventory.EquipmentSlot
 import org.bukkit.inventory.ItemStack
-import org.bukkit.potion.PotionEffectType
 import java.util.*
-import kotlin.random.Random
 
 /**
  * enhanced_mobs
@@ -31,32 +28,25 @@ class PlayerListener: Listener {
     companion object {
         private val uuid: UUID = UUID.fromString("7e993d80-af92-40ed-9097-101b28ae76ca")
         private val healthModifier = AttributeModifier(uuid, "Player spawn bonus", 20.0, ADD_NUMBER)
-        private val toughnessModifier = AttributeModifier(uuid, "Player spawn bonus", 8.0, ADD_NUMBER)
-        fun removeRespawnModifier(players: List<Player>) {
+        fun addPlayerModifier(players: List<Player>) {
             players.forEach {
-                it.getAttribute(GENERIC_MAX_HEALTH)?.removeModifier(healthModifier)
-                it.getAttribute(GENERIC_ARMOR_TOUGHNESS)?.removeModifier(toughnessModifier)
+                it.getAttribute(GENERIC_MAX_HEALTH)?.addModifierSafe(healthModifier)
+                val value = it.getAttribute(GENERIC_MAX_HEALTH)?.value ?: return@forEach
+                it.health *= value / 20
             }
         }
-    }
-
-    @EventHandler
-    fun onPlayerRespawn(event: PlayerRespawnEvent) {
-        event.player.run {
-            // 添加重生增益
-            getAttribute(GENERIC_MAX_HEALTH)?.addModifierSafe(healthModifier)
-            getAttribute(GENERIC_ARMOR_TOUGHNESS)?.addModifierSafe(toughnessModifier)
-            effect(PotionEffectType.NIGHT_VISION, 0, 5 * 60 * 20)
+        fun removePlayerModifier(players: List<Player>) {
+            players.forEach {
+                it.getAttribute(GENERIC_MAX_HEALTH)?.removeModifier(healthModifier)
+            }
         }
     }
 
     @EventHandler
     fun onArmorDamage(event: PlayerItemDamageEvent) {
         val armorSlots = listOf(EquipmentSlot.HEAD, EquipmentSlot.CHEST, EquipmentSlot.LEGS, EquipmentSlot.FEET)
-        if (event.item.type.equipmentSlot in armorSlots && Random.nextDouble() >= 0.6) {
-            event.isCancelled = true
-        }
-        if (event.item.type == Material.SHIELD && Random.nextDouble() >= 0.5) {
+        val type = event.item.type
+        if ((type.equipmentSlot in armorSlots || type == Material.SHIELD) && chance(0.8)) {
             event.isCancelled = true
         }
     }

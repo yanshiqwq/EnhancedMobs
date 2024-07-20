@@ -17,11 +17,11 @@ class TypeManager {
         fun getRandomTypeKey(entityType: EntityType, weightMapGroupList: List<WeightDslBuilder.WeightMapGroup>): TypeKey {
             val weightMap = weightMapGroupList
                 .filter { entityType in it.types }
-                .flatMap { it.weightList.toMap().entries }
-                .associate { it.value to it.key }
+                .flatMap { it.weightList.map().entries }
+                .associate { it.key to it.value }
             weightMap.ifEmpty { return TypeKey.subDefault }
-            val weightList = WeightDslBuilder.WeightList(weightMap)
-            return TypeKey(weightList.getRandom())
+            val weightList = WeightDslBuilder.WeightedRandom.create(weightMap)
+            return TypeKey(weightList.nextItem())
         }
     }
 

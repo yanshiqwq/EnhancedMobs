@@ -48,11 +48,15 @@ class MobInitListener: Listener {
     }
 
     @EventHandler
-    fun onEnhancedMobLoad(event: EntityTargetLivingEntityEvent){
+    fun onEnhancedMobReload(event: EntityTargetLivingEntityEvent){
         val entity = event.entity as? Mob ?: return
         entity.run {
             // 仅在有 EnhancedMob 数据且实体未标记于 manager 时继续执行
-            if (!hasEnhancedMobData() || isEnhancedMob()) return
+            if (isEnhancedMob()) return
+            if (!hasEnhancedMobData()) {
+                initEnhancedMob()
+                return
+            }
 
             // 从 container 中恢复数据并添加至 manager
             val multiplier = persistentDataContainer.get(EnhancedMob.multiplierKey, PersistentDataType.DOUBLE) ?: return
@@ -80,12 +84,6 @@ class MobInitListener: Listener {
         if (!entity.isEnhancedMob()) entity.initEnhancedMob()
     }
 
-    @EventHandler
-    fun onEntityTarget(event: EntityTargetEvent) {
-        val entity = event.entity as? Mob ?: return
-        if (!entity.isEnhancedMob()) entity.initEnhancedMob()
-    }
-
     private fun Mob.initEnhancedMob() {
         // 获取与玩家等级相关的乘数
         val playerLevelKey = NamespacedKey(instance!!, "nearest_player_level")
@@ -103,17 +101,15 @@ class MobInitListener: Listener {
             in 30..40 -> 1.0 // 35 级
             in 40..50 -> 1.4 // 45 级
             in 50..60 -> 1.85 // 56 级
-            in 60..70 -> 2.4 // 64 级
-            in 70..80 -> 3.5 // 75 级
-            in 80..Int.MAX_VALUE -> 4.2 // 82 级
+            in 60..80 -> 2.4 // 64 级
+            in 80..90 -> 3.5 // 75 级
+            in 90..Int.MAX_VALUE -> 4.2 // 82 级
             else -> 0.0
         } * worldDifficultyMultiplier
 
         // 设为 EnhancedMob
         val mainBoostTypeKey = Config.getMainTypeKey(type)
-        val subBoostTypeKey = Config.getWeightMap()?.let{
-            getRandomTypeKey(type, it)
-        }
+        val subBoostTypeKey = getRandomTypeKey(type, Config.getWeightMap())
         if (entitySpawnReason == CreatureSpawnEvent.SpawnReason.CUSTOM) return // 忽略 /enhancedmobs 生成的情况
         val mob = asEnhancedMob(multiplier, mainBoostTypeKey, subBoostTypeKey)
         instance!!.mobManager.register(uniqueId, mob)

@@ -34,12 +34,12 @@ object MainPack: PackManager.PackObj {
         type("zombie") {
             attribute(GENERIC_MAX_HEALTH, MULTIPLY_SCALAR_1, DoubleFactor { 0.52 * it })
             attribute(GENERIC_MOVEMENT_SPEED, MULTIPLY_SCALAR_1, logFormula(0.15))
-            attribute(GENERIC_ATTACK_DAMAGE, MULTIPLY_SCALAR_1, logFormula(2.0))
+            attribute(GENERIC_ATTACK_DAMAGE, MULTIPLY_SCALAR_1, logFormula(1.0))
             attribute(GENERIC_KNOCKBACK_RESISTANCE, ADD_NUMBER, DoubleFactor { 0.035 * it })
         }
         type("skeleton") {
             attribute(GENERIC_MAX_HEALTH, MULTIPLY_SCALAR_1, DoubleFactor { 0.44 * it })
-            attribute(GENERIC_ATTACK_DAMAGE, MULTIPLY_SCALAR_1, logFormula(2.5))
+            attribute(GENERIC_ATTACK_DAMAGE, MULTIPLY_SCALAR_1, logFormula(1.25))
             attribute(GENERIC_MOVEMENT_SPEED, MULTIPLY_SCALAR_1, logFormula(0.2))
             item(EquipmentSlot.HAND, Material.BOW) {
                 enchant(Enchantment.ARROW_KNOCKBACK, logFormula(1.0).asIntFactor())
@@ -48,7 +48,7 @@ object MainPack: PackManager.PackObj {
         type("spider") {
             attribute(GENERIC_MAX_HEALTH, MULTIPLY_SCALAR_1, DoubleFactor { 0.85 * it })
             attribute(GENERIC_MOVEMENT_SPEED, MULTIPLY_SCALAR_1, logFormula(0.25))
-            attribute(GENERIC_ATTACK_DAMAGE, MULTIPLY_SCALAR_1, logFormula(2.0))
+            attribute(GENERIC_ATTACK_DAMAGE, MULTIPLY_SCALAR_1, logFormula(1.0))
         }
         type("creeper") {
             attribute(GENERIC_MAX_HEALTH, MULTIPLY_SCALAR_1, DoubleFactor { 0.44 * it })
@@ -142,7 +142,7 @@ object MainPack: PackManager.PackObj {
                             }, 1)
                         }
                     }
-                }.getRandom().run() // TODO: weightList中Runnable不触发
+                }.nextItem().run() // TODO: weightList中Runnable不触发
                 lingering().byChance(
                         DoubleFactor(0.0..0.5) { 0.15 + it * 0.05 }.value(multiplier)
                 )?.run()
@@ -151,7 +151,7 @@ object MainPack: PackManager.PackObj {
         type("pillager") {
             attribute(GENERIC_MAX_HEALTH, MULTIPLY_SCALAR_1, DoubleFactor { 0.5 * it })
             attribute(GENERIC_MOVEMENT_SPEED, MULTIPLY_SCALAR_1, logFormula(0.2))
-            attribute(GENERIC_ATTACK_DAMAGE, MULTIPLY_SCALAR_1, logFormula(1.5))
+            attribute(GENERIC_ATTACK_DAMAGE, MULTIPLY_SCALAR_1, logFormula(1.0))
             weightList {
                 weight(Runnable { item(EquipmentSlot.OFF_HAND, potionItem(Material.TIPPED_ARROW, PotionType.WEAKNESS)) }, 2)
                 weight(Runnable { item(EquipmentSlot.OFF_HAND, ItemStack(Material.SPECTRAL_ARROW, 64)) }, 1)
@@ -160,7 +160,7 @@ object MainPack: PackManager.PackObj {
                     weight(Runnable { item(EquipmentSlot.OFF_HAND, potionItem(Material.TIPPED_ARROW, PotionType.STRONG_SLOWNESS)) }, 1)
                     weight(Runnable { item(EquipmentSlot.OFF_HAND, potionItem(Material.TIPPED_ARROW, PotionType.INSTANT_DAMAGE)) }, 1)
                 }
-            }.getRandom().byChance(
+            }.nextItem().byChance(
                 DoubleFactor(0.0..0.85) { 0.2 * it }.value(multiplier)
             )?.run()
         }

@@ -1,7 +1,6 @@
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
-//    id("com.github.johnrengelman.shadow") version "7.0.0"
     kotlin("jvm") version "1.9.20"
     application
 }
@@ -27,11 +26,6 @@ java {
 }
 
 tasks {
-//    shadowJar {
-//        archiveBaseName.set(project.name)
-//        version = project.version
-//        application.mainClass.set("cn.yanshiqwq.enhanced_mobs.Main")
-//    }
     withType<JavaCompile> {
         options.encoding = "UTF-8"
     }

@@ -1,5 +1,6 @@
 package cn.yanshiqwq.enhanced_mobs.dsl
 
+import cn.yanshiqwq.enhanced_mobs.Utils.chance
 import org.bukkit.entity.EntityType
 import kotlin.random.Random
 
@@ -11,35 +12,44 @@ import kotlin.random.Random
  * @since 2024/6/30 上午2:16
  */
 class WeightDslBuilder {
-    class WeightList<T : Any>(private val weights: MutableList<Weight<T>> = mutableListOf()) {
-        constructor(map: Map<T, Int>): this(map.entries.map { Weight<T>(it.key, it.value) }.toMutableList())
-
-        data class Weight<T>(val key: T, val weight: Int)
-        fun weight(key: T, weight: Int) = weights.add(Weight(key, weight))
-        fun weight(vararg entry: Pair<T, Int>) = entry.toMap().forEach {
-            weight(it.key, it.value)
+    class WeightedRandom<T> private constructor(private var items: MutableMap<T, Int>) {
+        companion object {
+            fun <T> create(items: Map<T, Int>): WeightedRandom<T> = WeightedRandom(items.toMutableMap())
+            fun <T> create(): WeightedRandom<T> = WeightedRandom(mutableMapOf())
         }
 
-        fun getRandom(): T {
-            val totalWeight = weights.sumOf { it.weight }
-            if (totalWeight <= 0) throw IllegalStateException("totalWeight must be positive")
-            val rand = Random.nextInt(totalWeight)
-            var cumulativeWeight = 0
-            for ((key, weight) in weights) {
-                cumulativeWeight += weight
-                if (rand <= cumulativeWeight) {
-                    return key
+        private var totalWeight: Int = calculateTotalWeight()
+
+        private fun calculateTotalWeight(): Int {
+            return items.toList().sumOf { it.second }
+        }
+
+        fun addItem(item: T, weight: Int) {
+            items[item] = weight
+            totalWeight += weight
+        }
+
+        fun nextItem(): T {
+            if (items.isEmpty()) throw IllegalStateException("Cannot select from an empty list")
+
+            var randomValue = Random.nextInt(totalWeight) + 1
+            for ((item, weight) in items) {
+                randomValue -= weight
+                if (randomValue <= 0) {
+                    return item
                 }
             }
-            throw IllegalStateException("Unknown error in getRandomByWeightList()")
+
+            throw IllegalStateException("Should never reach here")
         }
 
-        fun toMap() = weights.associate { it.weight to it.key }
+         fun map() = items.toMap()
     }
+
 
     data class WeightMapGroup(
         val types: List<EntityType>,
-        val weightList: WeightList<String>
+        val weightList: WeightedRandom<String>
     )
 
     fun loadWeightMap(block: EntityPropertiesBuilder.() -> Unit): List<WeightMapGroup> {
@@ -50,10 +60,9 @@ class WeightDslBuilder {
 
     class EntityPropertiesBuilder {
         val properties = mutableListOf<WeightMapGroup>()
-        fun entity(vararg types: EntityType, block: WeightList<String>.() -> Unit) {
-            val props = WeightList<String>()
-            props.block()
-            properties.add(WeightMapGroup(types.asList(), props))
-        }
+        fun entity(types: List<EntityType>, items: Map<String, Int>, chance: Double = 0.08) =
+            if (chance(chance))
+                properties.add(WeightMapGroup(types, WeightedRandom.create(items)))
+            else null
     }
 }

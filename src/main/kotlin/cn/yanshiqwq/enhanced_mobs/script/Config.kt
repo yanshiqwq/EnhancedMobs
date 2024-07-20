@@ -1,7 +1,6 @@
 package cn.yanshiqwq.enhanced_mobs.script
 
 import cn.yanshiqwq.enhanced_mobs.EnhancedMob
-import cn.yanshiqwq.enhanced_mobs.Utils.byChance
 import cn.yanshiqwq.enhanced_mobs.api.MobApi.baseAttribute
 import cn.yanshiqwq.enhanced_mobs.data.Tags
 import cn.yanshiqwq.enhanced_mobs.dsl.WeightDslBuilder
@@ -72,49 +71,53 @@ object Config {
 
             is Vex -> {
                 baseAttribute(GENERIC_MAX_HEALTH, 5.0)
-                baseAttribute(GENERIC_ATTACK_DAMAGE, 2.0)
+                baseAttribute(GENERIC_ATTACK_DAMAGE, 1.0)
             }
         }
     }
     private val block: WeightDslBuilder.EntityPropertiesBuilder.() -> Unit = {
-        entity(EntityType.ZOMBIE, EntityType.ZOMBIE_VILLAGER, EntityType.HUSK, EntityType.DROWNED, EntityType.ZOMBIFIED_PIGLIN) {
-            weight(
+        entity(
+            types = listOf(EntityType.ZOMBIE, EntityType.ZOMBIE_VILLAGER, EntityType.HUSK, EntityType.DROWNED, EntityType.ZOMBIFIED_PIGLIN),
+            items = mapOf(
                 "extend.zombie_leader" to 1,
                 "extend.strength_cloud" to 1,
                 "extend.totem" to 3,
-                "extend.tnt" to 3,
-                "extend.lava" to 3,
-                "extend.flint_and_steel" to 3,
-                "extend.ender_pearl" to 3,
-                "extend.anvil" to 2,
-                "extend.fire_charge" to 3,
-                "extend.shield" to 1
+                "extend.tnt" to 1,
+                "extend.lava" to 1,
+                "extend.flint_and_steel" to 1,
+                "extend.ender_pearl" to 1,
+                "extend.anvil" to 1,
+                "extend.fire_charge" to 1,
+                "extend.shield" to 2
             )
-        }
-        entity(EntityType.DROWNED) {
-            weight(
+        )
+        entity(
+            types = listOf(EntityType.DROWNED),
+            items = mapOf(
                 "extend.reduce_air" to 10
             )
-        }
-        entity(EntityType.SKELETON, EntityType.STRAY, EntityType.WITHER_SKELETON) {
-            weight(
+        )
+        entity(
+            types = listOf(EntityType.SKELETON, EntityType.STRAY, EntityType.WITHER_SKELETON),
+            items = mapOf(
                 "extend.iron_sword" to 5,
-                "extend.frost" to 2
+                "extend.frost" to 1
             )
-        }
-        entity(EntityType.SPIDER, EntityType.CAVE_SPIDER) {
-            weight(
+        )
+        entity(
+            types = listOf(EntityType.SPIDER, EntityType.CAVE_SPIDER),
+            items = mapOf(
                 "extend.spider_cobweb" to 2
             )
-        }
-        entity(EntityType.CREEPER) {
-            weight(
+        )
+        entity(
+            types = listOf(EntityType.CREEPER),
+            items = mapOf(
                 "extend.creeper_charged" to 2
             )
-        }
+        )
     }
-    private const val BOOST_CHANCE = 0.1
-    fun getWeightMap() = WeightDslBuilder().loadWeightMap(block).byChance(BOOST_CHANCE)
+    fun getWeightMap() = WeightDslBuilder().loadWeightMap(block)
     fun getMainTypeKey(type: EntityType) = when (type) {
         in Tags.Entity.zombies -> TypeManager.TypeKey("vanilla", "zombie")
         in Tags.Entity.skeletons -> TypeManager.TypeKey("vanilla", "skeleton")

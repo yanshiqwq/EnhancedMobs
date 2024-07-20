@@ -7,11 +7,21 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="d5ee4be2-1981-48f1-8632-49b4c7636b94" name="更改" comment="调整 - 等级计算方式">
+    <list default="true" id="d5ee4be2-1981-48f1-8632-49b4c7636b94" name="更改" comment="重构 - 加权随机函数&#10;调整 - extend.ender_pearl 的最大生效范围从 24 改为 16&#10;调整 - mainBoost 的各类权重与基础概率&#10;修复 - 插件重载后玩家血量上限未正常增加&#10;新增 - 等级压制机制">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/kotlin/cn/yanshiqwq/enhanced_mobs/EnhancedMob.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/cn/yanshiqwq/enhanced_mobs/EnhancedMob.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build.gradle.kts" beforeDir="false" afterPath="$PROJECT_DIR$/build.gradle.kts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/settings.gradle.kts" beforeDir="false" afterPath="$PROJECT_DIR$/settings.gradle.kts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/cn/yanshiqwq/enhanced_mobs/Main.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/cn/yanshiqwq/enhanced_mobs/Main.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/cn/yanshiqwq/enhanced_mobs/Utils.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/cn/yanshiqwq/enhanced_mobs/Utils.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/cn/yanshiqwq/enhanced_mobs/dsl/WeightDslBuilder.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/cn/yanshiqwq/enhanced_mobs/dsl/WeightDslBuilder.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/cn/yanshiqwq/enhanced_mobs/listeners/EntityLevelListener.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/cn/yanshiqwq/enhanced_mobs/listeners/EntityLevelListener.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/cn/yanshiqwq/enhanced_mobs/listeners/MobEventListener.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/cn/yanshiqwq/enhanced_mobs/listeners/MobEventListener.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/kotlin/cn/yanshiqwq/enhanced_mobs/listeners/MobInitListener.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/cn/yanshiqwq/enhanced_mobs/listeners/MobInitListener.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/cn/yanshiqwq/enhanced_mobs/listeners/PlayerListener.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/cn/yanshiqwq/enhanced_mobs/listeners/PlayerListener.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/cn/yanshiqwq/enhanced_mobs/managers/TypeManager.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/cn/yanshiqwq/enhanced_mobs/managers/TypeManager.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/kotlin/cn/yanshiqwq/enhanced_mobs/script/Config.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/cn/yanshiqwq/enhanced_mobs/script/Config.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/cn/yanshiqwq/enhanced_mobs/script/MainPack.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/cn/yanshiqwq/enhanced_mobs/script/MainPack.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/cn/yanshiqwq/enhanced_mobs/script/SubPack.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/cn/yanshiqwq/enhanced_mobs/script/SubPack.kt" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -578,7 +588,15 @@
       <option name="project" value="LOCAL" />
       <updated>1721374724975</updated>
     </task>
-    <option name="localTasksCounter" value="40" />
+    <task id="LOCAL-00040" summary="调整 - 下调猪灵蛮兵的基础伤害&#10;修复 - /enhancedmobs 指令生成的生物未被附加变种增强效果">
+      <option name="closed" value="true" />
+      <created>1721398457564</created>
+      <option name="number" value="00040" />
+      <option name="presentableId" value="LOCAL-00040" />
+      <option name="project" value="LOCAL" />
+      <updated>1721398457564</updated>
+    </task>
+    <option name="localTasksCounter" value="41" />
     <servers />
   </component>
   <component name="Vcs.Log.History.Properties">
@@ -633,9 +651,6 @@
   </component>
   <component name="VcsManagerConfiguration">
     <option name="ADD_EXTERNAL_FILES_SILENTLY" value="true" />
-    <MESSAGE value="重构Pack类结构&#10;新增ListenerAPI&#10;新增7个使用了ListenerAPI的示例type (位于extendPack)&#10;新增右键发射火焰弹功能&#10;&#10;暂时删除MobManager的保存功能 (EnhancedMob无法Serialize)" />
-    <MESSAGE value="格式化代码" />
-    <MESSAGE value="优化代码结构" />
     <MESSAGE value="优化代码结构，修改指令格式" />
     <MESSAGE value="修复查询非LivingEntity的实体属性会报错的问题" />
     <MESSAGE value="修复非创造模式玩家使用火球物品不会减少的问题" />
@@ -658,7 +673,10 @@
     <MESSAGE value="修复 - EnhancedMob 在被自然移除后未及时从 manager 类移除导致的内存泄漏" />
     <MESSAGE value="修复 - EnhancedMob 在被自然移除后未及时从 manager 类移除导致的内存泄漏&#10;调整 - 部分生物的基础攻击力下调&#10;调整 - 限制怪物的等级在 0 ~ 100 之间" />
     <MESSAGE value="调整 - 等级计算方式" />
-    <option name="LAST_COMMIT_MESSAGE" value="调整 - 等级计算方式" />
+    <MESSAGE value="调整 - 下调猪灵蛮兵的基础伤害&#10;修复 - /enhancedmobs 指令生成的生物未被附加变种增强效果" />
+    <MESSAGE value="重构 - 加权随机函数&#10;调整 - extend.ender_pearl 的最大生效范围从 24 改为 16&#10;调整 - mainBoost 的各类权重与基础概率" />
+    <MESSAGE value="重构 - 加权随机函数&#10;调整 - extend.ender_pearl 的最大生效范围从 24 改为 16&#10;调整 - mainBoost 的各类权重与基础概率&#10;修复 - 插件重载后玩家血量上限未正常增加&#10;新增 - 等级压制机制" />
+    <option name="LAST_COMMIT_MESSAGE" value="重构 - 加权随机函数&#10;调整 - extend.ender_pearl 的最大生效范围从 24 改为 16&#10;调整 - mainBoost 的各类权重与基础概率&#10;修复 - 插件重载后玩家血量上限未正常增加&#10;新增 - 等级压制机制" />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />

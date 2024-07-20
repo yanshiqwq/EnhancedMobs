@@ -1,7 +1,7 @@
 package cn.yanshiqwq.enhanced_mobs
 
 import cn.yanshiqwq.enhanced_mobs.Main.Companion.instance
-import cn.yanshiqwq.enhanced_mobs.dsl.WeightDslBuilder.WeightList
+import cn.yanshiqwq.enhanced_mobs.dsl.WeightDslBuilder
 import org.bukkit.*
 import org.bukkit.attribute.Attribute
 import org.bukkit.attribute.AttributeInstance
@@ -19,10 +19,15 @@ import kotlin.random.Random
  */
 @Suppress("unused")
 object Utils {
-    fun <T: Any> weightList(block: WeightList<T>.() -> Unit): WeightList<T> {
-        val weightList = WeightList<T>()
-        weightList.block()
-        return weightList
+    fun <T: Any> weightList(block: WeightListDsl<T>.() -> Unit): WeightDslBuilder.WeightedRandom<T> {
+        val random = WeightDslBuilder.WeightedRandom.create<T>()
+        val dsl = WeightListDsl(random)
+        dsl.block()
+        return dsl.random
+    }
+
+    data class WeightListDsl<T: Any>(val random: WeightDslBuilder.WeightedRandom<T>) {
+        fun weight(item: T, weight: Int) = random.addItem(item, weight)
     }
 
     fun <T: Any> T.byChance(chance: Double) = if (Random.nextDouble() <= chance) this else null

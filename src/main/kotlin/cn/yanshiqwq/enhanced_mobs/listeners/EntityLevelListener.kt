@@ -50,6 +50,47 @@ class EntityLevelListener : Listener {
     private val splitter = Component.text(" | ", NamedTextColor.GRAY)
     private val levelKey = NamespacedKey(instance!!, "level")
 
+    companion object {
+        private fun LivingEntity.getLeveledNameComponent(level: Int): TextComponent {
+            // 设定等级颜色
+            val levelColor = when (level) {
+                in 10..50 -> NamedTextColor.GREEN
+                in 50..70 -> NamedTextColor.YELLOW
+                in 70..80 -> NamedTextColor.RED
+                in 80..90 -> NamedTextColor.DARK_PURPLE
+                in 90..Int.MAX_VALUE -> NamedTextColor.DARK_RED
+                else -> NamedTextColor.GRAY
+            }
+            val nameColor = if (level >= 10) NamedTextColor.WHITE else NamedTextColor.GRAY
+
+            // 设定发光颜色
+            val teamName = when (level) {
+                in 85..90 -> MobInitListener.MobTeam.STRENGTH.id
+                in 90..95 -> MobInitListener.MobTeam.ENHANCED.id
+                in 95..Int.MAX_VALUE -> MobInitListener.MobTeam.BOSS.id
+                else -> null
+            }
+            if (teamName != null) {
+                getTeam(teamName)?.addEntity(this)
+                isGlowing = true
+            }
+
+            // 返回等级信息
+            val typeKey = type.translationKey()
+            return Component.text("[", NamedTextColor.GRAY)
+                .append(Component.text("Lv.$level", levelColor))
+                .append(Component.text("] ", NamedTextColor.GRAY))
+                .append(Component.translatable(typeKey, nameColor))
+        }
+
+        fun EnhancedMob.getCommonLevel() = when (multiplier) {
+            in -1.0..0.0 -> 10 * multiplier + 10
+            in 0.0..2.0 -> 25 * multiplier + 10
+            in 2.0..EnhancedMob.MULTIPLIER_MAX_VALUE -> 10 * multiplier + 40
+            else -> 0.0
+        }.toInt().coerceIn(0..100)
+    }
+
     @EventHandler(priority = EventPriority.LOWEST)
     fun onEntityTarget(event: EntityTargetEvent) {
         val mob = (if (event.entity.isEnhancedMob()) instance!!.mobManager.get(event.entity as Mob) else return) ?: return
@@ -120,44 +161,4 @@ class EntityLevelListener : Listener {
             .append(speedComponent)
         player.sendMessage(component)
     }
-
-    private fun LivingEntity.getLeveledNameComponent(level: Int): TextComponent {
-        // 设定等级颜色
-        val levelColor = when (level) {
-            in 10..50 -> NamedTextColor.GREEN
-            in 50..70 -> NamedTextColor.YELLOW
-            in 70..80 -> NamedTextColor.RED
-            in 80..90 -> NamedTextColor.DARK_PURPLE
-            in 90..Int.MAX_VALUE -> NamedTextColor.DARK_RED
-            else -> NamedTextColor.GRAY
-        }
-        val nameColor = if (level >= 10) NamedTextColor.WHITE else NamedTextColor.GRAY
-
-        // 设定发光颜色
-        val teamName = when (level) {
-            in 85..90 -> MobInitListener.MobTeam.STRENGTH.id
-            in 90..95 -> MobInitListener.MobTeam.ENHANCED.id
-            in 95..Int.MAX_VALUE -> MobInitListener.MobTeam.BOSS.id
-            else -> null
-        }
-        if (teamName != null) {
-            getTeam(teamName)?.addEntity(this)
-            isGlowing = true
-        }
-
-        // 返回等级信息
-        val typeKey = type.translationKey()
-        return Component.text("[", NamedTextColor.GRAY)
-            .append(Component.text("Lv.$level", levelColor))
-            .append(Component.text("] ", NamedTextColor.GRAY))
-            .append(Component.translatable(typeKey, nameColor))
-    }
-
-    private fun EnhancedMob.getCommonLevel() = when (multiplier) {
-        in -1.0..0.0 -> 10 * multiplier + 10
-        in 0.0..2.0 -> 25 * multiplier + 10
-        in 2.0..6.0 -> 10 * multiplier + 40
-        in 6.0..EnhancedMob.MULTIPLIER_MAX_VALUE -> 100.0
-        else -> 0.0
-    }.coerceAtLeast(0.0).toInt()
 }
