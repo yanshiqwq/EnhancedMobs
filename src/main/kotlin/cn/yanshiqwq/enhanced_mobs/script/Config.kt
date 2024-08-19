@@ -18,63 +18,7 @@ import org.bukkit.potion.PotionEffectType
  * @since 2024/6/30 下午4:17
  */
 object Config {
-    fun EnhancedMob.applyVariantBoost() {
-        when (this.entity) {
-            is Stray, is WitherSkeleton -> {
-                baseAttribute(GENERIC_MAX_HEALTH, 24.0)
-                baseAttribute(GENERIC_ARMOR, 2.0)
-                baseAttribute(GENERIC_ATTACK_DAMAGE, 4.0)
-                baseAttribute(GENERIC_FOLLOW_RANGE, 24.0)
-            }
 
-            is Husk, is Drowned -> {
-                baseAttribute(GENERIC_MAX_HEALTH, 24.0)
-                baseAttribute(GENERIC_ARMOR, 4.0)
-                baseAttribute(GENERIC_ATTACK_DAMAGE, 4.0)
-                baseAttribute(GENERIC_FOLLOW_RANGE, 42.0)
-            }
-
-            is Creeper -> if (entity.isPowered) {
-                baseAttribute(GENERIC_MAX_HEALTH, 24.0)
-                baseAttribute(GENERIC_ARMOR, 6.0)
-                baseAttribute(GENERIC_FOLLOW_RANGE, 24.0)
-                baseAttribute(GENERIC_KNOCKBACK_RESISTANCE, 0.35)
-            }
-
-            is Giant -> {
-                baseAttribute(GENERIC_MAX_HEALTH, 196.0)
-                baseAttribute(GENERIC_ARMOR, 6.0)
-                baseAttribute(GENERIC_ATTACK_DAMAGE, 13.0)
-                baseAttribute(GENERIC_MOVEMENT_SPEED, 0.4)
-                baseAttribute(GENERIC_FOLLOW_RANGE, 128.0)
-                baseAttribute(GENERIC_KNOCKBACK_RESISTANCE, 0.65)
-                baseAttribute(ZOMBIE_SPAWN_REINFORCEMENTS, 0.65)
-                entity.addPotionEffect(PotionEffect(PotionEffectType.JUMP, Int.MAX_VALUE, 3, true, false))
-            }
-
-            is Piglin -> {
-                baseAttribute(GENERIC_ARMOR, 2.0)
-            }
-
-            is PiglinBrute -> {
-                baseAttribute(GENERIC_MAX_HEALTH, 48.0)
-                baseAttribute(GENERIC_ARMOR, 4.0)
-                baseAttribute(GENERIC_ATTACK_KNOCKBACK, 0.35)
-                baseAttribute(GENERIC_ATTACK_DAMAGE, -1.0)
-                baseAttribute(GENERIC_KNOCKBACK_RESISTANCE, 0.35)
-                entity.isImmuneToZombification = true
-            }
-
-            is Vindicator -> baseAttribute(GENERIC_ATTACK_DAMAGE, -2.0)
-
-            is Ravager -> baseAttribute(GENERIC_ATTACK_DAMAGE, 7.0)
-
-            is Vex -> {
-                baseAttribute(GENERIC_MAX_HEALTH, 5.0)
-                baseAttribute(GENERIC_ATTACK_DAMAGE, 1.0)
-            }
-        }
-    }
     private val block: WeightDslBuilder.EntityPropertiesBuilder.() -> Unit = {
         entity(
             types = listOf(EntityType.ZOMBIE, EntityType.ZOMBIE_VILLAGER, EntityType.HUSK, EntityType.DROWNED, EntityType.ZOMBIFIED_PIGLIN),
@@ -89,32 +33,29 @@ object Config {
                 "extend.anvil" to 1,
                 "extend.fire_charge" to 1,
                 "extend.shield" to 2
-            )
+            ),
+            chance = 0.1
         )
         entity(
             types = listOf(EntityType.DROWNED),
             items = mapOf(
-                "extend.reduce_air" to 10
-            )
+                "extend.reduce_air" to 1
+            ),
+            chance = 0.1
         )
         entity(
             types = listOf(EntityType.SKELETON, EntityType.STRAY, EntityType.WITHER_SKELETON),
             items = mapOf(
-                "extend.iron_sword" to 5,
                 "extend.frost" to 1
-            )
+            ),
+            chance = 0.02
         )
         entity(
             types = listOf(EntityType.SPIDER, EntityType.CAVE_SPIDER),
             items = mapOf(
-                "extend.spider_cobweb" to 2
-            )
-        )
-        entity(
-            types = listOf(EntityType.CREEPER),
-            items = mapOf(
-                "extend.creeper_charged" to 2
-            )
+                "extend.spider_cobweb" to 1
+            ),
+            chance = 0.02
         )
     }
     fun getWeightMap() = WeightDslBuilder().loadWeightMap(block)

@@ -2,12 +2,16 @@ package cn.yanshiqwq.enhanced_mobs.commands
 
 import cn.yanshiqwq.enhanced_mobs.EnhancedMob.Companion.asEnhancedMob
 import cn.yanshiqwq.enhanced_mobs.Main
+import cn.yanshiqwq.enhanced_mobs.Utils.addModifier
 import cn.yanshiqwq.enhanced_mobs.managers.PackManager
 import cn.yanshiqwq.enhanced_mobs.managers.TypeManager
 import cn.yanshiqwq.enhanced_mobs.script.Config.getMainTypeKey
 import net.kyori.adventure.text.Component
 import net.kyori.adventure.text.format.NamedTextColor
 import org.bukkit.Location
+import org.bukkit.attribute.Attribute
+import org.bukkit.attribute.AttributeModifier
+import org.bukkit.attribute.AttributeModifier.Operation
 import org.bukkit.command.Command
 import org.bukkit.command.CommandExecutor
 import org.bukkit.command.CommandSender
@@ -37,7 +41,7 @@ class EnhancedMobsExecutor : CommandExecutor {
 
         // 检查命令参数数量
         if (args == null || args.size < 3) {
-            sender.sendMessage(prefix.append(Component.text("用法: /enhancedmobs spawn <怪物类型> <主强化类型> <次强化类型> [怪物强度] [坐标]", NamedTextColor.GREEN)))
+            sender.sendMessage(prefix.append(Component.text("用法: /enhancedmobs spawn <怪物类型> <主强化类型> <次强化类型> [怪物强度] [怪物生命值倍率] [坐标]", NamedTextColor.GREEN)))
             return true
         }
 
@@ -83,11 +87,22 @@ class EnhancedMobsExecutor : CommandExecutor {
             }
         } else 0.0
 
+        // 解析生命值倍率
+        val healthMultiplier = if (args.size >= 6) {
+            val multiplierArg = args[5]
+            try {
+                multiplierArg.toDouble()
+            } catch (e: NumberFormatException) {
+                sender.sendMessage(prefix.append(Component.text("无效的怪物生命值倍率 \"$multiplierArg\" ！", NamedTextColor.RED)))
+                return true
+            }
+        } else 0.0
+
         // 解析坐标参数
-        val location: Location = if (args.size >= 8) {
-            val xArg = args[5]
-            val yArg = args[6]
-            val zArg = args[7]
+        val location: Location = if (args.size >= 9) {
+            val xArg = args[6]
+            val yArg = args[7]
+            val zArg = args[8]
             try {
                 val x = xArg.toDouble()
                 val y = yArg.toDouble()
@@ -101,6 +116,8 @@ class EnhancedMobsExecutor : CommandExecutor {
 
         // 生成实体
         val entity: Mob = sender.world.spawnEntity(location, entityType, CreatureSpawnEvent.SpawnReason.CUSTOM) as Mob
+        val healthModifier = AttributeModifier(UUID.fromString("9151f301-e4b7-4545-9e55-934084902af4"), "EnhancedMobs Health Multiplier", healthMultiplier, Operation.MULTIPLY_SCALAR_1)
+        entity.addModifier(Attribute.GENERIC_MAX_HEALTH, healthModifier)
         entity.asEnhancedMob(multiplier, mainBoostTypeKey, subBoostTypeKey)
 
         val percent = String.format("${if (multiplier >= 0.0) "+" else ""}%.2f", multiplier * 100)

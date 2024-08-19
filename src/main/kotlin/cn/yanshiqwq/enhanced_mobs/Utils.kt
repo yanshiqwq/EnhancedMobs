@@ -38,7 +38,7 @@ object Utils {
     }.getOrNull()
 
     fun AttributeInstance.addModifierSafe(modifier: AttributeModifier) = try {
-        addModifier(modifier)
+        if (!modifiers.contains(modifier)) addModifier(modifier) else null
     } catch (_: IllegalArgumentException) {}
 
     fun Boolean.Companion.all(vararg booleans: Boolean): Boolean = booleans.all { it }

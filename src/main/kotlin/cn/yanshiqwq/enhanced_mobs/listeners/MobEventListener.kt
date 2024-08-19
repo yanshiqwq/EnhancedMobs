@@ -3,21 +3,20 @@ package cn.yanshiqwq.enhanced_mobs.listeners
 import cn.yanshiqwq.enhanced_mobs.EnhancedMob.Companion.isEnhancedMob
 import cn.yanshiqwq.enhanced_mobs.Main.Companion.instance
 import cn.yanshiqwq.enhanced_mobs.api.TaskApi.cancelTask
-import cn.yanshiqwq.enhanced_mobs.listeners.EntityLevelListener.Companion.getCommonLevel
 import com.destroystokyo.paper.event.entity.EntityPathfindEvent
 import com.destroystokyo.paper.event.entity.EntityRemoveFromWorldEvent
 import io.papermc.paper.event.entity.EntityToggleSitEvent
-import org.bukkit.attribute.Attributable
-import org.bukkit.attribute.Attribute
 import org.bukkit.attribute.Attribute.GENERIC_ATTACK_DAMAGE
 import org.bukkit.enchantments.Enchantment
-import org.bukkit.entity.*
+import org.bukkit.entity.Arrow
+import org.bukkit.entity.LivingEntity
+import org.bukkit.entity.Player
 import org.bukkit.event.Event
 import org.bukkit.event.EventHandler
 import org.bukkit.event.Listener
 import org.bukkit.event.entity.*
+import org.checkerframework.checker.units.qual.t
 import java.util.*
-import kotlin.ConcurrentModificationException
 
 /**
  * enhanced_mobs
@@ -35,31 +34,6 @@ class MobEventListener : Listener {
         if (damager is Player || !damager.isEnhancedMob()) return
         val level = damager.equipment?.itemInMainHand?.enchantments?.get(Enchantment.ARROW_DAMAGE) ?: 0
         event.damage = 1.5 * (damager.getAttribute(GENERIC_ATTACK_DAMAGE)?.value ?: 0.0) * (1 + level * 0.25)
-    }
-
-    // 等级压制
-    @EventHandler
-    fun onEnhancedMobDamage(event: EntityDamageByEntityEvent) {
-        fun getLevel(entity: Entity): Int {
-            if (entity.isEnhancedMob()) {
-                val mob = instance!!.mobManager.get(entity as Mob)!!
-                return mob.getCommonLevel()
-            } else if (entity is Player){
-                return entity.level.coerceIn(0..80)
-            } else return 0
-        }
-        fun getArmorFactor(armor: Double) = when (armor) {
-            in 0.0..15.0 -> 0.3 * armor
-            in 15.0..30.0 -> 3.1 * armor - 42
-            else -> 0.0
-        }.toInt()
-
-        val damager = (event.damager as? Attributable ?: return)
-        val damagerArmor: Double = damager.getAttribute(Attribute.GENERIC_ARMOR)?.value ?: return
-        val damagerToughness: Double = damager.getAttribute(Attribute.GENERIC_ARMOR_TOUGHNESS)?.value ?: return
-        val damagerLevel: Int = getLevel(event.damager)
-        val entityLevel: Int = getLevel(event.entity)
-        event.damage *= (damagerLevel + 25) / (2 * (getArmorFactor(damagerArmor) + damagerToughness) + entityLevel + 25)
     }
 
     @EventHandler
@@ -81,14 +55,18 @@ class MobEventListener : Listener {
     private fun triggerListeners(event: Event) {
         try {
             for (mob in instance!!.mobManager.map().values) {
+                val start = System.nanoTime()
                 for (it in mob.listeners) {
                     if (it.eventClass != event::class) continue
                     it.function.invoke(event)
                 }
+                val time = (System.nanoTime() - start) / 1000000.0
+                if (time >= 1) instance!!.logger.warning("Mob ${mob.entity.name} (${mob.entity.uniqueId}) took ${time}ms !")
             }
         } catch (_: ConcurrentModificationException) {
+        } catch (_: IllegalArgumentException) {
         } catch (e: Exception) {
-            instance!!.logger.warning("An unexpected exception occurred while triggering skill.")
+            instance!!.logger.warning("An unexpected exception occurred while triggering skill")
             e.printStackTrace()
         }
     }

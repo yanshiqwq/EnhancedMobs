@@ -19,7 +19,6 @@ import org.bukkit.event.EventHandler
 import org.bukkit.event.Listener
 import org.bukkit.event.entity.CreatureSpawnEvent
 import org.bukkit.event.entity.EntitySpawnEvent
-import org.bukkit.event.entity.EntityTargetEvent
 import org.bukkit.event.entity.EntityTargetLivingEntityEvent
 import org.bukkit.event.server.ServerLoadEvent
 import org.bukkit.persistence.PersistentDataType
@@ -54,7 +53,7 @@ class MobInitListener: Listener {
             // 仅在有 EnhancedMob 数据且实体未标记于 manager 时继续执行
             if (isEnhancedMob()) return
             if (!hasEnhancedMobData()) {
-                initEnhancedMob()
+//                initEnhancedMob()
                 return
             }
 
@@ -78,11 +77,11 @@ class MobInitListener: Listener {
         }
     }
 
-    @EventHandler
-    fun onEntitySpawn(event: EntitySpawnEvent) {
-        val entity = event.entity as? Mob ?: return
-        if (!entity.isEnhancedMob()) entity.initEnhancedMob()
-    }
+//    @EventHandler
+//    fun onEntitySpawn(event: EntitySpawnEvent) {
+//        val entity = event.entity as? Mob ?: return
+//        if (!entity.isEnhancedMob()) entity.initEnhancedMob()
+//    }
 
     private fun Mob.initEnhancedMob() {
         // 获取与玩家等级相关的乘数
@@ -94,19 +93,26 @@ class MobInitListener: Listener {
         val worldDifficultyMultiplier = (world.difficulty.ordinal + 1) / 4 // 和平=0.25, 简单=0.5, 普通=0.75, 困难=1
 
         // 获取最终乘数
+//        val multiplier = when (playerLevel) {
+//            in 0..10 -> -0.2 // 8 级
+//            in 10..20 -> 0.25 // 16 级
+//            in 20..30 -> 0.55 // 23 级
+//            in 30..40 -> 1.0 // 35 级
+//            in 40..50 -> 1.4 // 45 级
+//            in 50..60 -> 1.85 // 56 级
+//            in 60..80 -> 2.4 // 64 级
+//            in 80..90 -> 3.5 // 75 级
+//            in 90..Int.MAX_VALUE -> 4.2 // 82 级
+//            else -> 0.0
+//        } * worldDifficultyMultiplier
         val multiplier = when (playerLevel) {
             in 0..10 -> -0.2 // 8 级
             in 10..20 -> 0.25 // 16 级
             in 20..30 -> 0.55 // 23 级
             in 30..40 -> 1.0 // 35 级
-            in 40..50 -> 1.4 // 45 级
-            in 50..60 -> 1.85 // 56 级
-            in 60..80 -> 2.4 // 64 级
-            in 80..90 -> 3.5 // 75 级
-            in 90..Int.MAX_VALUE -> 4.2 // 82 级
+            in 40..Int.MAX_VALUE -> 1.4 // 45 级
             else -> 0.0
         } * worldDifficultyMultiplier
-
         // 设为 EnhancedMob
         val mainBoostTypeKey = Config.getMainTypeKey(type)
         val subBoostTypeKey = getRandomTypeKey(type, Config.getWeightMap())

@@ -53,14 +53,15 @@ class EnhancedMobsCompleter : TabCompleter {
                         .map { it.value() }
                         .plus("none")
                 } // 次强化类型
-                5 -> completions.addAll(arrayOf("-0.5", "0.0", "1.0", "2.0")) // 怪物强度
-                in 6..8 -> {
+                5 -> completions.addAll(arrayOf("-0.2", "0.25", "0.55", "1.0", "1.4", "1.85", "2.4", "3.5", "4.2", "4.5", "4.7", "5.0", "5.2", "5.5")) // 怪物强度
+                6 -> completions.addAll(arrayOf("-0.5", "0.0", "1.0", "2.0")) // 怪物生命值倍率
+                in 7..9 -> {
                     if (sender is Player) { // 玩家坐标
                         val location = sender.location.toCenterLocation()
                         when (args.size) {
-                            6 -> completions.add(location.x.toString())
-                            7 -> completions.add(location.y.toString())
-                            8 -> completions.add(location.z.toString())
+                            7 -> completions.add(location.x.toString())
+                            8 -> completions.add(location.y.toString())
+                            9 -> completions.add(location.z.toString())
                         }
                     }
                 }

@@ -32,7 +32,7 @@ class PlayerListener: Listener {
             players.forEach {
                 it.getAttribute(GENERIC_MAX_HEALTH)?.addModifierSafe(healthModifier)
                 val value = it.getAttribute(GENERIC_MAX_HEALTH)?.value ?: return@forEach
-                it.health *= value / 20
+                it.health = (value / 20 * it.health).coerceAtMost(value)
             }
         }
         fun removePlayerModifier(players: List<Player>) {

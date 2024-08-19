@@ -32,23 +32,30 @@ import org.bukkit.potion.PotionType
 object MainPack: PackManager.PackObj {
     override fun get(): PackManager.Pack = pack("vanilla", PackManager.PackType.MAIN) {
         type("zombie") {
-            attribute(GENERIC_MAX_HEALTH, MULTIPLY_SCALAR_1, DoubleFactor { 0.52 * it })
+            attribute(GENERIC_MAX_HEALTH, MULTIPLY_SCALAR_1, DoubleFactor { 1.0 * it })
             attribute(GENERIC_MOVEMENT_SPEED, MULTIPLY_SCALAR_1, logFormula(0.15))
-            attribute(GENERIC_ATTACK_DAMAGE, MULTIPLY_SCALAR_1, logFormula(1.0))
+            attribute(GENERIC_ATTACK_DAMAGE, MULTIPLY_SCALAR_1, DoubleFactor { 0.8 * it })
             attribute(GENERIC_KNOCKBACK_RESISTANCE, ADD_NUMBER, DoubleFactor { 0.035 * it })
         }
         type("skeleton") {
-            attribute(GENERIC_MAX_HEALTH, MULTIPLY_SCALAR_1, DoubleFactor { 0.44 * it })
-            attribute(GENERIC_ATTACK_DAMAGE, MULTIPLY_SCALAR_1, logFormula(1.25))
-            attribute(GENERIC_MOVEMENT_SPEED, MULTIPLY_SCALAR_1, logFormula(0.2))
-            item(EquipmentSlot.HAND, Material.BOW) {
-                enchant(Enchantment.ARROW_KNOCKBACK, logFormula(1.0).asIntFactor())
-            }
+            attribute(GENERIC_MAX_HEALTH, MULTIPLY_SCALAR_1, DoubleFactor { 0.5 * it })
+            attribute(GENERIC_ATTACK_DAMAGE, MULTIPLY_SCALAR_1, DoubleFactor { 0.6 * it })
+            attribute(GENERIC_MOVEMENT_SPEED, MULTIPLY_SCALAR_1, logFormula(0.15))
+            weightList<Runnable> {
+                weight({
+                    item(EquipmentSlot.HAND, Material.BOW) {
+                        enchant(Enchantment.ARROW_KNOCKBACK, logFormula(0.5).asIntFactor())
+                    }
+                }, 1)
+                weight({
+                    item(EquipmentSlot.HAND, Material.AIR)
+                }, 1)
+            }.nextItem().run()
         }
         type("spider") {
             attribute(GENERIC_MAX_HEALTH, MULTIPLY_SCALAR_1, DoubleFactor { 0.85 * it })
             attribute(GENERIC_MOVEMENT_SPEED, MULTIPLY_SCALAR_1, logFormula(0.25))
-            attribute(GENERIC_ATTACK_DAMAGE, MULTIPLY_SCALAR_1, logFormula(1.0))
+            attribute(GENERIC_ATTACK_DAMAGE, MULTIPLY_SCALAR_1, DoubleFactor { 0.8 * it })
         }
         type("creeper") {
             attribute(GENERIC_MAX_HEALTH, MULTIPLY_SCALAR_1, DoubleFactor { 0.44 * it })
@@ -56,8 +63,8 @@ object MainPack: PackManager.PackObj {
             attribute(GENERIC_KNOCKBACK_RESISTANCE, MULTIPLY_SCALAR_1, DoubleFactor { 0.065 * it })
             property<Creeper> {
                 maxFuseTicks = IntFactor(15..32767) { 30 - 2 * it }.value(multiplier)
-                explosionRadius = IntFactor(0..8) { it + 3 }.value(multiplier)
-                isPowered = chance(0.065)
+                explosionRadius = IntFactor(0..5) { it + 3 }.value(multiplier)
+                isPowered = chance(0.035)
             }
         }
         type("witch") {
@@ -151,7 +158,7 @@ object MainPack: PackManager.PackObj {
         type("pillager") {
             attribute(GENERIC_MAX_HEALTH, MULTIPLY_SCALAR_1, DoubleFactor { 0.5 * it })
             attribute(GENERIC_MOVEMENT_SPEED, MULTIPLY_SCALAR_1, logFormula(0.2))
-            attribute(GENERIC_ATTACK_DAMAGE, MULTIPLY_SCALAR_1, logFormula(1.0))
+            attribute(GENERIC_ATTACK_DAMAGE, MULTIPLY_SCALAR_1, DoubleFactor { 0.6 * it })
             weightList {
                 weight(Runnable { item(EquipmentSlot.OFF_HAND, potionItem(Material.TIPPED_ARROW, PotionType.WEAKNESS)) }, 2)
                 weight(Runnable { item(EquipmentSlot.OFF_HAND, ItemStack(Material.SPECTRAL_ARROW, 64)) }, 1)
@@ -167,16 +174,16 @@ object MainPack: PackManager.PackObj {
         type("vindicator") {
             attribute(GENERIC_MAX_HEALTH, MULTIPLY_SCALAR_1, DoubleFactor { 0.5 * it })
             attribute(GENERIC_MOVEMENT_SPEED, MULTIPLY_SCALAR_1, logFormula(0.1))
-            attribute(GENERIC_ATTACK_DAMAGE, MULTIPLY_SCALAR_1, logFormula(1.2))
+            attribute(GENERIC_ATTACK_DAMAGE, MULTIPLY_SCALAR_1, DoubleFactor { 0.8 * it })
         }
         type("enderman") {
             attribute(GENERIC_MAX_HEALTH, MULTIPLY_SCALAR_1, DoubleFactor { 0.3 * it })
-            attribute(GENERIC_ATTACK_DAMAGE, MULTIPLY_SCALAR_1, logFormula(1.2))
+            attribute(GENERIC_ATTACK_DAMAGE, MULTIPLY_SCALAR_1, DoubleFactor { 0.8 * it })
         }
         type("fallback") {
             attribute(GENERIC_MAX_HEALTH, MULTIPLY_SCALAR_1, DoubleFactor { 0.44 * it })
             attribute(GENERIC_MOVEMENT_SPEED, MULTIPLY_SCALAR_1, logFormula(0.2))
-            attribute(GENERIC_ATTACK_DAMAGE, MULTIPLY_SCALAR_1, logFormula(1.5))
+            attribute(GENERIC_ATTACK_DAMAGE, MULTIPLY_SCALAR_1, DoubleFactor { 0.8 * it })
         }
     }
 }

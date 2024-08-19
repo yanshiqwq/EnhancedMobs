@@ -8,7 +8,6 @@ import cn.yanshiqwq.enhanced_mobs.Utils.percentHeal
 import cn.yanshiqwq.enhanced_mobs.api.ListenerApi
 import cn.yanshiqwq.enhanced_mobs.api.TaskApi
 import cn.yanshiqwq.enhanced_mobs.managers.TypeManager
-import cn.yanshiqwq.enhanced_mobs.script.Config.applyVariantBoost
 import org.bukkit.NamespacedKey
 import org.bukkit.entity.Entity
 import org.bukkit.entity.Mob
@@ -56,7 +55,6 @@ class EnhancedMob(val multiplier: Double, val entity: Mob) {
         fun Mob.asEnhancedMob(multiplier: Double, mainBoostTypeKey: TypeManager.TypeKey, subBoostTypeKey: TypeManager.TypeKey?, isReload: Boolean = true): EnhancedMob {
             val mob = EnhancedMob(multiplier, this)
             mob.boost(mainBoostTypeKey, subBoostTypeKey)
-            mob.applyVariantBoost()
             instance!!.mobManager.register(this.uniqueId, mob)
             if (isReload) percentHeal()
             return mob

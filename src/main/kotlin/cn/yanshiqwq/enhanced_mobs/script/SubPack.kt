@@ -55,17 +55,6 @@ object SubPack: PackManager.PackObj {
                 target.freeze(tick.toInt())
             }
         }
-        type("iron_sword") {
-            item(EquipmentSlot.HAND, Material.IRON_SWORD, dropChance = 0F) {
-                val meta = item.itemMeta ?: return@item
-                val modifier = AttributeModifier(
-                    UUID.fromString("8ee84e93-7c40-4159-8089-57a32907c432"), "Random spawn bonus", 2.0, ADD_NUMBER)
-                meta.addAttributeModifier(GENERIC_ATTACK_DAMAGE, modifier)
-                item.itemMeta = meta
-            }
-            attribute(GENERIC_MAX_HEALTH, MULTIPLY_SCALAR_1, DoubleFactor { 0.65 * it })
-            attribute(GENERIC_MOVEMENT_SPEED, MULTIPLY_SCALAR_1, logFormula(0.1))
-        }
 
         type("spider_cobweb") {
             itemTask(
@@ -221,7 +210,7 @@ object SubPack: PackManager.PackObj {
                 }
             }
         }
-        type("totem") { // TODO fix percentHeal
+        type("totem") {
             item(EquipmentSlot.OFF_HAND, Material.TOTEM_OF_UNDYING)
             onResurrect {
                 entity.percentHeal(0.5)
