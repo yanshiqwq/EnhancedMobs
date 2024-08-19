@@ -4,7 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="ef5c36e8-977c-42a1-8a12-007d83c37ffe" name="更改" comment="dsl &amp; api update" />
+    <list default="true" id="ef5c36e8-977c-42a1-8a12-007d83c37ffe" name="更改" comment="modify README.md" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -45,7 +45,19 @@
     </option>
   </component>
   <component name="Git.Settings">
+    <option name="PUSH_TAGS">
+      <GitPushTagMode>
+        <option name="argument" value="--tags" />
+        <option name="title" value="All" />
+      </GitPushTagMode>
+    </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="KotlinScriptingSettings">
+    <scriptDefinition className="org.jetbrains.kotlin.idea.core.script.StandardIdeScriptDefinition" definitionName="Kotlin Script">
+      <order>2147483647</order>
+      <autoReloadConfigurations>true</autoReloadConfigurations>
+    </scriptDefinition>
   </component>
   <component name="ProblemsViewState">
     <option name="selectedTabId" value="CurrentFile" />
@@ -64,6 +76,7 @@
   </component>
   <component name="PropertiesComponent"><![CDATA[{
   "keyToString": {
+    "ASKED_ADD_EXTERNAL_FILES": "true",
     "ASKED_SHARE_PROJECT_CONFIGURATION_FILES": "true",
     "Gradle.enhanced_mobs [init].executor": "Run",
     "Gradle.下载源代码.executor": "Run",
@@ -71,7 +84,8 @@
     "SHARE_PROJECT_CONFIGURATION_FILES": "true",
     "ignore_missing_gitignore": "true",
     "kotlin-language-version-configured": "true",
-    "last_opened_file_path": "F:/yanshiqwq/Project/Code/enhanced_mobs.bak"
+    "last_opened_file_path": "F:/yanshiqwq/Project/Code/enhanced_mobs.bak",
+    "settings.editor.selected.configurable": "http.proxy"
   },
   "keyToStringList": {
     "kotlin-gradle-user-dirs": [
@@ -146,7 +160,23 @@
       <option name="project" value="LOCAL" />
       <updated>1724085372534</updated>
     </task>
-    <option name="localTasksCounter" value="4" />
+    <task id="LOCAL-00004" summary="v2.0 init">
+      <option name="closed" value="true" />
+      <created>1724085723711</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1724085723711</updated>
+    </task>
+    <task id="LOCAL-00005" summary="modify README.md">
+      <option name="closed" value="true" />
+      <created>1724085972921</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1724085972921</updated>
+    </task>
+    <option name="localTasksCounter" value="6" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -154,15 +184,31 @@
       <map>
         <entry key="MAIN">
           <value>
-            <State />
+            <State>
+              <option name="FILTERS">
+                <map>
+                  <entry key="branch">
+                    <value>
+                      <list>
+                        <option value="dev" />
+                      </list>
+                    </value>
+                  </entry>
+                </map>
+              </option>
+            </State>
           </value>
         </entry>
       </map>
     </option>
   </component>
   <component name="VcsManagerConfiguration">
+    <option name="ADD_EXTERNAL_FILES_SILENTLY" value="true" />
     <MESSAGE value="taboolib init" />
     <MESSAGE value="dsl &amp; api update" />
-    <option name="LAST_COMMIT_MESSAGE" value="dsl &amp; api update" />
+    <MESSAGE value="bug fix" />
+    <MESSAGE value="v2.0 init" />
+    <MESSAGE value="modify README.md" />
+    <option name="LAST_COMMIT_MESSAGE" value="modify README.md" />
   </component>
 </project>
