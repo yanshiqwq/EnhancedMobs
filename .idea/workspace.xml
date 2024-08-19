@@ -1,25 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
-  <component name="AnalysisUIOptions">
-    <option name="ANALYZE_TEST_SOURCES" value="false" />
-  </component>
   <component name="AutoImportSettings">
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="d5ee4be2-1981-48f1-8632-49b4c7636b94" name="更改" comment="移除 - 等级压制机制&#10;修复 - 插件加载报错 Health value must be between 0 and 40.0&#10;修复 - 怪物伤害异常过低">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/kotlin/cn/yanshiqwq/enhanced_mobs/EnhancedMob.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/cn/yanshiqwq/enhanced_mobs/EnhancedMob.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/kotlin/cn/yanshiqwq/enhanced_mobs/Utils.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/cn/yanshiqwq/enhanced_mobs/Utils.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/kotlin/cn/yanshiqwq/enhanced_mobs/commands/EnhancedMobsCompleter.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/cn/yanshiqwq/enhanced_mobs/commands/EnhancedMobsCompleter.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/kotlin/cn/yanshiqwq/enhanced_mobs/commands/EnhancedMobsExecutor.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/cn/yanshiqwq/enhanced_mobs/commands/EnhancedMobsExecutor.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/kotlin/cn/yanshiqwq/enhanced_mobs/listeners/MobEventListener.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/cn/yanshiqwq/enhanced_mobs/listeners/MobEventListener.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/kotlin/cn/yanshiqwq/enhanced_mobs/listeners/MobInitListener.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/cn/yanshiqwq/enhanced_mobs/listeners/MobInitListener.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/kotlin/cn/yanshiqwq/enhanced_mobs/listeners/PlayerListener.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/cn/yanshiqwq/enhanced_mobs/listeners/PlayerListener.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/kotlin/cn/yanshiqwq/enhanced_mobs/script/Config.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/cn/yanshiqwq/enhanced_mobs/script/Config.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/kotlin/cn/yanshiqwq/enhanced_mobs/script/MainPack.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/cn/yanshiqwq/enhanced_mobs/script/MainPack.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/kotlin/cn/yanshiqwq/enhanced_mobs/script/SubPack.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/cn/yanshiqwq/enhanced_mobs/script/SubPack.kt" afterDir="false" />
-    </list>
+    <list default="true" id="ef5c36e8-977c-42a1-8a12-007d83c37ffe" name="更改" comment="dsl &amp; api update" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -38,7 +23,12 @@
         </task>
         <projects_view>
           <tree_state>
-            <expand />
+            <expand>
+              <path>
+                <item name="" type="6a2764b6:ExternalProjectsStructure$RootNode" />
+                <item name="enhanced_mobs" type="f1a62948:ProjectNode" />
+              </path>
+            </expand>
             <select />
           </tree_state>
         </projects_view>
@@ -48,82 +38,23 @@
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
       <list>
-        <option value="Kotlin File" />
-        <option value="Kotlin Object" />
         <option value="Class" />
         <option value="Kotlin Class" />
+        <option value="Kotlin Interface" />
       </list>
     </option>
   </component>
   <component name="Git.Settings">
-    <branch-grouping />
-    <option name="PUSH_AUTO_UPDATE" value="true" />
-    <option name="PUSH_TAGS">
-      <GitPushTagMode>
-        <option name="argument" value="--tags" />
-        <option name="title" value="All" />
-      </GitPushTagMode>
-    </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
-    <option name="RESET_MODE" value="SOFT" />
-  </component>
-  <component name="GitHubPullRequestSearchHistory">{
-  &quot;lastFilter&quot;: {
-    &quot;state&quot;: &quot;OPEN&quot;,
-    &quot;assignee&quot;: &quot;yanshiqwq&quot;
-  }
-}</component>
-  <component name="GitToolBoxStore">
-    <option name="projectConfigVersion" value="5" />
-    <option name="recentBranches">
-      <RecentBranches>
-        <option name="branchesForRepo">
-          <list>
-            <RecentBranchesForRepo>
-              <option name="branches">
-                <list>
-                  <RecentBranch>
-                    <option name="branchName" value="main" />
-                    <option name="lastUsedInstant" value="1717888557" />
-                  </RecentBranch>
-                  <RecentBranch>
-                    <option name="branchName" value="master" />
-                    <option name="lastUsedInstant" value="1717888556" />
-                  </RecentBranch>
-                </list>
-              </option>
-              <option name="repositoryRootUrl" value="file://$PROJECT_DIR$" />
-            </RecentBranchesForRepo>
-          </list>
-        </option>
-      </RecentBranches>
-    </option>
-  </component>
-  <component name="GithubPullRequestsUISettings">{
-  &quot;selectedUrlAndAccountId&quot;: {
-    &quot;url&quot;: &quot;https://github.com/yanshiqwq/EnhancedMobs.git&quot;,
-    &quot;accountId&quot;: &quot;c3f97eb3-ce37-4d88-8788-4388ef9af76d&quot;
-  }
-}</component>
-  <component name="HighlightingSettingsPerFile">
-    <setting file="file://$PROJECT_DIR$/src/main/kotlin/cn/yanshiqwq/enhanced_mobs/script/SubPack.kt" root0="FORCE_HIGHLIGHTING" />
-  </component>
-  <component name="KotlinScriptingSettings" supportWarning="false">
-    <scriptDefinition className="org.jetbrains.kotlin.idea.core.script.StandardIdeScriptDefinition" definitionName="Kotlin Script">
-      <order>2147483647</order>
-      <autoReloadConfigurations>true</autoReloadConfigurations>
-    </scriptDefinition>
-  </component>
-  <component name="MarkdownSettingsMigration">
-    <option name="stateVersion" value="1" />
   </component>
   <component name="ProblemsViewState">
     <option name="selectedTabId" value="CurrentFile" />
   </component>
   <component name="ProjectColorInfo">{
+  &quot;customColor&quot;: &quot;&quot;,
   &quot;associatedIndex&quot;: 8
 }</component>
-  <component name="ProjectId" id="2hByqKRT4BNuIpxSwWRr8IAImSS" />
+  <component name="ProjectId" id="2krqTtqYiTc5vynjsmRNzBe3Vog" />
   <component name="ProjectLevelVcsManager" settingsEditedManually="true">
     <ConfirmationsSetting value="2" id="Add" />
   </component>
@@ -131,59 +62,30 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;ASKED_ADD_EXTERNAL_FILES&quot;: &quot;true&quot;,
-    &quot;Downloaded.Files.Path.Enabled&quot;: &quot;true&quot;,
-    &quot;Gradle.enhanced_mobs [build].executor&quot;: &quot;Run&quot;,
-    &quot;Gradle.enhanced_mobs [jar].executor&quot;: &quot;Run&quot;,
-    &quot;Gradle.enhanced_mobs [kotlinSourcesJar].executor&quot;: &quot;Run&quot;,
-    &quot;Gradle.enhanced_mobs [shadowJar].executor&quot;: &quot;Run&quot;,
-    &quot;Gradle.下载源代码.executor&quot;: &quot;Run&quot;,
-    &quot;Gradle.加载 Gradle 依赖项.executor&quot;: &quot;Run&quot;,
-    &quot;Gradle.构建 enhanced_mobs.executor&quot;: &quot;Run&quot;,
-    &quot;Kotlin 脚本(测试版).vanilla.kts.executor&quot;: &quot;Run&quot;,
-    &quot;Kotlin.PackManagerKt.executor&quot;: &quot;Run&quot;,
-    &quot;Repository.Attach.Annotations&quot;: &quot;false&quot;,
-    &quot;Repository.Attach.JavaDocs&quot;: &quot;false&quot;,
-    &quot;Repository.Attach.Sources&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
-    &quot;dart.analysis.tool.window.visible&quot;: &quot;false&quot;,
-    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
-    &quot;last_opened_file_path&quot;: &quot;F:/yanshiqwq/Project/Code/enhanced_mobs.bak&quot;,
-    &quot;project.structure.last.edited&quot;: &quot;模块&quot;,
-    &quot;project.structure.proportion&quot;: &quot;0.15&quot;,
-    &quot;project.structure.side.proportion&quot;: &quot;0.2&quot;,
-    &quot;run.code.analysis.last.selected.profile&quot;: &quot;pProject Default&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;vcs.Subversion&quot;,
-    &quot;show.migrate.to.gradle.popup&quot;: &quot;false&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "ASKED_SHARE_PROJECT_CONFIGURATION_FILES": "true",
+    "Gradle.enhanced_mobs [init].executor": "Run",
+    "Gradle.下载源代码.executor": "Run",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
+    "ignore_missing_gitignore": "true",
+    "kotlin-language-version-configured": "true",
+    "last_opened_file_path": "F:/yanshiqwq/Project/Code/enhanced_mobs.bak"
   },
-  &quot;keyToStringList&quot;: {
-    &quot;kotlin-gradle-user-dirs&quot;: [
-      &quot;C:\\Users\\yanshiqwq\\.gradle&quot;
+  "keyToStringList": {
+    "kotlin-gradle-user-dirs": [
+      "C:\\Users\\yanshiqwq\\.gradle"
     ]
   }
-}</component>
+}]]></component>
   <component name="RecentsManager">
-    <key name="MoveFile.RECENT_KEYS">
-      <recent name="F:\yanshiqwq\Project\enhanced_mobs\src\main\kotlin\cn\yanshiqwq\enhanced_mobs\script" />
-      <recent name="F:\yanshiqwq\Project\enhanced_mobs\src\main\resources\packs\yanshiqwq" />
-      <recent name="F:\yanshiqwq\Project\enhanced_mobs\src\main\resources" />
-      <recent name="F:\yanshiqwq\Project\enhanced_mobs" />
-      <recent name="F:\yanshiqwq\Project\enhanced_mobs\src" />
-    </key>
     <key name="MoveKotlinTopLevelDeclarationsDialog.RECENTS_KEY">
-      <recent name="cn.yanshiqwq.enhanced_mobs.dsl" />
-      <recent name="cn.yanshiqwq.enhanced_mobs.script.Api" />
-      <recent name="cn.yanshiqwq.enhanced_mobs.script" />
       <recent name="cn.yanshiqwq.enhanced_mobs" />
-      <recent name="cn.yanshiqwq.enhanced_mobs.data" />
     </key>
   </component>
-  <component name="RunManager" selected="Gradle.enhanced_mobs [jar]">
-    <configuration name="enhanced_mobs [jar]" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
+  <component name="RunManager">
+    <configuration name="enhanced_mobs [init]" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
       <ExternalSystemSettings>
         <option name="executionName" />
         <option name="externalProjectPath" value="$PROJECT_DIR$" />
@@ -194,7 +96,7 @@
         </option>
         <option name="taskNames">
           <list>
-            <option value="jar" />
+            <option value="init" />
           </list>
         </option>
         <option name="vmOptions" />
@@ -205,450 +107,52 @@
       <RunAsTest>false</RunAsTest>
       <method v="2" />
     </configuration>
-    <configuration name="enhanced_mobs [kotlinSourcesJar]" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
-      <ExternalSystemSettings>
-        <option name="executionName" />
-        <option name="externalProjectPath" value="$PROJECT_DIR$" />
-        <option name="externalSystemIdString" value="GRADLE" />
-        <option name="scriptParameters" />
-        <option name="taskDescriptions">
-          <list />
-        </option>
-        <option name="taskNames">
-          <list>
-            <option value="kotlinSourcesJar" />
-          </list>
-        </option>
-        <option name="vmOptions" />
-      </ExternalSystemSettings>
-      <ExternalSystemDebugServerProcess>true</ExternalSystemDebugServerProcess>
-      <ExternalSystemReattachDebugProcess>true</ExternalSystemReattachDebugProcess>
-      <DebugAllEnabled>false</DebugAllEnabled>
-      <RunAsTest>false</RunAsTest>
-      <method v="2" />
-    </configuration>
-    <configuration name="enhanced_mobs [shadowJar]" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
-      <ExternalSystemSettings>
-        <option name="executionName" />
-        <option name="externalProjectPath" value="$PROJECT_DIR$" />
-        <option name="externalSystemIdString" value="GRADLE" />
-        <option name="scriptParameters" value="" />
-        <option name="taskDescriptions">
-          <list />
-        </option>
-        <option name="taskNames">
-          <list>
-            <option value="shadowJar" />
-          </list>
-        </option>
-        <option name="vmOptions" />
-      </ExternalSystemSettings>
-      <ExternalSystemDebugServerProcess>true</ExternalSystemDebugServerProcess>
-      <ExternalSystemReattachDebugProcess>true</ExternalSystemReattachDebugProcess>
-      <DebugAllEnabled>false</DebugAllEnabled>
-      <RunAsTest>false</RunAsTest>
-      <method v="2" />
-    </configuration>
-    <configuration name="PackManagerKt" type="JetRunConfigurationType" temporary="true" nameIsGenerated="true">
-      <option name="MAIN_CLASS_NAME" value="cn.yanshiqwq.enhanced_mobs.managers.PackManagerKt" />
-      <module name="enhanced_mobs.main" />
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
-    <configuration name="vanilla.kts" type="KotlinStandaloneScriptRunConfigurationType" temporary="true" nameIsGenerated="true">
-      <module name="enhanced_mobs" />
-      <shortenClasspath name="NONE" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
-      <extension name="coverage">
-        <pattern>
-          <option name="PATTERN" value="cn.yanshiqwq.enhanced_mobs.*" />
-          <option name="ENABLED" value="true" />
-        </pattern>
-      </extension>
-      <extension name="coverage">
-        <pattern>
-          <option name="PATTERN" value="cn.yanshiqwq.enhanced_mobs.*" />
-          <option name="ENABLED" value="true" />
-        </pattern>
-      </extension>
-      <option name="filePath" value="$PROJECT_DIR$/src/main/kotlin/cn/yanshiqwq/enhanced_mobs/script/vanilla.kts" />
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
-    <list>
-      <item itemvalue="Gradle.enhanced_mobs [jar]" />
-      <item itemvalue="Gradle.enhanced_mobs [kotlinSourcesJar]" />
-      <item itemvalue="Gradle.enhanced_mobs [shadowJar]" />
-      <item itemvalue="Kotlin.PackManagerKt" />
-      <item itemvalue="Kotlin 脚本(测试版).vanilla.kts" />
-    </list>
     <recent_temporary>
       <list>
-        <item itemvalue="Gradle.enhanced_mobs [jar]" />
-        <item itemvalue="Gradle.enhanced_mobs [shadowJar]" />
-        <item itemvalue="Kotlin 脚本(测试版).vanilla.kts" />
-        <item itemvalue="Kotlin.PackManagerKt" />
-        <item itemvalue="Gradle.enhanced_mobs [kotlinSourcesJar]" />
+        <item itemvalue="Gradle.enhanced_mobs [init]" />
       </list>
     </recent_temporary>
   </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="应用程序级" UseSingleDictionary="true" transferred="true" />
-  <component name="SvnConfiguration">
-    <configuration>C:\Users\yanshiqwq\AppData\Roaming\Subversion</configuration>
-  </component>
   <component name="TaskManager">
     <task active="true" id="Default" summary="默认任务">
-      <changelist id="d5ee4be2-1981-48f1-8632-49b4c7636b94" name="更改" comment="" />
-      <created>1717081957376</created>
+      <changelist id="ef5c36e8-977c-42a1-8a12-007d83c37ffe" name="更改" comment="" />
+      <created>1724052053458</created>
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
-      <updated>1717081957376</updated>
+      <updated>1724052053458</updated>
     </task>
-    <task id="LOCAL-00001" summary="重构">
-      <created>1717290664888</created>
+    <task id="LOCAL-00001" summary="taboolib init">
+      <option name="closed" value="true" />
+      <created>1724052263494</created>
       <option name="number" value="00001" />
       <option name="presentableId" value="LOCAL-00001" />
       <option name="project" value="LOCAL" />
-      <updated>1717290664888</updated>
+      <updated>1724052263494</updated>
     </task>
-    <task id="LOCAL-00002" summary="改bug">
-      <created>1717360042559</created>
+    <task id="LOCAL-00002" summary="dsl &amp; api update">
+      <option name="closed" value="true" />
+      <created>1724085317397</created>
       <option name="number" value="00002" />
       <option name="presentableId" value="LOCAL-00002" />
       <option name="project" value="LOCAL" />
-      <updated>1717360042559</updated>
+      <updated>1724085317397</updated>
     </task>
-    <task id="LOCAL-00003" summary="改bug">
-      <created>1717360071060</created>
+    <task id="LOCAL-00003" summary="dsl &amp; api update">
+      <option name="closed" value="true" />
+      <created>1724085372534</created>
       <option name="number" value="00003" />
       <option name="presentableId" value="LOCAL-00003" />
       <option name="project" value="LOCAL" />
-      <updated>1717360071060</updated>
+      <updated>1724085372534</updated>
     </task>
-    <task id="LOCAL-00004" summary="重构怪物强化逻辑">
-      <created>1717801129631</created>
-      <option name="number" value="00004" />
-      <option name="presentableId" value="LOCAL-00004" />
-      <option name="project" value="LOCAL" />
-      <updated>1717801129631</updated>
-    </task>
-    <task id="LOCAL-00005" summary="修复逻辑错误">
-      <created>1717803894295</created>
-      <option name="number" value="00005" />
-      <option name="presentableId" value="LOCAL-00005" />
-      <option name="project" value="LOCAL" />
-      <updated>1717803894295</updated>
-    </task>
-    <task id="LOCAL-00006" summary="修复猪比bug">
-      <created>1717804123907</created>
-      <option name="number" value="00006" />
-      <option name="presentableId" value="LOCAL-00006" />
-      <option name="project" value="LOCAL" />
-      <updated>1717804123907</updated>
-    </task>
-    <task id="LOCAL-00007" summary="重构, 优化Tab补全, 回滚实体等级计算方法">
-      <created>1717887829755</created>
-      <option name="number" value="00007" />
-      <option name="presentableId" value="LOCAL-00007" />
-      <option name="project" value="LOCAL" />
-      <updated>1717887829755</updated>
-    </task>
-    <task id="LOCAL-00008" summary="修改版本号, 修正插件信息文件">
-      <created>1717888031590</created>
-      <option name="number" value="00008" />
-      <option name="presentableId" value="LOCAL-00008" />
-      <option name="project" value="LOCAL" />
-      <updated>1717888031590</updated>
-    </task>
-    <task id="LOCAL-00009" summary="重构Pack类结构&#10;新增ListenerAPI&#10;新增7个使用了ListenerAPI的示例type (位于extendPack)&#10;新增右键发射火焰弹功能&#10;&#10;暂时删除MobManager的保存功能 (EnhancedMob无法Serialize)">
-      <created>1718032887755</created>
-      <option name="number" value="00009" />
-      <option name="presentableId" value="LOCAL-00009" />
-      <option name="project" value="LOCAL" />
-      <updated>1718032887755</updated>
-    </task>
-    <task id="LOCAL-00010" summary="格式化代码">
-      <created>1718034751537</created>
-      <option name="number" value="00010" />
-      <option name="presentableId" value="LOCAL-00010" />
-      <option name="project" value="LOCAL" />
-      <updated>1718034751537</updated>
-    </task>
-    <task id="LOCAL-00011" summary="优化代码结构">
-      <created>1718036838196</created>
-      <option name="number" value="00011" />
-      <option name="presentableId" value="LOCAL-00011" />
-      <option name="project" value="LOCAL" />
-      <updated>1718036838196</updated>
-    </task>
-    <task id="LOCAL-00012" summary="优化代码结构">
-      <created>1718036965973</created>
-      <option name="number" value="00012" />
-      <option name="presentableId" value="LOCAL-00012" />
-      <option name="project" value="LOCAL" />
-      <updated>1718036965973</updated>
-    </task>
-    <task id="LOCAL-00013" summary="优化代码结构">
-      <created>1718036991257</created>
-      <option name="number" value="00013" />
-      <option name="presentableId" value="LOCAL-00013" />
-      <option name="project" value="LOCAL" />
-      <updated>1718036991257</updated>
-    </task>
-    <task id="LOCAL-00014" summary="优化代码结构，修改指令格式">
-      <created>1718207416258</created>
-      <option name="number" value="00014" />
-      <option name="presentableId" value="LOCAL-00014" />
-      <option name="project" value="LOCAL" />
-      <updated>1718207416258</updated>
-    </task>
-    <task id="LOCAL-00015" summary="修复查询非LivingEntity的实体属性会报错的问题">
-      <created>1718208017640</created>
-      <option name="number" value="00015" />
-      <option name="presentableId" value="LOCAL-00015" />
-      <option name="project" value="LOCAL" />
-      <updated>1718208017640</updated>
-    </task>
-    <task id="LOCAL-00016" summary="修复非创造模式玩家使用火球物品不会减少的问题">
-      <created>1718208289011</created>
-      <option name="number" value="00016" />
-      <option name="presentableId" value="LOCAL-00016" />
-      <option name="project" value="LOCAL" />
-      <updated>1718208289011</updated>
-    </task>
-    <task id="LOCAL-00017" summary="优化代码格式，修复了ListenerAPI无法正常使用的问题，新增随机强化生成功能，上调了怪物的攻击力成长曲线">
-      <created>1718471160170</created>
-      <option name="number" value="00017" />
-      <option name="presentableId" value="LOCAL-00017" />
-      <option name="project" value="LOCAL" />
-      <updated>1718471160170</updated>
-    </task>
-    <task id="LOCAL-00018" summary="优化代码格式，修复了ListenerAPI无法正常使用的问题，新增随机强化生成功能，上调了怪物的攻击力成长曲线">
-      <created>1718471174253</created>
-      <option name="number" value="00018" />
-      <option name="presentableId" value="LOCAL-00018" />
-      <option name="project" value="LOCAL" />
-      <updated>1718471174253</updated>
-    </task>
-    <task id="LOCAL-00019" summary="优化代码格式，修复了ListenerAPI无法正常使用的问题，新增随机强化生成功能，上调了怪物的攻击力成长曲线">
-      <created>1718471211510</created>
-      <option name="number" value="00019" />
-      <option name="presentableId" value="LOCAL-00019" />
-      <option name="project" value="LOCAL" />
-      <updated>1718471211510</updated>
-    </task>
-    <task id="LOCAL-00020" summary="优化代码格式，修复了ListenerAPI无法正常使用的问题，新增随机强化生成功能，上调了怪物的攻击力成长曲线">
-      <created>1718471243925</created>
-      <option name="number" value="00020" />
-      <option name="presentableId" value="LOCAL-00020" />
-      <option name="project" value="LOCAL" />
-      <updated>1718471243925</updated>
-    </task>
-    <task id="LOCAL-00021" summary="优化代码格式，修复了ListenerAPI无法正常使用的问题，新增随机强化生成功能，上调了怪物的攻击力成长曲线">
-      <created>1718471530733</created>
-      <option name="number" value="00021" />
-      <option name="presentableId" value="LOCAL-00021" />
-      <option name="project" value="LOCAL" />
-      <updated>1718471530733</updated>
-    </task>
-    <task id="LOCAL-00022" summary="上调了骷髅的血量系数, 新增了6种extendPack强化类型">
-      <created>1718548300489</created>
-      <option name="number" value="00022" />
-      <option name="presentableId" value="LOCAL-00022" />
-      <option name="project" value="LOCAL" />
-      <updated>1718548300489</updated>
-    </task>
-    <task id="LOCAL-00023" summary="修复bug">
-      <created>1718662750601</created>
-      <option name="number" value="00023" />
-      <option name="presentableId" value="LOCAL-00023" />
-      <option name="project" value="LOCAL" />
-      <updated>1718662750601</updated>
-    </task>
-    <task id="LOCAL-00024" summary="下调了怪物高强化系数的概率">
-      <created>1718721843384</created>
-      <option name="number" value="00024" />
-      <option name="presentableId" value="LOCAL-00024" />
-      <option name="project" value="LOCAL" />
-      <updated>1718721843384</updated>
-    </task>
-    <task id="LOCAL-00025" summary="下调了怪物强化系数">
-      <created>1718886966690</created>
-      <option name="number" value="00025" />
-      <option name="presentableId" value="LOCAL-00025" />
-      <option name="project" value="LOCAL" />
-      <updated>1718886966690</updated>
-    </task>
-    <task id="LOCAL-00026" summary="上调敌方箭矢伤害，新增玩家重生增益，修复控制台报错">
-      <created>1718889156908</created>
-      <option name="number" value="00026" />
-      <option name="presentableId" value="LOCAL-00026" />
-      <option name="project" value="LOCAL" />
-      <updated>1718889156908</updated>
-    </task>
-    <task id="LOCAL-00027" summary="下调怪物血量，调整怪物等级计算方法，调整骷髅伤害计算方式，修复了控制台ConcurrentModificationException报错的问题，新增了怪物掉落物（未完成）">
-      <created>1719073500750</created>
-      <option name="number" value="00027" />
-      <option name="presentableId" value="LOCAL-00027" />
-      <option name="project" value="LOCAL" />
-      <updated>1719073500750</updated>
-    </task>
-    <task id="LOCAL-00028" summary="重构，新增kts解析器用于自定义怪物行为">
-      <created>1719492646579</created>
-      <option name="number" value="00028" />
-      <option name="presentableId" value="LOCAL-00028" />
-      <option name="project" value="LOCAL" />
-      <updated>1719492646579</updated>
-    </task>
-    <task id="LOCAL-00029" summary="重构，新增kts解析器用于自定义怪物行为">
-      <created>1719492710573</created>
-      <option name="number" value="00029" />
-      <option name="presentableId" value="LOCAL-00029" />
-      <option name="project" value="LOCAL" />
-      <updated>1719492710573</updated>
-    </task>
-    <task id="LOCAL-00030" summary="重构 DSL 解析器, 优化代码逻辑">
-      <created>1719501923242</created>
-      <option name="number" value="00030" />
-      <option name="presentableId" value="LOCAL-00030" />
-      <option name="project" value="LOCAL" />
-      <updated>1719501923242</updated>
-    </task>
-    <task id="LOCAL-00031" summary="修复 MobEventListener 无法触发 DSL 中 listeners 的 bug">
-      <created>1719503592619</created>
-      <option name="number" value="00031" />
-      <option name="presentableId" value="LOCAL-00031" />
-      <option name="project" value="LOCAL" />
-      <updated>1719503592619</updated>
-    </task>
-    <task id="LOCAL-00032" summary="重构, 暂时移除 kts 解析器">
-      <option name="closed" value="true" />
-      <created>1719739013781</created>
-      <option name="number" value="00032" />
-      <option name="presentableId" value="LOCAL-00032" />
-      <option name="project" value="LOCAL" />
-      <updated>1719739013781</updated>
-    </task>
-    <task id="LOCAL-00033" summary="重构, 修改 API, 新增女巫和掠夺者的默认强化">
-      <option name="closed" value="true" />
-      <created>1719760638504</created>
-      <option name="number" value="00033" />
-      <option name="presentableId" value="LOCAL-00033" />
-      <option name="project" value="LOCAL" />
-      <updated>1719760638504</updated>
-    </task>
-    <task id="LOCAL-00034" summary="修复：插件无法正常加载, 骷髅的弓无法正常附魔, 多种 MobType 的效果无法正常触发">
-      <option name="closed" value="true" />
-      <created>1719849963101</created>
-      <option name="number" value="00034" />
-      <option name="presentableId" value="LOCAL-00034" />
-      <option name="project" value="LOCAL" />
-      <updated>1719849963101</updated>
-    </task>
-    <task id="LOCAL-00035" summary="修复女巫无法正常投掷特殊药水的bug">
-      <option name="closed" value="true" />
-      <created>1719938073581</created>
-      <option name="number" value="00035" />
-      <option name="presentableId" value="LOCAL-00035" />
-      <option name="project" value="LOCAL" />
-      <updated>1719938073581</updated>
-    </task>
-    <task id="LOCAL-00036" summary="重构 - itemTask&#10;调整 - 等级计算公式&#10;调整 - extend.frost 的冻结时间&#10;修复 - extend.anvil 无法正常放置铁砧&#10;修复 - extend.ender_pearl 无法正常传送&#10;修复 - &quot;Cannot measure distance between ...&quot; 报错">
-      <option name="closed" value="true" />
-      <created>1720356628639</created>
-      <option name="number" value="00036" />
-      <option name="presentableId" value="LOCAL-00036" />
-      <option name="project" value="LOCAL" />
-      <updated>1720356628639</updated>
-    </task>
-    <task id="LOCAL-00037" summary="修复 - EnhancedMob 在被自然移除后未及时从 manager 类移除导致的内存泄漏&#10;调整 - 部分生物的基础攻击力下调&#10;调整 - 限制怪物的等级在 0 ~ 100 之间">
-      <option name="closed" value="true" />
-      <created>1721124188839</created>
-      <option name="number" value="00037" />
-      <option name="presentableId" value="LOCAL-00037" />
-      <option name="project" value="LOCAL" />
-      <updated>1721124188839</updated>
-    </task>
-    <task id="LOCAL-00038" summary="修复 - EnhancedMob 在被自然移除后未及时从 manager 类移除导致的内存泄漏&#10;调整 - 部分生物的基础攻击力下调&#10;调整 - 限制怪物的等级在 0 ~ 100 之间">
-      <option name="closed" value="true" />
-      <created>1721124301802</created>
-      <option name="number" value="00038" />
-      <option name="presentableId" value="LOCAL-00038" />
-      <option name="project" value="LOCAL" />
-      <updated>1721124301802</updated>
-    </task>
-    <task id="LOCAL-00039" summary="调整 - 等级计算方式">
-      <option name="closed" value="true" />
-      <created>1721374724975</created>
-      <option name="number" value="00039" />
-      <option name="presentableId" value="LOCAL-00039" />
-      <option name="project" value="LOCAL" />
-      <updated>1721374724975</updated>
-    </task>
-    <task id="LOCAL-00040" summary="调整 - 下调猪灵蛮兵的基础伤害&#10;修复 - /enhancedmobs 指令生成的生物未被附加变种增强效果">
-      <option name="closed" value="true" />
-      <created>1721398457564</created>
-      <option name="number" value="00040" />
-      <option name="presentableId" value="LOCAL-00040" />
-      <option name="project" value="LOCAL" />
-      <updated>1721398457564</updated>
-    </task>
-    <task id="LOCAL-00041" summary="重构 - 加权随机函数&#10;调整 - extend.ender_pearl 的最大生效范围从 24 改为 16&#10;调整 - mainBoost 的各类权重与基础概率&#10;修复 - 插件重载后玩家血量上限未正常增加&#10;新增 - 等级压制机制">
-      <option name="closed" value="true" />
-      <created>1721518304027</created>
-      <option name="number" value="00041" />
-      <option name="presentableId" value="LOCAL-00041" />
-      <option name="project" value="LOCAL" />
-      <updated>1721518304027</updated>
-    </task>
-    <option name="localTasksCounter" value="42" />
+    <option name="localTasksCounter" value="4" />
     <servers />
-  </component>
-  <component name="Vcs.Log.History.Properties">
-    <option name="COLUMN_ID_ORDER">
-      <list>
-        <option value="Default.Root" />
-        <option value="Default.Author" />
-        <option value="Default.Date" />
-        <option value="Default.Subject" />
-        <option value="Space.CommitStatus" />
-      </list>
-    </option>
   </component>
   <component name="Vcs.Log.Tabs.Properties">
     <option name="TAB_STATES">
       <map>
-        <entry key="55b2c7c6-b455-4c5f-a4a9-e3bf0eba1fc7">
-          <value>
-            <State>
-              <option name="CUSTOM_BOOLEAN_PROPERTIES">
-                <map>
-                  <entry key="Show.Git.Branches" value="true" />
-                </map>
-              </option>
-            </State>
-          </value>
-        </entry>
         <entry key="MAIN">
-          <value>
-            <State>
-              <option name="FILTERS">
-                <map>
-                  <entry key="branch">
-                    <value>
-                      <list>
-                        <option value="HEAD" />
-                      </list>
-                    </value>
-                  </entry>
-                </map>
-              </option>
-            </State>
-          </value>
-        </entry>
-        <entry key="d251b90a-5a5a-4fa2-a103-2d54dc233fff">
           <value>
             <State />
           </value>
@@ -657,36 +161,8 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <option name="ADD_EXTERNAL_FILES_SILENTLY" value="true" />
-    <MESSAGE value="优化代码结构，修改指令格式" />
-    <MESSAGE value="修复查询非LivingEntity的实体属性会报错的问题" />
-    <MESSAGE value="修复非创造模式玩家使用火球物品不会减少的问题" />
-    <MESSAGE value="优化代码格式，修复了ListenerAPI无法正常使用的问题，新增随机强化生成功能，上调了怪物的攻击力成长曲线" />
-    <MESSAGE value="上调了骷髅的血量系数, 新增了6种extendPack强化类型" />
-    <MESSAGE value="修复bug" />
-    <MESSAGE value="下调了怪物高强化系数的概率" />
-    <MESSAGE value="下调了怪物强化系数" />
-    <MESSAGE value="上调敌方箭矢伤害，新增玩家重生增益，修复控制台报错" />
-    <MESSAGE value="下调怪物血量，调整怪物等级计算方法，调整骷髅伤害计算方式，修复了控制台ConcurrentModificationException报错的问题，新增了怪物掉落物（未完成）" />
-    <MESSAGE value="重构，新增kts解析器用于自定义怪物行为" />
-    <MESSAGE value="重构 DSL 解析器, 优化代码逻辑" />
-    <MESSAGE value="修复 MobEventListener 无法触发 DSL 中 listeners 的 bug" />
-    <MESSAGE value="重构, 暂时移除 kts 解析器" />
-    <MESSAGE value="重构, 修改 API, 新增女巫和掠夺者的默认强化" />
-    <MESSAGE value="修复：插件无法正常加载, 骷髅的弓无法正常附魔, 多种 MobType 的效果无法正常触发" />
-    <MESSAGE value="修复女巫无法正常投掷特殊药水的bug" />
-    <MESSAGE value="重构了 itemTask&#10;调整了等级计算公式&#10;修复了 extend.anvil 无法正常放置铁砧&#10;修复了 extend.ender_pearl 无法正常传送&#10;修复了 &quot;Cannot measure distance between ...&quot;报错" />
-    <MESSAGE value="重构 - itemTask&#10;调整 - 等级计算公式&#10;调整 - extend.frost 的冻结时间&#10;修复 - extend.anvil 无法正常放置铁砧&#10;修复 - extend.ender_pearl 无法正常传送&#10;修复 - &quot;Cannot measure distance between ...&quot; 报错" />
-    <MESSAGE value="修复 - EnhancedMob 在被自然移除后未及时从 manager 类移除导致的内存泄漏" />
-    <MESSAGE value="修复 - EnhancedMob 在被自然移除后未及时从 manager 类移除导致的内存泄漏&#10;调整 - 部分生物的基础攻击力下调&#10;调整 - 限制怪物的等级在 0 ~ 100 之间" />
-    <MESSAGE value="调整 - 等级计算方式" />
-    <MESSAGE value="调整 - 下调猪灵蛮兵的基础伤害&#10;修复 - /enhancedmobs 指令生成的生物未被附加变种增强效果" />
-    <MESSAGE value="重构 - 加权随机函数&#10;调整 - extend.ender_pearl 的最大生效范围从 24 改为 16&#10;调整 - mainBoost 的各类权重与基础概率" />
-    <MESSAGE value="重构 - 加权随机函数&#10;调整 - extend.ender_pearl 的最大生效范围从 24 改为 16&#10;调整 - mainBoost 的各类权重与基础概率&#10;修复 - 插件重载后玩家血量上限未正常增加&#10;新增 - 等级压制机制" />
-    <option name="LAST_COMMIT_MESSAGE" value="重构 - 加权随机函数&#10;调整 - extend.ender_pearl 的最大生效范围从 24 改为 16&#10;调整 - mainBoost 的各类权重与基础概率&#10;修复 - 插件重载后玩家血量上限未正常增加&#10;新增 - 等级压制机制" />
-  </component>
-  <component name="XSLT-Support.FileAssociations.UIState">
-    <expand />
-    <select />
+    <MESSAGE value="taboolib init" />
+    <MESSAGE value="dsl &amp; api update" />
+    <option name="LAST_COMMIT_MESSAGE" value="dsl &amp; api update" />
   </component>
 </project>
