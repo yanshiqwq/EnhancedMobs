@@ -17,7 +17,7 @@ taboolib {
     }
     env {
         // 安装模块
-        install(UNIVERSAL, BUKKIT, AI, CHAT, CONFIGURATION, DATABASE, METRICS, NAVIGATION)
+        install(UNIVERSAL, BUKKIT_ALL, NMS_UTIL, UI, CHAT)
     }
     version { taboolib = "6.1.2-beta10" }
 }
