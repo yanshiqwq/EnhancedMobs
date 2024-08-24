@@ -2,9 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/enhanced_mobs.iml" filepath="$PROJECT_DIR$/.idea/modules/enhanced_mobs.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/enhanced_mobs.main.iml" filepath="$PROJECT_DIR$/.idea/modules/enhanced_mobs.main.iml" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/enhanced_mobs.test.iml" filepath="$PROJECT_DIR$/.idea/modules/enhanced_mobs.test.iml" />
     </modules>
   </component>
 </project>

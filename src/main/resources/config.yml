@@ -1,0 +1,26 @@
+# 是否加载内置怪物类型包
+loadBuiltinPacks: true
+
+# 等级成长公式
+levelFormula:
+  maxHealth: "base * 1.025 ^ (level - 20)"
+  attackDamage: "base * 1.025 ^ (level - 30)"
+  movementSpeed: |
+    if (level <= 65) then
+        base
+    else if (level <= 77) then
+        1.1 * base
+    else if (level <= 85) then
+        1.2 * base
+    else
+        1.32 * base
+  knockbackResistance: "base + level * 0.35"
+
+# 等级范围限制
+levelRange: "1..99"
+
+# 自定义怪物名称
+customName: "&7[%sLv.%d&7] %s"
+
+# 不要修改下面的选项！此项会用于识别配置文件版本
+configVersion: 1

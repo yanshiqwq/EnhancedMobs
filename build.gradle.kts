@@ -4,7 +4,22 @@ import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 plugins {
     java
     id("io.izzel.taboolib") version "2.0.11"
-    id("org.jetbrains.kotlin.jvm") version "1.8.22"
+    id("org.jetbrains.kotlin.jvm") version "1.9.22"
+    kotlin("plugin.serialization") version "1.7.20"
+}
+
+repositories {
+    maven("https://maven.aliyun.com/repository/public")
+    mavenCentral()
+    maven("https://jitpack.io")
+}
+
+dependencies {
+    compileOnly("com.github.Keelar:ExprK:91fdabf")
+    compileOnly("ink.ptms.core:v12004:12004:mapped")
+    compileOnly("ink.ptms.core:v12004:12004:universal")
+    compileOnly(kotlin("stdlib"))
+    compileOnly(fileTree("libs"))
 }
 
 taboolib {
@@ -16,21 +31,9 @@ taboolib {
         }
     }
     env {
-        // 安装模块
         install(UNIVERSAL, BUKKIT_ALL, NMS_UTIL, UI, CHAT)
     }
     version { taboolib = "6.1.2-beta10" }
-}
-
-repositories {
-    mavenCentral()
-}
-
-dependencies {
-    compileOnly("ink.ptms.core:v12004:12004:mapped")
-    compileOnly("ink.ptms.core:v12004:12004:universal")
-    compileOnly(kotlin("stdlib"))
-    compileOnly(fileTree("libs"))
 }
 
 tasks.withType<JavaCompile> {
@@ -44,6 +47,7 @@ tasks.withType<KotlinCompile> {
     }
 }
 
+@Suppress("DEPRECATION")
 configure<JavaPluginConvention> {
     sourceCompatibility = JavaVersion.VERSION_1_8
     targetCompatibility = JavaVersion.VERSION_1_8
