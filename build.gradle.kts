@@ -1,4 +1,8 @@
-import io.izzel.taboolib.gradle.*
+
+import io.izzel.taboolib.gradle.BUKKIT_ALL
+import io.izzel.taboolib.gradle.CHAT
+import io.izzel.taboolib.gradle.EXPANSION_SUBMIT_CHAIN
+import io.izzel.taboolib.gradle.UNIVERSAL
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
@@ -31,19 +35,20 @@ taboolib {
         }
     }
     env {
-        install(UNIVERSAL, BUKKIT_ALL, NMS_UTIL, UI, CHAT)
+        install(UNIVERSAL, BUKKIT_ALL, CHAT, EXPANSION_SUBMIT_CHAIN)
     }
     version { taboolib = "6.1.2-beta10" }
 }
 
-tasks.withType<JavaCompile> {
-    options.encoding = "UTF-8"
-}
-
-tasks.withType<KotlinCompile> {
-    kotlinOptions {
-        jvmTarget = "1.8"
-        freeCompilerArgs = listOf("-Xjvm-default=all")
+tasks {
+    withType<JavaCompile> {
+        options.encoding = "UTF-8"
+    }
+    withType<KotlinCompile> {
+        kotlinOptions {
+            jvmTarget = "1.8"
+            freeCompilerArgs = listOf("-Xjvm-default=all")
+        }
     }
 }
 

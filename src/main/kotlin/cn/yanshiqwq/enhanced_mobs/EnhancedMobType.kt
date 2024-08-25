@@ -19,10 +19,10 @@ import org.bukkit.entity.Mob
  * @see EntityType
  * @property block 用于在创建生物时配置其属性的配置块
  */
-class EnhancedMobType(
+data class EnhancedMobType(
     val id: String,
     val type: EntityType,
-    val block: Mob.() -> Unit
+    val block: Mob.(EnhancedMob) -> Unit
 ) {
     companion object {
         /**

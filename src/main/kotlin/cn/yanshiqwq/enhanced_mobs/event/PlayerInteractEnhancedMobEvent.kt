@@ -15,10 +15,10 @@ import taboolib.common.platform.function.server
  * @author yanshiqwq
  * @since 2024/8/24 下午8:31
  */
-data class PlayerInteractEnhancedMobEvent(
-    val player: Player,
+class PlayerInteractEnhancedMobEvent(
+    player: Player,
     val mob: EnhancedMob
-): PlayerInteractEntityEvent(player, mob.mob) {
+): PlayerInteractEntityEvent(player, mob.entity) {
     companion object {
         init {
             registerBukkitListener(PlayerInteractEntityEvent::class.java) {

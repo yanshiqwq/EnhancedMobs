@@ -1,5 +1,7 @@
 package cn.yanshiqwq.enhanced_mobs.dsl
 
+import org.bukkit.World
+
 /**
  * enhanced_mobs
  * cn.yanshiqwq.enhanced_mobs.dsl.Cooldown
@@ -13,33 +15,25 @@ package cn.yanshiqwq.enhanced_mobs.dsl
  *
  * @param time 冷却时间，单位为刻
  */
-class CooldownTimer(private var time: Long) {
+class CooldownTimer(private val time: Long, private val world: World) {
+    private fun getGameTime() = world.gameTime
+    
     /**
      * 上次操作的时间戳，初始值为 `-1`，表示未操作过
      * 单位为刻
      */
     private var lastActionTime: Long = -1
-
-    /**
-     * 更新上次操作时间戳为当前游戏时间
-     *
-     * @param gameTime 当前游戏时间，单位为刻
-     * @see org.bukkit.World.getGameTime
-     */
-    private fun update(gameTime: Long) {
-        lastActionTime = gameTime
-    }
-
+    
     /**
      * 检查是否已超过冷却时间，并更新上次操作时间
      *
-     * @param gameTime 当前游戏时间，单位为单位为刻
-     * @see org.bukkit.World.getGameTime
      * @return 如果冷却时间已过，则返回 `true` 并更新上次操作时间；否则返回 `false`
      */
-    fun checkAndUpdate(gameTime: Long): Boolean =
-        if (gameTime - lastActionTime > time) {
-            update(gameTime)
+    fun checkAndUpdate(): Boolean =
+        if (getGameTime() - lastActionTime > time) {
+            lastActionTime = getGameTime()
             true
         } else false
+    
+    override fun toString() = "CooldownTimer(time=$time, remaining=${getGameTime() - lastActionTime})"
 }

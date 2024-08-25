@@ -2,6 +2,7 @@ package cn.yanshiqwq.enhanced_mobs.manager
 
 import cn.yanshiqwq.enhanced_mobs.EnhancedMobType
 import cn.yanshiqwq.enhanced_mobs.Pack
+import taboolib.common.platform.function.info
 
 /**
  * enhanced_mobs
@@ -13,8 +14,13 @@ import cn.yanshiqwq.enhanced_mobs.Pack
 object PackManager {
     private val packs: HashSet<Pack> = hashSetOf()
     fun register(pack: Pack) {
+        info("Loading Pack \"${pack.id}\" ... (${pack.types.size} types)")
         packs.add(pack)
-        MobTypeManager.register(pack.types)
+        pack.types.forEach {
+            MobTypeManager.register(it)
+            info("  - $it")
+        }
+        info("Pack \"${pack.id}\" loaded!")
     }
     fun unregister(pack: Pack) {
         packs.remove(pack)

@@ -14,7 +14,7 @@ object MobManager {
     private val mobs: HashSet<EnhancedMob> = hashSetOf()
     fun add(mob: EnhancedMob) = mobs.add(mob)
     fun remove(mob: EnhancedMob) = mobs.remove(mob)
-    fun get(uuid: UUID) = mobs.find { it.mob.uniqueId == uuid }
+    fun get(uuid: UUID) = mobs.find { it.entity.uniqueId == uuid }
     fun get(id: String) = mobs.filter { it.type.id == id }
     fun get(range: IntRange) = mobs.filter { it.level in range }
     fun get() = mobs

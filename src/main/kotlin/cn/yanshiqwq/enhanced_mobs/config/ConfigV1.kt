@@ -53,7 +53,7 @@ object ConfigV1: AbstractConfig(Main.configFile) {
             config.getString("levelFormula.knockbackResistance") ?: "base + level * 0.35"
         )
     }
-
+    
     data class LevelFormula(
         val maxHealth: String,
         val armor: String,
@@ -79,7 +79,11 @@ object ConfigV1: AbstractConfig(Main.configFile) {
     }
 
     init {
-        info(Main.PREFIX, " ConfigV$configVersion initialized!")
+        info("Config initialized!")
+        info("  - configVersion = $configVersion")
+        info("  - loadBuiltInPacks = $loadBuiltinPacks")
+        info("  - levelRange = \"$levelRange\"")
+        info("  - customName = \"$customName\"")
     }
 }
 

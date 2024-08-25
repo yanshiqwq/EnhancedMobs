@@ -15,7 +15,6 @@ import org.bukkit.inventory.EquipmentSlot
 import org.bukkit.inventory.ItemStack
 import org.bukkit.potion.PotionEffectType
 import org.bukkit.potion.PotionType
-import taboolib.common.platform.service.PlatformExecutor
 import java.util.*
 import kotlin.random.Random
 
@@ -162,23 +161,24 @@ object GenericApi {
      * @see TimerBuilder
      * @return 返回创建的 TabooLib 计时器任务
      */
-    inline fun onTimer(period: Long = 20L, params: TimerBuilder.() -> Unit): PlatformExecutor.PlatformTask {
+    inline fun Mob.onTimer(period: Long = 20L, cooldown: Long? = null, params: TimerBuilder.() -> Unit) {
         val builder = TimerBuilder(period)
+        if (cooldown != null) builder.setCooldown(cooldown, world)
         params.invoke(builder)
-        return builder.build()
+        return builder.build(this)
     }
 
     /**
      * 创建一个 TabooLib 延迟任务
      *
      * @param params 配置计时器的参数
-     * @see DelayBuilder
+     * @see TimerBuilder
      * @return 返回创建的 TabooLib 计时器任务
      */
-    inline fun delay(tick: Long, params: DelayBuilder.() -> Unit): PlatformExecutor.PlatformTask {
+    inline fun Mob.delay(tick: Long, params: DelayBuilder.() -> Unit) {
         val builder = DelayBuilder(tick)
         params.invoke(builder)
-        return builder.build()
+        return builder.build(this)
     }
 
     /**
@@ -197,7 +197,7 @@ object GenericApi {
 
     /**
      * 检查目标是否满足给定条件
-     * @param default 目标不存在时的默认返回值
+     * @param default 目标不存在时的默认返回值，默认值等效 hasTarget()
      * @param condition 用于检查目标的条件
      * @return 如果目标不存在，返回默认值；否则，返回条件函数对目标的检查结果
      */

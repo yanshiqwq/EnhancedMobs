@@ -2,15 +2,13 @@ package cn.yanshiqwq.enhanced_mobs
 
 import cn.yanshiqwq.enhanced_mobs.dsl.GenericApi.allOf
 import cn.yanshiqwq.enhanced_mobs.dsl.GenericApi.base
-import cn.yanshiqwq.enhanced_mobs.dsl.GenericApi.chance
 import cn.yanshiqwq.enhanced_mobs.dsl.GenericApi.distanceFromTarget
 import cn.yanshiqwq.enhanced_mobs.dsl.GenericApi.effect
 import cn.yanshiqwq.enhanced_mobs.dsl.GenericApi.equip
-import cn.yanshiqwq.enhanced_mobs.dsl.GenericApi.hasTarget
 import cn.yanshiqwq.enhanced_mobs.dsl.GenericApi.inAir
 import cn.yanshiqwq.enhanced_mobs.dsl.GenericApi.inLiquid
 import cn.yanshiqwq.enhanced_mobs.dsl.GenericApi.name
-import cn.yanshiqwq.enhanced_mobs.dsl.GenericApi.onDamage
+import cn.yanshiqwq.enhanced_mobs.dsl.GenericApi.onAttack
 import cn.yanshiqwq.enhanced_mobs.dsl.GenericApi.onLiquid
 import cn.yanshiqwq.enhanced_mobs.dsl.GenericApi.onTimer
 import cn.yanshiqwq.enhanced_mobs.dsl.GenericApi.sound
@@ -34,14 +32,13 @@ object BuiltInPack {
     fun load() =
         pack("enhancedmobs", "built-in pack") {
             type(EntityType.ZOMBIE, "zombie_bloody_energized") {
-                name("嗜血僵尸-势能")
+                name("嗜血僵尸 - 势能")
                 base {
                     health = 20.0
                     damage = 2.0
                     speed = 0.23
                 }
-                onDamage{
-                    judge(chance(0.65))
+                onAttack {
                     execute {
                         effect(PotionEffectType.INCREASE_DAMAGE) {
                             duration = 20
@@ -50,7 +47,7 @@ object BuiltInPack {
                 }
             }
             type(EntityType.ZOMBIE, "zombie_miner_igniter") {
-                name("矿工僵尸-烧灼")
+                name("矿工僵尸 - 烧灼")
                 base {
                     health = 20.0
                     damage = 2.0
@@ -60,17 +57,11 @@ object BuiltInPack {
                     head(Material.IRON_HELMET)
                     offHand(Material.FLINT_AND_STEEL)
                 }
-                onTimer(40) {
+                onTimer(40, 80) { // TODO 修复在条件为真的情况下仍然判定失败
                     judgeAll(
-                        cooldown(80),
-                        hasTarget(),
                         distanceFromTarget { it <= 5.5 },
                         target {
-                            allOf(
-                                inAir(),
-                                !inLiquid(),
-                                !onLiquid()
-                            )
+                            allOf(inAir(), !inLiquid(), !onLiquid())
                         }
                     )
                     execute {
@@ -89,7 +80,7 @@ object BuiltInPack {
                 }
             }
             type(EntityType.ZOMBIE, "zombie_miner_lava") {
-                name("矿工僵尸-熔火")
+                name("矿工僵尸 - 熔火")
                 base {
                     health = 20.0
                     damage = 2.0
@@ -99,17 +90,11 @@ object BuiltInPack {
                     head(Material.IRON_HELMET)
                     offHand(Material.LAVA_BUCKET)
                 }
-                onTimer(40) {
+                onTimer(40, 120) {
                     judgeAll(
-                        cooldown(120),
-                        hasTarget(),
                         distanceFromTarget { it <= 3.5 },
                         target {
-                            allOf(
-                                inAir(),
-                                !inLiquid(),
-                                !onLiquid()
-                            )
+                            allOf(inAir(), !inLiquid(), !onLiquid())
                         }
                     )
                     execute {
@@ -126,11 +111,11 @@ object BuiltInPack {
                                 equip(EquipmentSlot.OFF_HAND, Material.LAVA_BUCKET)
                             }
                             onFailedRemove {
-                                cancel() // 这里 cancel 的是 onTimer 的任务
+                                cancel()
                             }
                         }
                     }
                 }
             }
-    }
+        }
 }

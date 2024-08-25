@@ -11,7 +11,7 @@ import org.bukkit.entity.Mob
 import org.bukkit.persistence.PersistentDataType
 import taboolib.module.chat.colored
 import taboolib.platform.BukkitPlugin
-import java.util.UUID
+import java.util.*
 
 /**
  * enhanced_mobs
@@ -34,28 +34,25 @@ class EnhancedMob(
      *
      * @return 若实体死亡或被移除则为null
      */
-    val mob = Bukkit.getEntity(uuid) as Mob
-
+    val entity = Bukkit.getEntity(uuid) as Mob
+    
     companion object {
         /**
          * 使用给定的怪物实体、类型和等级构造一个 `EnhancedMob`
          *
-         * @param entity 代表怪物实体
+         * @param mob 代表怪物实体
          * @param type 怪物类型
          * @param level 怪物等级
          */
-        fun build(entity: Mob, type: EnhancedMobType, level: Int) = EnhancedMob(entity.uniqueId, type, level).apply {
+        fun build(mob: Mob, type: EnhancedMobType, level: Int) = EnhancedMob(mob.uniqueId, type, level).apply {
             // 持久化数据
-            mob.persistentDataContainer.apply {
+            entity.persistentDataContainer.apply {
                 set(MobDataKey.TYPE_ID, PersistentDataType.STRING, type.id)
                 set(MobDataKey.LEVEL, PersistentDataType.INTEGER, level)
             }
 
             // 应用类型代码块
-            type.block.invoke(mob)
-
-            // 应用等级曲线
-            ConfigV1.levelFormula.apply(mob, level)
+            type.block.invoke(entity, this)
 
             // 修改显示名称
             val color = when (level) {
@@ -65,10 +62,13 @@ class EnhancedMob(
                 in 90..ConfigV1.levelRange.last -> "&c"
                 else -> "&7"
             }
-            mob.customName = ConfigV1.customName.format(color, level, mob.customName).colored()
+            entity.customName = ConfigV1.customName.format(color, level, entity.customName).colored()
+            
+            // 应用等级曲线
+//            ConfigV1.levelFormula.apply(mob, level)
 
             // 触发 EnhancedMob 生成事件
-            EnhancedMobSpawnEvent(this, mob.location).call()
+            EnhancedMobSpawnEvent(this, this.entity.location).call()
         }
 
         /**
@@ -91,7 +91,11 @@ class EnhancedMob(
             val id = container.get(MobDataKey.TYPE_ID, PersistentDataType.STRING) ?: return
             val type = MobTypeManager.get(id) ?: return
             val level = container.get(MobDataKey.LEVEL, PersistentDataType.INTEGER) ?: return
-            MobManager.add(build(mob, type, level))
+            try {
+                MobManager.add(build(mob, type, level))
+            } catch (e: Exception) {
+                throw RuntimeException("Failed casting entity ${mob.uniqueId} to EnhancedMob", e)
+            }
         }
     }
 }

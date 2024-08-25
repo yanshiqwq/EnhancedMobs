@@ -1,11 +1,11 @@
 package cn.yanshiqwq.enhanced_mobs.dsl
 
+import cn.yanshiqwq.enhanced_mobs.EnhancedMob
 import cn.yanshiqwq.enhanced_mobs.EnhancedMobType
 import cn.yanshiqwq.enhanced_mobs.Pack
 import cn.yanshiqwq.enhanced_mobs.manager.PackManager
 import org.bukkit.entity.EntityType
 import org.bukkit.entity.Mob
-import java.util.*
 
 /**
  * enhanced_mobs
@@ -58,6 +58,6 @@ class PackBuilder(private val id: String, private val description: String) {
      * @param id 该怪物类型的唯一标识符
      * @param block 用于配置怪物实例的 DSL 函数
      */
-    fun type(type: EntityType, id: String, block: Mob.() -> Unit) =
-        types.plus(EnhancedMobType(id, type, block))
+    fun type(type: EntityType, id: String, block: Mob.(EnhancedMob) -> Unit) =
+        types.add(EnhancedMobType(id, type, block))
 }

@@ -20,9 +20,9 @@ object SkillApi {
      * @param type 要放置的方块的类型
      * @param removeOnDeath 是否在实体死亡时移除方块
      */
-    fun Mob.placeBlock(delay: Long = 0, type: Material = Material.AIR, removeOnDeath: Boolean = true, blockPlacer: BlockPlacer.() -> Unit) {
+    fun Mob.placeBlock(delay: Long = 0, type: Material = Material.AIR, removeOnDeath: Boolean = true, block: BlockPlacer.() -> Unit) {
         val placer = BlockPlacer(this, delay, type, removeOnDeath)
-        blockPlacer(placer)
+        block.invoke(placer)
         placer.execute()
     }
     class BlockPlacer(
@@ -49,27 +49,31 @@ object SkillApi {
          */
         fun onFailedRemove(block: () -> Unit) { onFailedRemove = block }
         private var onFailedRemove: (() -> Unit) = {}
-
-
+        
         fun execute() {
             val target = mob.target ?: return
             val block = target.location.block
             block.type = type
             onPlace.invoke()
-
-            delay(delay) {
+            println("Block placed: ${block.type} ${block.location}")
+            mob.delay(delay) {
                 if (block.type != type) {
                     onFailedRemove.invoke()
+                    println("Failed to remove block: ${block.type} ${block.location}")
                     return@delay
                 }
                 onRemove.invoke()
                 block.type = Material.AIR
+                println("Block removed: ${block.type} ${block.location}")
+                cancel()
             }
-
+            
             if (removeOnDeath) {
                 mob.onDeath {
                     if (block.type != type) return@onDeath
                     block.type = Material.AIR
+                    println("Block removed on death: ${block.type} ${block.location}")
+                    close()
                 }
             }
         }
