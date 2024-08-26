@@ -12,7 +12,7 @@ import org.bukkit.entity.Mob
  * @since 2024/8/19 下午9:16
  */
 /**
- * `EnhancedMob` 怪物类型类
+ * 怪物类型
  *
  * @property id 怪物类型的唯一标识符
  * @property type 生物类型
@@ -26,11 +26,11 @@ data class EnhancedMobType(
 ) {
     companion object {
         /**
-         * 在指定位置生成一个 `EnhancedMob`
+         * 在指定位置生成一个本插件的怪物
          *
          * @param loc 生物生成的位置
          * @param level 生物的等级
-         * @return 一个 `EnhancedMob` 实例，表示生成的生物
+         * @return 一个怪物类型实例，表示生成的生物
          * @throws NullPointerException 如果指定位置的世界不存在
          * @throws ClassCastException 如果要生成的实体不是生物类型
          */

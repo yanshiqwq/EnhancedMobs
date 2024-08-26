@@ -20,6 +20,7 @@ import org.bukkit.Sound
 import org.bukkit.entity.EntityType
 import org.bukkit.inventory.EquipmentSlot
 import org.bukkit.potion.PotionEffectType
+import taboolib.common.platform.function.info
 
 /**
  * enhanced_mobs
@@ -32,7 +33,7 @@ object BuiltInPack {
     fun load() =
         pack("enhancedmobs", "built-in pack") {
             type(EntityType.ZOMBIE, "zombie_bloody_energized") {
-                name("嗜血僵尸 - 势能")
+                name("嗜血僵尸·势能")
                 base {
                     health = 20.0
                     damage = 2.0
@@ -47,7 +48,7 @@ object BuiltInPack {
                 }
             }
             type(EntityType.ZOMBIE, "zombie_miner_igniter") {
-                name("矿工僵尸 - 烧灼")
+                name("矿工僵尸·烧灼")
                 base {
                     health = 20.0
                     damage = 2.0
@@ -57,10 +58,11 @@ object BuiltInPack {
                     head(Material.IRON_HELMET)
                     offHand(Material.FLINT_AND_STEEL)
                 }
-                onTimer(40, 80) { // TODO 修复在条件为真的情况下仍然判定失败
+                onTimer(40, 80) {
                     judgeAll(
-                        distanceFromTarget { it <= 5.5 },
+//                        distanceFromTarget { it <= 5.5 },
                         target {
+                            info("${inAir()}, ${!inLiquid()}, ${!onLiquid()}")
                             allOf(inAir(), !inLiquid(), !onLiquid())
                         }
                     )
@@ -80,7 +82,7 @@ object BuiltInPack {
                 }
             }
             type(EntityType.ZOMBIE, "zombie_miner_lava") {
-                name("矿工僵尸 - 熔火")
+                name("矿工僵尸·熔火")
                 base {
                     health = 20.0
                     damage = 2.0

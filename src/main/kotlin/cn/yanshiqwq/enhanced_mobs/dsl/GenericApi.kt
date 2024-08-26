@@ -15,6 +15,8 @@ import org.bukkit.inventory.EquipmentSlot
 import org.bukkit.inventory.ItemStack
 import org.bukkit.potion.PotionEffectType
 import org.bukkit.potion.PotionType
+import taboolib.common.platform.service.PlatformExecutor
+import taboolib.platform.util.groundBlock
 import java.util.*
 import kotlin.random.Random
 
@@ -129,7 +131,7 @@ object GenericApi {
      *
      * @param params 配置监听器的参数
      */
-    inline fun Entity.onDamage(params: ListenerBuilder<EntityDamageByEntityEvent>.() -> Unit) =
+    inline fun LivingEntity.onDamage(params: ListenerBuilder<EntityDamageByEntityEvent>.() -> Unit) =
         ListenerBuilder(EntityDamageByEntityEvent::class.java)
             .apply(params)
             .build(this)
@@ -139,7 +141,7 @@ object GenericApi {
      *
      * @param params 配置监听器的参数
      */
-    inline fun Entity.onAttack(params: ListenerBuilder<EntityDamageByEntityEvent>.() -> Unit) =
+    inline fun LivingEntity.onAttack(params: ListenerBuilder<EntityDamageByEntityEvent>.() -> Unit) =
         ListenerBuilder(EntityDamageByEntityEvent::class.java)
             .apply(params)
             .build(this) { damager }
@@ -149,8 +151,9 @@ object GenericApi {
      *
      * @param params 配置监听器的参数
      */
-    inline fun Entity.onDeath(params: ListenerBuilder<EntityDeathEvent>.() -> Unit) =
+    inline fun LivingEntity.onDeath(params: ListenerBuilder<EntityDeathEvent>.() -> Unit) =
         ListenerBuilder(EntityDeathEvent::class.java)
+            .apply { runAfterEntityDead = true }
             .apply(params)
             .build(this)
 
@@ -161,7 +164,7 @@ object GenericApi {
      * @see TimerBuilder
      * @return 返回创建的 TabooLib 计时器任务
      */
-    inline fun Mob.onTimer(period: Long = 20L, cooldown: Long? = null, params: TimerBuilder.() -> Unit) {
+    inline fun Mob.onTimer(period: Long = 20L, cooldown: Long? = null, params: TimerBuilder.() -> Unit): PlatformExecutor.PlatformTask {
         val builder = TimerBuilder(period)
         if (cooldown != null) builder.setCooldown(cooldown, world)
         params.invoke(builder)
@@ -175,7 +178,7 @@ object GenericApi {
      * @see TimerBuilder
      * @return 返回创建的 TabooLib 计时器任务
      */
-    inline fun Mob.delay(tick: Long, params: DelayBuilder.() -> Unit) {
+    inline fun Mob.delay(tick: Long, params: DelayBuilder.() -> Unit): PlatformExecutor.PlatformTask {
         val builder = DelayBuilder(tick)
         params.invoke(builder)
         return builder.build(this)
@@ -224,8 +227,9 @@ object GenericApi {
      * @return 如果目标不存在，返回 false；否则，返回条件函数对距离的检查结果
      */
     inline fun Mob.distanceFromTarget(condition: (Double) -> Boolean): Boolean {
-        val distance = distance(target ?: return false)
-        return condition.invoke(distance)
+        val targetDistance = target?.let { distance(it) } ?: return false
+        println("Target distance: $targetDistance")
+        return condition(targetDistance)
     }
 
     /**
@@ -253,13 +257,13 @@ object GenericApi {
      * @return 如果实体下方的方块类型在给定类型中，返回 true；否则，返回 false
      */
     fun Entity.onBlock(vararg type: Material) =
-        type.contains(location.move(y = -1.0).block.type)
+        type.contains(groundBlock.type)
 
     /**
      * 判断实体是否在液体上方
      * @return 如果实体下方的方块是液体，返回 true；否则，返回 false
      */
-    fun Entity.onLiquid() = location.move(y = -1.0).block.isLiquid
+    fun Entity.onLiquid() = groundBlock.isLiquid
 
     /**
      * 移动位置坐标
@@ -274,7 +278,32 @@ object GenericApi {
         this.z += z
     }
     
-    fun chance(chance: Double, random: Random = Random) = (random.nextDouble() > chance)
+    /**
+     * 根据给定的概率计算随机事件是否发生
+     *
+     * @param chance 发生的概率，范围在0到1之间
+     * @param random 用于生成随机数的Random对象
+     * @return 如果随机数小于给定概率，则返回true，表示事件发生
+     */
+    fun chance(chance: Double, random: Random = Random) = random.nextDouble() < chance
+    
+    /**
+     * 根据给定的概率和种子计算随机事件是否发生
+     *
+     * @param chance 发生的概率，范围在0到1之间
+     * @param seed 用于初始化Random对象的种子
+     * @param random 用于生成随机数的Random对象，使用给定的种子初始化
+     * @return 如果随机数小于给定概率，则返回true，表示事件发生
+     */
     fun chance(chance: Double, seed: Long, random: Random = Random(seed)) = chance(chance, random)
+    
+    /**
+     * 根据给定的概率和种子计算随机事件是否发生
+     *
+     * @param chance 发生的概率，范围在0到1之间
+     * @param seed 用于初始化Random对象的种子
+     * @param random 用于生成随机数的Random对象，使用给定的种子初始化
+     * @return 如果随机数小于给定概率，则返回true，表示事件发生
+     */
     fun chance(chance: Double, seed: Int, random: Random = Random(seed)) = chance(chance, random)
 }

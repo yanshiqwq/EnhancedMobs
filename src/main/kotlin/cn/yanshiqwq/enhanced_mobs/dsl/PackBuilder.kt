@@ -16,15 +16,18 @@ import org.bukkit.entity.Mob
  */
 
 /**
- * 用于构建 `Pack` 实例的构建器类
+ * 用于构建数据包实例的构建器类
  *
  * @param id 该包的唯一标识符
  * @param description 该包的描述信息
  */
-class PackBuilder(private val id: String, private val description: String) {
+class PackBuilder(
+    private val id: String,
+    private val description: String
+) {
     companion object {
         /**
-         * 创建并注册一个新的 `Pack` 实例
+         * 创建并注册一个新的数据包实例
          *
          * @param id 该包的唯一标识符
          * @param description 该包的描述信息
@@ -41,7 +44,7 @@ class PackBuilder(private val id: String, private val description: String) {
     private val types: HashSet<EnhancedMobType> = hashSetOf()
 
     /**
-     * 构建并返回一个 `Pack` 实例
+     * 构建并返回一个数据包实例
      *
      * @return 配置好的实例
      * @throws NullPointerException 如果包的 id 为空，则抛出异常
@@ -56,7 +59,7 @@ class PackBuilder(private val id: String, private val description: String) {
      *
      * @param type 要添加的怪物类型
      * @param id 该怪物类型的唯一标识符
-     * @param block 用于配置怪物实例的 DSL 函数
+     * @param block 用于配置怪物实例
      */
     fun type(type: EntityType, id: String, block: Mob.(EnhancedMob) -> Unit) =
         types.add(EnhancedMobType(id, type, block))

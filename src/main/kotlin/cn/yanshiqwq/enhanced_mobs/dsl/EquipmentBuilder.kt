@@ -21,38 +21,68 @@ class EquipmentBuilder {
      * 头部装备
      */
     var head: ItemStack? = null
+    /**
+     * 设置头部装备
+     *
+     * @param type 装备的材料类型
+     */
     fun head(type: Material) { head = ItemStack(type) }
-
+    
     /**
      * 胸部装备
      */
     var chest: ItemStack? = null
+    /**
+     * 设置胸部装备
+     *
+     * @param type 装备的材料类型
+     */
     fun chest(type: Material) { chest = ItemStack(type) }
-
+    
     /**
      * 腿部装备
      */
     var legs: ItemStack? = null
+    /**
+     * 设置腿部装备
+     *
+     * @param type 装备的材料类型
+     */
     fun legs(type: Material) { legs = ItemStack(type) }
-
+    
     /**
      * 脚部装备
      */
     var feet: ItemStack? = null
+    /**
+     * 设置脚部装备
+     *
+     * @param type 装备的材料类型
+     */
     fun feet(type: Material) { feet = ItemStack(type) }
-
+    
     /**
      * 主手装备
      */
     var hand: ItemStack? = null
+    /**
+     * 设置主手装备
+     *
+     * @param type 装备的材料类型
+     */
     fun hand(type: Material) { hand = ItemStack(type) }
-
+    
     /**
      * 副手装备
      */
     var offHand: ItemStack? = null
+    /**
+     * 设置副手装备
+     *
+     * @param type 装备的材料类型
+     */
     fun offHand(type: Material) { offHand = ItemStack(type) }
-
+    
     /**
      * 将设置好的装备应用到指定的实体上
      *

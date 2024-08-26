@@ -11,7 +11,7 @@ import org.bukkit.World
  */
 
 /**
- * 冷却时间机制
+ * 冷却时间计时器
  *
  * @param time 冷却时间，单位为刻
  */
@@ -30,7 +30,7 @@ class CooldownTimer(private val time: Long, private val world: World) {
      * @return 如果冷却时间已过，则返回 `true` 并更新上次操作时间；否则返回 `false`
      */
     fun checkAndUpdate(): Boolean =
-        if (getGameTime() - lastActionTime > time) {
+        if (getGameTime() - lastActionTime >= time) {
             lastActionTime = getGameTime()
             true
         } else false

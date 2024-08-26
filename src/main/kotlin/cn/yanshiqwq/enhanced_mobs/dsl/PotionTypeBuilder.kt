@@ -17,7 +17,7 @@ import org.bukkit.potion.PotionEffectType
  */
 data class PotionTypeBuilder(private val effects: MutableList<PotionEffect>) {
     /**
-     * 为指定的药水效果类型配置效果。
+     * 修改组内指定的状态效果
      *
      * @param type 状态效果的类型
      * @param block 用于配置状态效果的 DSL 函数

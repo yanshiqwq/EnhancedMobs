@@ -30,7 +30,7 @@ class EnhancedMob(
     val level: Int
 ) {
     /**
-     * 此 `EnhancedMob` 对应的怪物实体
+     * 此怪物类对应的怪物实体
      *
      * @return 若实体死亡或被移除则为null
      */
@@ -38,7 +38,7 @@ class EnhancedMob(
     
     companion object {
         /**
-         * 使用给定的怪物实体、类型和等级构造一个 `EnhancedMob`
+         * 使用给定的怪物实体、类型和等级构造一个怪物实例
          *
          * @param mob 代表怪物实体
          * @param type 怪物类型
@@ -64,15 +64,15 @@ class EnhancedMob(
             }
             entity.customName = ConfigV1.customName.format(color, level, entity.customName).colored()
             
-            // 应用等级曲线
-//            ConfigV1.levelFormula.apply(mob, level)
+            // TODO 应用等级曲线
+            // ConfigV1.levelFormula.apply(mob, level)
 
-            // 触发 EnhancedMob 生成事件
+            // 触发怪物生成事件
             EnhancedMobSpawnEvent(this, this.entity.location).call()
         }
 
         /**
-         * 用于在持久数据容器中存储怪物类型ID的键
+         * 用于在持久数据容器中存储怪物数据的键
          */
         private val MobDataKey = object {
             val TYPE_ID = NamespacedKey(BukkitPlugin.getInstance(), "type_id")
@@ -80,7 +80,7 @@ class EnhancedMob(
         }
 
         /**
-         * 尝试将实体加载为 `EnhancedMob`
+         * 尝试将实体加载怪物实例
          * 用于插件重启后重新加载数据
          *
          * @param entity 需要加载的实体

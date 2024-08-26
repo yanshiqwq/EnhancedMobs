@@ -10,8 +10,9 @@ import org.bukkit.potion.PotionEffectType
  * @author yanshiqwq
  * @since 2024/8/20 下午3:39
  */
+
 /**
- * 用于构建状态效果实例的构建器类
+ * 用于构建状态效果
  *
  * @param type 状态效果的类型
  * @param duration 状态效果的持续时间，单位为刻
@@ -29,14 +30,14 @@ data class PotionEffectBuilder(
     var icon: Boolean = true
 ) {
     /**
-     * 使用药水效果实例创建构建器类
+     * 使用状态效果构建
      *
      * @param effect 要用于构建器的药水效果实例
      */
     constructor(effect: PotionEffect) : this(effect.type, effect.duration, effect.amplifier, effect.isAmbient, effect.hasParticles(), effect.hasIcon())
 
     /**
-     * 将药水效果的持续时间设置为无限
+     * 将状态效果的持续时间设置为无限
      * @see PotionEffect.INFINITE_DURATION
      * @see PotionEffect.isInfinite
      *

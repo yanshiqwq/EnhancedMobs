@@ -9,16 +9,23 @@ package cn.yanshiqwq.enhanced_mobs.dsl
  */
 
 /**
- * 定义一个可执行的操作
+ * 定义一个有上下文的可执行操作
  *
- * @param T 操作的接收者类型
+ * @param T 操作的上下文类型
  */
 interface ExecutionHandler<T> {
     /**
      * 用于监听器和计时器对象的执行器
+     *
      * @see ListenerBuilder
      * @see TimerBuilder
      */
     var executor: T.() -> Unit
+    
+    /**
+     * 设定执行的操作
+     *
+     * @param block 要执行的操作
+     */
     fun execute(block: T.() -> Unit) { executor = block }
 }
