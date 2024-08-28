@@ -56,29 +56,25 @@ object SkillApi {
             val block = target.location.block
             block.type = type
             onPlace.invoke()
-            println("Block placed: ${block.type} ${block.location}")
             mob.delay(delay) {
                 execute {
                     if (block.type != type) {
                         onFailedRemove.invoke(this)
-                        println("Failed to remove block: ${block.type} ${block.location}")
                         cancel()
                         return@execute
                     }
                     onRemove.invoke(this)
                     block.type = Material.AIR
-                    println("Block removed: ${block.type} ${block.location}")
                 }
             }
             
             if (removeOnDeath) {
                 mob.onDeath {
-                    judgeAll(
+                    judge {
                         block.type == type
-                    )
+                    }
                     execute {
                         block.type = Material.AIR
-                        println("Block removed on death: ${block.type} ${block.location}")
                     }
                 }
             }

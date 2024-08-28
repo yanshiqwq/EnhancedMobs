@@ -22,6 +22,8 @@ import taboolib.common.platform.function.registerBukkitListener
  * @sample ListenerBuilder(EntityDeathEvent::class.java)
  */
 class ListenerBuilder<T: EntityEvent>(private val eventClass: Class<T>) : EventBuilder<T>() {
+    override var executor: T.() -> Unit = {}
+    
     /**
      * 事件监听器的优先级
      */
@@ -31,16 +33,6 @@ class ListenerBuilder<T: EntityEvent>(private val eventClass: Class<T>) : EventB
      * 是否忽略已取消的事件
      */
     var ignoreCancelled: Boolean = true
-    
-    /**
-     * 定义事件执行的具体逻辑
-     */
-    override var executor: T.() -> Unit = {}
-    
-    /**
-     * 定义事件的冷却时间
-     */
-    override var cooldown: CooldownTimer? = null
     
     /**
      * 构建并注册事件监听器

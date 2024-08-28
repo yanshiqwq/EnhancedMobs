@@ -228,7 +228,6 @@ object GenericApi {
      */
     inline fun Mob.distanceFromTarget(condition: (Double) -> Boolean): Boolean {
         val targetDistance = target?.let { distance(it) } ?: return false
-        println("Target distance: $targetDistance")
         return condition(targetDistance)
     }
 

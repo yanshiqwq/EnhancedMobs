@@ -9,13 +9,13 @@ package cn.yanshiqwq.enhanced_mobs.dsl
  */
 
 /**
- * 定义一个有上下文的可执行操作
+ * 有上下文的可执行操作接口
  *
  * @param T 操作的上下文类型
  */
 interface ExecutionHandler<T> {
     /**
-     * 用于监听器和计时器对象的执行器
+     * 要执行的操作
      *
      * @see ListenerBuilder
      * @see TimerBuilder

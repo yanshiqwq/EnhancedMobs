@@ -1,6 +1,5 @@
 package cn.yanshiqwq.enhanced_mobs
 
-import cn.yanshiqwq.enhanced_mobs.dsl.GenericApi.allOf
 import cn.yanshiqwq.enhanced_mobs.dsl.GenericApi.base
 import cn.yanshiqwq.enhanced_mobs.dsl.GenericApi.distanceFromTarget
 import cn.yanshiqwq.enhanced_mobs.dsl.GenericApi.effect
@@ -20,7 +19,6 @@ import org.bukkit.Sound
 import org.bukkit.entity.EntityType
 import org.bukkit.inventory.EquipmentSlot
 import org.bukkit.potion.PotionEffectType
-import taboolib.common.platform.function.info
 
 /**
  * enhanced_mobs
@@ -30,94 +28,101 @@ import taboolib.common.platform.function.info
  * @since 2024/8/20 下午4:37
  */
 object BuiltInPack {
-    fun load() =
-        pack("enhancedmobs", "built-in pack") {
-            type(EntityType.ZOMBIE, "zombie_bloody_energized") {
-                name("嗜血僵尸·势能")
-                base {
-                    health = 20.0
-                    damage = 2.0
-                    speed = 0.23
-                }
-                onAttack {
-                    execute {
-                        effect(PotionEffectType.INCREASE_DAMAGE) {
-                            duration = 20
-                        }
+    fun load() = pack("enhancedmobs", "built-in pack") {
+        type(EntityType.ZOMBIE, "zombie_bloody_energized") {
+            name("嗜血僵尸·势能")
+            base {
+                health = 20.0
+                damage = 2.0
+                speed = 0.23
+            }
+            onAttack {
+                execute {
+                    effect(PotionEffectType.INCREASE_DAMAGE) {
+                        duration = 20
                     }
                 }
             }
-            type(EntityType.ZOMBIE, "zombie_miner_igniter") {
-                name("矿工僵尸·烧灼")
-                base {
-                    health = 20.0
-                    damage = 2.0
-                    speed = 0.24
-                }
-                equip {
-                    head(Material.IRON_HELMET)
-                    offHand(Material.FLINT_AND_STEEL)
-                }
-                onTimer(40, 80) {
-                    judgeAll(
-//                        distanceFromTarget { it <= 5.5 },
-                        target {
-                            info("${inAir()}, ${!inLiquid()}, ${!onLiquid()}")
-                            allOf(inAir(), !inLiquid(), !onLiquid())
-                        }
-                    )
-                    execute {
-                        placeBlock(40, Material.FIRE) {
-                            onPlace {
-                                effect(PotionEffectType.FIRE_RESISTANCE) {
-                                    duration = 300
-                                }
-                                sound(Sound.ITEM_FLINTANDSTEEL_USE)
-                            }
-                            onRemove {
-                                sound(Sound.BLOCK_FIRE_EXTINGUISH, pitch = 2.0F)
-                            }
-                        }
-                    }
-                }
+        }
+        
+        type(EntityType.ZOMBIE, "zombie_miner_igniter") {
+            name("矿工僵尸·烧灼")
+            base {
+                health = 20.0
+                damage = 2.0
+                speed = 0.24
             }
-            type(EntityType.ZOMBIE, "zombie_miner_lava") {
-                name("矿工僵尸·熔火")
-                base {
-                    health = 20.0
-                    damage = 2.0
-                    speed = 0.24
-                }
-                equip {
-                    head(Material.IRON_HELMET)
-                    offHand(Material.LAVA_BUCKET)
-                }
-                onTimer(40, 120) {
-                    judgeAll(
+            equip {
+                head(Material.IRON_HELMET)
+                offHand(Material.FLINT_AND_STEEL)
+            }
+            onTimer(40, 80) {
+                judge {
+                    allOf(
                         distanceFromTarget { it <= 3.5 },
                         target {
                             allOf(inAir(), !inLiquid(), !onLiquid())
                         }
                     )
-                    execute {
-                        placeBlock(50, Material.FIRE) {
-                            onPlace {
-                                effect(PotionEffectType.FIRE_RESISTANCE) {
-                                    duration = 400
-                                }
-                                sound(Sound.ITEM_BUCKET_EMPTY_LAVA)
-                                equip(EquipmentSlot.OFF_HAND, Material.BUCKET)
+                }
+                execute {
+                    placeBlock(40, Material.FIRE) {
+                        onPlace {
+                            effect(PotionEffectType.FIRE_RESISTANCE) {
+                                duration = 300
                             }
-                            onRemove {
-                                sound(Sound.ITEM_BUCKET_FILL_LAVA)
-                                equip(EquipmentSlot.OFF_HAND, Material.LAVA_BUCKET)
-                            }
-                            onFailedRemove {
-                                cancel()
-                            }
+                            sound(Sound.ITEM_FLINTANDSTEEL_USE)
+                        }
+                        onRemove {
+                            sound(Sound.BLOCK_FIRE_EXTINGUISH, pitch = 2.0F)
                         }
                     }
                 }
             }
         }
+        
+        type(EntityType.ZOMBIE, "zombie_miner_lava") {
+            name("矿工僵尸·熔火")
+            base {
+                health = 20.0
+                damage = 2.0
+                speed = 0.24
+            }
+            equip {
+                head(Material.IRON_HELMET)
+                offHand(Material.LAVA_BUCKET)
+            }
+            onTimer(40, 120) {
+                judge {
+                    allOf(
+                        distanceFromTarget { it <= 3.5 },
+                        target {
+                            allOf(inAir(), !inLiquid(), !onLiquid())
+                        }
+                    )
+                }
+                execute {
+                    placeBlock(50, Material.LAVA) {
+                        onPlace {
+                            effect(PotionEffectType.FIRE_RESISTANCE) {
+                                duration = 400
+                            }
+                            sound(Sound.ITEM_BUCKET_EMPTY_LAVA)
+                            equip(EquipmentSlot.OFF_HAND, Material.BUCKET)
+                        }
+                        onRemove {
+                            sound(Sound.ITEM_BUCKET_FILL_LAVA)
+                            equip(EquipmentSlot.OFF_HAND, Material.LAVA_BUCKET)
+                        }
+                        onFailedRemove {
+                            effect(PotionEffectType.SLOW) {
+                                duration = 100
+                            }
+                            cancel()
+                        }
+                    }
+                }
+            }
+        }
+    }
 }

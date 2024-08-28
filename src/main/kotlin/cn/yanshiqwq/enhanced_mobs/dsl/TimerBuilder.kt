@@ -27,15 +27,7 @@ open class TimerBuilder(
     private val now: Boolean = false,
     private val async: Boolean = false
 ) : EventBuilder<PlatformExecutor.PlatformTask>() {
-    /**
-     * 任务执行的具体逻辑
-     */
     override var executor: PlatformExecutor.PlatformTask.() -> Unit = {}
-    
-    /**
-     * 任务的冷却计时器
-     */
-    override var cooldown: CooldownTimer? = null
     
     /**
      * 构建并提交任务

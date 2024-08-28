@@ -2,6 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/cn.yanshiqwq.enhanced_mobs.enhanced_mobs.main.iml" filepath="$PROJECT_DIR$/.idea/modules/cn.yanshiqwq.enhanced_mobs.enhanced_mobs.main.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/enhanced_mobs.main.iml" filepath="$PROJECT_DIR$/.idea/modules/enhanced_mobs.main.iml" />
     </modules>
   </component>
