@@ -34,9 +34,11 @@ taboolib {
             name("延时qwq")
         }
     }
+    
     env {
         install(UNIVERSAL, BUKKIT_ALL, CHAT, EXPANSION_SUBMIT_CHAIN)
     }
+    
     version { taboolib = "6.1.2-beta10" }
 }
 
@@ -44,6 +46,7 @@ tasks {
     withType<JavaCompile> {
         options.encoding = "UTF-8"
     }
+    
     withType<KotlinCompile> {
         kotlinOptions {
             jvmTarget = "1.8"
@@ -52,8 +55,7 @@ tasks {
     }
 }
 
-@Suppress("DEPRECATION")
-configure<JavaPluginConvention> {
+java {
     sourceCompatibility = JavaVersion.VERSION_1_8
     targetCompatibility = JavaVersion.VERSION_1_8
 }
