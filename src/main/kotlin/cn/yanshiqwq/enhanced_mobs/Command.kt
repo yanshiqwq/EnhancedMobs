@@ -3,17 +3,14 @@ package cn.yanshiqwq.enhanced_mobs
 import cn.yanshiqwq.enhanced_mobs.manager.MobTypeManager
 import org.bukkit.command.CommandSender
 import org.bukkit.entity.Player
-import taboolib.common.platform.command.CommandBody
-import taboolib.common.platform.command.CommandHeader
-import taboolib.common.platform.command.int
-import taboolib.common.platform.command.subCommand
+import taboolib.common.platform.command.*
 
 /**
  * enhanced_mobs
  * cn.yanshiqwq.enhanced_mobs.Command
  *
  * @author yanshiqwq
- * @since 2024/8/22 下午9:04
+ * @since 2024/8/22 下午 9:04
  */
 @CommandHeader("enhancedmobs", ["em"])
 object Command {
@@ -29,13 +26,15 @@ object Command {
                 }
                 execute<Player> { sender, context, _ ->
                     val location = sender.location
-                    val type = MobTypeManager.get(context["type"]) ?: throw NullPointerException("TypeId not found: ${context["type"]}")
+                    val type = MobTypeManager.get(context["type"])
+                               ?: throw NullPointerException("TypeId not found: ${context["type"]}")
                     val level = context.int("level")
                     EnhancedMobType.spawn(type, location, level)
                 }
             }
         }
     }
+    
     @CommandBody
     val help = subCommand {
         execute<CommandSender> { sender, _, _ ->

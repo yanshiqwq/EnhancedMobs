@@ -11,9 +11,8 @@ import taboolib.common.platform.function.registerBukkitListener
  * cn.yanshiqwq.enhanced_mobs.dsl.ListenerBuilder
  *
  * @author yanshiqwq
- * @since 2024/8/21 下午7:27
+ * @since 2024/8/21 下午 7:27
  */
-
 /**
  * 用于构建和注册实体事件监听器的构建器类
  *
@@ -21,7 +20,7 @@ import taboolib.common.platform.function.registerBukkitListener
  * @property eventClass 事件的类类型
  * @sample ListenerBuilder(EntityDeathEvent::class.java)
  */
-class ListenerBuilder<T: EntityEvent>(private val eventClass: Class<T>) : EventBuilder<T>() {
+class ListenerBuilder<T: EntityEvent>(private val eventClass: Class<T>): EventBuilder<T>() {
     override var executor: T.() -> Unit = {}
     
     /**

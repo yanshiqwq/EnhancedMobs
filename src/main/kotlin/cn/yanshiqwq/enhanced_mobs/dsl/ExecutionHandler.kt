@@ -5,9 +5,8 @@ package cn.yanshiqwq.enhanced_mobs.dsl
  * cn.yanshiqwq.enhanced_mobs.dsl.IExecution
  *
  * @author yanshiqwq
- * @since 2024/8/21 下午7:13
+ * @since 2024/8/21 下午 7:13
  */
-
 /**
  * 有上下文的可执行操作接口
  *
@@ -27,5 +26,7 @@ interface ExecutionHandler<T> {
      *
      * @param block 要执行的操作
      */
-    fun execute(block: T.() -> Unit) { executor = block }
+    fun execute(block: T.() -> Unit) {
+        executor = block
+    }
 }

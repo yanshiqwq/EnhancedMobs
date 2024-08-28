@@ -18,9 +18,8 @@ import java.util.*
  * cn.yanshiqwq.enhanced_mobs.EnhancedMob
  *
  * @author yanshiqwq
- * @since 2024/8/21 下午10:34
+ * @since 2024/8/21 下午 10:34
  */
-
 /**
  * 本插件特有的怪物实例
  */
@@ -32,7 +31,7 @@ class EnhancedMob(
     /**
      * 此怪物类对应的怪物实体
      *
-     * @return 若实体死亡或被移除则为null
+     * @return 若实体死亡或被移除则为 null
      */
     val entity = Bukkit.getEntity(uuid) as Mob
     
@@ -50,27 +49,23 @@ class EnhancedMob(
                 set(MobDataKey.TYPE_ID, PersistentDataType.STRING, type.id)
                 set(MobDataKey.LEVEL, PersistentDataType.INTEGER, level)
             }
-
             // 应用类型代码块
             type.block.invoke(entity, this)
-
             // 修改显示名称
             val color = when (level) {
-                in 10..70 -> "&a"
-                in 70..80 -> "&e"
-                in 80..90 -> "&5"
-                in 90..ConfigV1.levelRange.last -> "&c"
+                in 10 .. 70 -> "&a"
+                in 70 .. 80 -> "&e"
+                in 80 .. 90 -> "&5"
+                in 90 .. ConfigV1.levelRange.last -> "&c"
                 else -> "&7"
             }
             entity.customName = ConfigV1.customName.format(color, level, entity.customName).colored()
-            
             // TODO 应用等级曲线
             // ConfigV1.levelFormula.apply(mob, level)
-
             // 触发怪物生成事件
             EnhancedMobSpawnEvent(this, this.entity.location).call()
         }
-
+        
         /**
          * 用于在持久数据容器中存储怪物数据的键
          */
@@ -78,7 +73,7 @@ class EnhancedMob(
             val TYPE_ID = NamespacedKey(BukkitPlugin.getInstance(), "type_id")
             val LEVEL = NamespacedKey(BukkitPlugin.getInstance(), "level")
         }
-
+        
         /**
          * 尝试将实体加载怪物实例
          * 用于插件重启后重新加载数据

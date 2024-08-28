@@ -8,7 +8,7 @@ import org.bukkit.potion.PotionEffectType
  * cn.yanshiqwq.enhanced_mobs.dsl.PotionTypeBuilder
  *
  * @author yanshiqwq
- * @since 2024/8/20 下午4:04
+ * @since 2024/8/20 下午 4:04
  */
 /**
  * 用于构建状态效果组的构建器类
@@ -30,7 +30,7 @@ data class PotionTypeBuilder(private val effects: MutableList<PotionEffect>) {
             effects[index] = builder.build()
         }
     }
-
+    
     /**
      * 构建并返回药水效果列表
      *

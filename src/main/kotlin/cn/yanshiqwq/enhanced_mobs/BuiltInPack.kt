@@ -25,7 +25,7 @@ import org.bukkit.potion.PotionEffectType
  * cn.yanshiqwq.enhanced_mobs.pack.Default
  *
  * @author yanshiqwq
- * @since 2024/8/20 下午4:37
+ * @since 2024/8/20 下午 4:37
  */
 object BuiltInPack {
     fun load() = pack("enhancedmobs", "built-in pack") {

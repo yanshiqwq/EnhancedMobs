@@ -11,4 +11,4 @@ class DelayBuilder(
     delay: Long,
     now: Boolean = false,
     async: Boolean = false
-) : TimerBuilder(0, delay, now, async)
+): TimerBuilder(0, delay, now, async)

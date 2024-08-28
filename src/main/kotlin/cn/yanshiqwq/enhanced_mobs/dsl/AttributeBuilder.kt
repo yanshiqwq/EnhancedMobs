@@ -1,71 +1,67 @@
 package cn.yanshiqwq.enhanced_mobs.dsl
 
-import org.bukkit.attribute.Attributable
-import org.bukkit.attribute.Attribute
-import org.bukkit.attribute.AttributeModifier
-import java.util.UUID
+import org.bukkit.attribute.*
+import java.util.*
 
 /**
  * enhanced_mobs
  * cn.yanshiqwq.enhanced_mobs.dsl.BaseAttributeBuilder
  *
  * @author yanshiqwq
- * @since 2024/8/19 下午10:33
+ * @since 2024/8/19 下午 10:33
  */
-
 /**
  * 用于构建和设置实体的属性
  */
 class AttributeBuilder {
-
     /**
      * 实体的生命上限
      * @see Attribute.GENERIC_MAX_HEALTH
      */
     var health: Double? = null
-
+    
     /**
      * 实体的攻击力
      * @see Attribute.GENERIC_ATTACK_DAMAGE
      */
     var damage: Double? = null
-
+    
     /**
      * 实体的移动速度
      * @see Attribute.GENERIC_MOVEMENT_SPEED
      */
     var speed: Double? = null
-
+    
     /**
      * 实体的攻击击退值
      * @see Attribute.GENERIC_ATTACK_KNOCKBACK
      */
     var knockback: Double? = null
-
+    
     /**
      * 实体的击退抗性
      * @see Attribute.GENERIC_KNOCKBACK_RESISTANCE
      */
     var knockbackResistance: Double? = null
-
+    
     /**
      * 实体的护甲值
      * @see Attribute.GENERIC_ARMOR
      */
     var armor: Double? = null
-
+    
     /**
      * 实体的护甲韧性
      * @see Attribute.GENERIC_ARMOR_TOUGHNESS
      */
     var armorToughness: Double? = null
-
+    
     /**
      * 实体的幸运值（保留字段）
      * @see Attribute.GENERIC_LUCK
      */
     var luck: Double? = null
-
+    
     /**
      * 生成当前属性的映射
      *
@@ -81,7 +77,7 @@ class AttributeBuilder {
         Attribute.GENERIC_ARMOR_TOUGHNESS to armorToughness,
         Attribute.GENERIC_LUCK to luck
     ).filterValues { it != null }
-
+    
     /**
      * 将属性应用于实体的基础值
      *
@@ -90,7 +86,7 @@ class AttributeBuilder {
     fun applyAsBase(entity: Attributable) = map().forEach { (attribute, value) ->
         entity.getAttribute(attribute)?.baseValue = value!!
     }
-
+    
     /**
      * 为指定实体的属性添加属性修饰器
      * @see AttributeModifier
@@ -100,20 +96,26 @@ class AttributeBuilder {
      * @param entity 要添加修饰器的实体
      * @param uuid 修饰器的 UUID
      */
-    fun applyAsModifier(name: String, operation: AttributeModifier.Operation, entity: Attributable, uuid: UUID? = null) = map().forEach { (attribute, value) ->
+    fun applyAsModifier(
+        name: String,
+        operation: AttributeModifier.Operation,
+        entity: Attributable,
+        uuid: UUID? = null
+    ) = map().forEach { (attribute, value) ->
         val modifier = if (uuid != null)
             AttributeModifier(uuid, name, value!!, operation)
         else
             AttributeModifier(name, value!!, operation)
         entity.getAttribute(attribute)?.addModifier(modifier)
     }
-
+    
     companion object {
         fun removeModifier(name: String, entity: Attributable) = Attribute.entries.forEach { attribute ->
             entity.getAttribute(attribute)?.let { attr ->
                 attr.modifiers.removeIf { it.name == name }
             }
         }
+        
         fun removeModifier(uuid: UUID, entity: Attributable) = Attribute.entries.forEach { attribute ->
             entity.getAttribute(attribute)?.let { attr ->
                 attr.modifiers.removeIf { it.uniqueId == uuid }

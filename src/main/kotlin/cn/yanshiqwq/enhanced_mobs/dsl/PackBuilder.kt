@@ -1,8 +1,6 @@
 package cn.yanshiqwq.enhanced_mobs.dsl
 
-import cn.yanshiqwq.enhanced_mobs.EnhancedMob
-import cn.yanshiqwq.enhanced_mobs.EnhancedMobType
-import cn.yanshiqwq.enhanced_mobs.Pack
+import cn.yanshiqwq.enhanced_mobs.*
 import cn.yanshiqwq.enhanced_mobs.manager.PackManager
 import org.bukkit.entity.EntityType
 import org.bukkit.entity.Mob
@@ -12,9 +10,8 @@ import org.bukkit.entity.Mob
  * cn.yanshiqwq.enhanced_mobs.dsl.PackBuilder
  *
  * @author yanshiqwq
- * @since 2024/8/20 下午4:41
+ * @since 2024/8/20 下午 4:41
  */
-
 /**
  * 用于构建数据包实例的构建器类
  *
@@ -40,9 +37,9 @@ class PackBuilder(
             PackManager.register(pack)
         }
     }
-
+    
     private val types: HashSet<EnhancedMobType> = hashSetOf()
-
+    
     /**
      * 构建并返回一个数据包实例
      *
@@ -53,7 +50,7 @@ class PackBuilder(
         if (id == "") throw NullPointerException("Pack id must not be empty")
         return Pack(id, description, types)
     }
-
+    
     /**
      * 添加一个怪物类型到包中
      *

@@ -7,9 +7,8 @@ import org.bukkit.World
  * cn.yanshiqwq.enhanced_mobs.dsl.Cooldown
  *
  * @author yanshiqwq
- * @since 2024/8/21 下午8:08
+ * @since 2024/8/21 下午 8:08
  */
-
 /**
  * 冷却时间计时器
  *

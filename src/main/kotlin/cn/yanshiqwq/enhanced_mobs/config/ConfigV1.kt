@@ -12,9 +12,8 @@ import taboolib.module.configuration.ConfigFile
  * cn.yanshiqwq.enhanced_mobs.config.ConfigV1
  *
  * @author yanshiqwq
- * @since 2024/8/22 下午9:08
+ * @since 2024/8/22 下午 9:08
  */
-
 object ConfigV1: AbstractConfig(Main.configFile) {
     private val config: ConfigFile = Main.configFile
     var loadBuiltinPacks: Boolean = config.getBoolean("loadBuiltinPacks", true)
@@ -22,10 +21,10 @@ object ConfigV1: AbstractConfig(Main.configFile) {
         val rangeStr = config.getString("levelRange")!!
         val start = rangeStr.substringBefore("..").toInt()
         val end = rangeStr.substringAfter("..").toInt()
-        return@runCatching start..end
-    }.getOrDefault(1..99)
+        return@runCatching start .. end
+    }.getOrDefault(1 .. 99)
     var customName: String = config.getString("customName", "&7[%sLv.%d&7] %s")!!
-    val levelFormula: LevelFormula by lazy {
+    val levelFormula: LevelFormula by lazy { // TODO
         LevelFormula(
             config.getString("levelFormula.maxHealth") ?: "base * 1.025 ^ (level - 20)",
             config.getString("levelFormula.armor") ?: "base + level * 0.08",
@@ -77,7 +76,7 @@ object ConfigV1: AbstractConfig(Main.configFile) {
             }
         }
     }
-
+    
     init {
         info("Config initialized!")
         info("  - configVersion = $configVersion")
@@ -86,4 +85,3 @@ object ConfigV1: AbstractConfig(Main.configFile) {
         info("  - customName = \"$customName\"")
     }
 }
-

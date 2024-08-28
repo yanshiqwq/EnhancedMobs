@@ -7,14 +7,14 @@ import org.bukkit.entity.LivingEntity
  * cn.yanshiqwq.enhanced_mobs.dsl.EventBuilder
  *
  * @author yanshiqwq
- * @since 2024/8/26 下午7:47
+ * @since 2024/8/26 下午 7:47
  */
 /**
  * 抽象类，用于构建事件处理逻辑
  *
  * @param T 事件处理逻辑的类型
  */
-abstract class EventBuilder<T> : EntityChecker<T>, ConditionHandler<T>, ExecutionHandler<T>, CooldownHandler {
+abstract class EventBuilder<T>: EntityChecker<T>, ConditionHandler<T>, ExecutionHandler<T>, CooldownHandler {
     override var runAfterEntityDead: Boolean = false
     override var cooldown: CooldownTimer? = null
     override val conditions = hashSetOf<(T) -> Boolean>()
@@ -39,7 +39,6 @@ abstract class EventBuilder<T> : EntityChecker<T>, ConditionHandler<T>, Executio
             onCancel()
             return
         }
-        
         // 条件检测不通过则取消执行
         if (!checkIfCooldownFinished() || !checkCondition(context)) return
         

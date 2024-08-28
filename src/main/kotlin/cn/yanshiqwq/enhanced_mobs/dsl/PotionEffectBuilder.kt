@@ -8,9 +8,8 @@ import org.bukkit.potion.PotionEffectType
  * cn.yanshiqwq.enhanced_mobs.dsl.PotionEffectBuilder
  *
  * @author yanshiqwq
- * @since 2024/8/20 下午3:39
+ * @since 2024/8/20 下午 3:39
  */
-
 /**
  * 用于构建状态效果
  *
@@ -34,8 +33,15 @@ data class PotionEffectBuilder(
      *
      * @param effect 要用于构建器的药水效果实例
      */
-    constructor(effect: PotionEffect) : this(effect.type, effect.duration, effect.amplifier, effect.isAmbient, effect.hasParticles(), effect.hasIcon())
-
+    constructor(effect: PotionEffect): this(
+        effect.type,
+        effect.duration,
+        effect.amplifier,
+        effect.isAmbient,
+        effect.hasParticles(),
+        effect.hasIcon()
+    )
+    
     /**
      * 将状态效果的持续时间设置为无限
      * @see PotionEffect.INFINITE_DURATION
@@ -47,7 +53,7 @@ data class PotionEffectBuilder(
         duration = PotionEffect.INFINITE_DURATION
         return this
     }
-
+    
     /**
      * 构建并返回一个状态效果实例
      *

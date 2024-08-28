@@ -5,7 +5,7 @@ package cn.yanshiqwq.enhanced_mobs.dsl
  * cn.yanshiqwq.enhanced_mobs.dsl.ContextConditionHandler
  *
  * @author yanshiqwq
- * @since 2024/8/28 下午1:16
+ * @since 2024/8/28 下午 1:16
  */
 /**
  * 有上下文的条件接口

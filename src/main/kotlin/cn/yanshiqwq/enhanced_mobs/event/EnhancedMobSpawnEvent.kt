@@ -9,7 +9,7 @@ import taboolib.platform.type.BukkitProxyEvent
  * cn.yanshiqwq.enhanced_mobs.event.EnhancedMobSpawnEvent
  *
  * @author yanshiqwq
- * @since 2024/8/24 下午5:03
+ * @since 2024/8/24 下午 5:03
  */
 data class EnhancedMobSpawnEvent(
     val mob: EnhancedMob,

@@ -9,10 +9,9 @@ import taboolib.common.platform.service.PlatformExecutor
  * cn.yanshiqwq.enhanced_mobs.dsl.DelayBuilder
  *
  * @author yanshiqwq
- * @since 2024/8/24 下午3:39
+ * @since 2024/8/24 下午 3:39
  *
  */
-
 /**
  * 用于构建和执行定时任务
  *
@@ -26,7 +25,7 @@ open class TimerBuilder(
     private val delay: Long = 0,
     private val now: Boolean = false,
     private val async: Boolean = false
-) : EventBuilder<PlatformExecutor.PlatformTask>() {
+): EventBuilder<PlatformExecutor.PlatformTask>() {
     override var executor: PlatformExecutor.PlatformTask.() -> Unit = {}
     
     /**

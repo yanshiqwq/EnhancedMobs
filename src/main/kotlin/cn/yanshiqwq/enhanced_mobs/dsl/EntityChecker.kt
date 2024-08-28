@@ -7,9 +7,8 @@ import org.bukkit.entity.LivingEntity
  * cn.yanshiqwq.enhanced_mobs.dsl.Condition
  *
  * @author yanshiqwq
- * @since 2024/8/21 下午6:52
+ * @since 2024/8/21 下午 6:52
  */
-
 /**
  * 用于检查实体条件的接口
  *

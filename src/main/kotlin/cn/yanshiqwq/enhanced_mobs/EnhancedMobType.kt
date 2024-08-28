@@ -9,7 +9,7 @@ import org.bukkit.entity.Mob
  * cn.yanshiqwq.enhanced_mobs.EnhancedMobType
  *
  * @author yanshiqwq
- * @since 2024/8/19 下午9:16
+ * @since 2024/8/19 下午 9:16
  */
 /**
  * 怪物类型
@@ -37,7 +37,7 @@ data class EnhancedMobType(
         fun spawn(enhancedType: EnhancedMobType, loc: Location, level: Int): EnhancedMob {
             val world = loc.world ?: throw NullPointerException("The specified location's world is null: $loc")
             val entity = world.spawnEntity(loc, enhancedType.type) as? Mob
-                ?: throw ClassCastException("The provided type must be a subclass of Mob: $enhancedType.type")
+                         ?: throw ClassCastException("The provided type must be a subclass of Mob: $enhancedType.type")
             return EnhancedMob.build(entity, enhancedType, level)
         }
     }

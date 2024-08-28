@@ -7,9 +7,8 @@ import org.bukkit.World
  * cn.yanshiqwq.enhanced_mobs.dsl.ICooldown
  *
  * @author yanshiqwq
- * @since 2024/8/21 下午8:33
+ * @since 2024/8/21 下午 8:33
  */
-
 /**
  * 用于处理冷却时间的接口
  *

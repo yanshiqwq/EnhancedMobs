@@ -5,9 +5,8 @@ package cn.yanshiqwq.enhanced_mobs
  * cn.yanshiqwq.enhanced_mobs.Pack
  *
  * @author yanshiqwq
- * @since 2024/8/21 下午9:06
+ * @since 2024/8/21 下午 9:06
  */
-
 /**
  * 数据包
  *

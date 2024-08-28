@@ -8,7 +8,7 @@ import org.bukkit.entity.EntityType
  * cn.yanshiqwq.enhanced_mobs.manager.MobTypeManager
  *
  * @author yanshiqwq
- * @since 2024/8/22 下午5:04
+ * @since 2024/8/22 下午 5:04
  */
 object MobTypeManager {
     private val types: HashSet<EnhancedMobType> = hashSetOf()

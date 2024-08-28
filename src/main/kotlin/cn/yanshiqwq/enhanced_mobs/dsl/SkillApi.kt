@@ -11,7 +11,7 @@ import taboolib.common.platform.service.PlatformExecutor
  * cn.yanshiqwq.enhanced_mobs.dsl.SkillApi
  *
  * @author yanshiqwq
- * @since 2024/8/24 下午6:23
+ * @since 2024/8/24 下午 6:23
  */
 object SkillApi {
     /**
@@ -21,11 +21,17 @@ object SkillApi {
      * @param type 要放置的方块的类型
      * @param removeOnDeath 是否在实体死亡时移除方块
      */
-    fun Mob.placeBlock(delay: Long = 0, type: Material = Material.AIR, removeOnDeath: Boolean = true, block: BlockPlacer.() -> Unit) {
+    fun Mob.placeBlock(
+        delay: Long = 0,
+        type: Material = Material.AIR,
+        removeOnDeath: Boolean = true,
+        block: BlockPlacer.() -> Unit
+    ) {
         val placer = BlockPlacer(this, delay, type, removeOnDeath)
         block.invoke(placer)
         placer.run()
     }
+    
     class BlockPlacer(
         private val mob: Mob,
         private val delay: Long,
@@ -35,20 +41,28 @@ object SkillApi {
         /**
          * 设置放置方块后的回调函数
          */
-        fun onPlace(block: () -> Unit) { onPlace = block }
+        fun onPlace(block: () -> Unit) {
+            onPlace = block
+        }
+        
         private var onPlace: () -> Unit = {}
-
-
+        
         /**
          * 设置移除方块后的回调函数
          */
-        fun onRemove(block: PlatformExecutor.PlatformTask.() -> Unit) { onRemove = block }
+        fun onRemove(block: PlatformExecutor.PlatformTask.() -> Unit) {
+            onRemove = block
+        }
+        
         private var onRemove: PlatformExecutor.PlatformTask.() -> Unit = {}
-
+        
         /**
          * 设置方块移除失败后的回调函数
          */
-        fun onFailedRemove(block: PlatformExecutor.PlatformTask.() -> Unit) { onFailedRemove = block }
+        fun onFailedRemove(block: PlatformExecutor.PlatformTask.() -> Unit) {
+            onFailedRemove = block
+        }
+        
         private var onFailedRemove: PlatformExecutor.PlatformTask.() -> Unit = {}
         
         fun run() {

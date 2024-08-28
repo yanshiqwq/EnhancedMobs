@@ -9,7 +9,7 @@ import taboolib.common.platform.function.info
  * cn.yanshiqwq.enhanced_mobs.manager.PackManager
  *
  * @author yanshiqwq
- * @since 2024/8/22 下午5:04
+ * @since 2024/8/22 下午 5:04
  */
 object PackManager {
     private val packs: HashSet<Pack> = hashSetOf()
@@ -22,10 +22,12 @@ object PackManager {
         }
         info("Pack \"${pack.id}\" loaded!")
     }
+    
     fun unregister(pack: Pack) {
         packs.remove(pack)
         MobTypeManager.unregister(pack.types)
     }
+    
     fun get(id: String) = packs.find { it.id == id }
     fun get(type: EnhancedMobType) = packs.find { it.types.contains(type) }
 }

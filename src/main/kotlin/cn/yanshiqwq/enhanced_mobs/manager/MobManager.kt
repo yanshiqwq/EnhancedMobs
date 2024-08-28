@@ -8,7 +8,7 @@ import java.util.*
  * cn.yanshiqwq.enhanced_mobs.manager.MobManager
  *
  * @author yanshiqwq
- * @since 2024/8/19 下午5:26
+ * @since 2024/8/19 下午 5:26
  */
 object MobManager {
     private val mobs: HashSet<EnhancedMob> = hashSetOf()
