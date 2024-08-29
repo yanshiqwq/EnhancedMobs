@@ -1,6 +1,12 @@
 package cn.yanshiqwq.enhanced_mobs
 
 import cn.yanshiqwq.enhanced_mobs.config.ConfigV1
+import cn.yanshiqwq.enhanced_mobs.dsl.AttributeBuilder
+import cn.yanshiqwq.enhanced_mobs.dsl.EquipmentBuilder
+import cn.yanshiqwq.enhanced_mobs.dsl.MobApi.base
+import cn.yanshiqwq.enhanced_mobs.dsl.MobApi.equip
+import cn.yanshiqwq.enhanced_mobs.dsl.MobApi.heal
+import cn.yanshiqwq.enhanced_mobs.dsl.MobApi.name
 import cn.yanshiqwq.enhanced_mobs.event.EnhancedMobSpawnEvent
 import cn.yanshiqwq.enhanced_mobs.manager.MobManager
 import cn.yanshiqwq.enhanced_mobs.manager.MobTypeManager
@@ -35,6 +41,10 @@ class EnhancedMob(
      */
     val entity = Bukkit.getEntity(uuid) as Mob
     
+    init {
+        entity.heal()
+    }
+    
     companion object {
         /**
          * 使用给定的怪物实体、类型和等级构造一个怪物实例
@@ -50,7 +60,7 @@ class EnhancedMob(
                 set(MobDataKey.LEVEL, PersistentDataType.INTEGER, level)
             }
             // 应用类型代码块
-            type.block.invoke(entity, this)
+            type.block.invoke(this)
             // 修改显示名称
             val color = when (level) {
                 in 10 .. 70 -> "&a"
@@ -93,4 +103,12 @@ class EnhancedMob(
             }
         }
     }
+    
+    fun name(name: String) = entity.name(name)
+    
+    inline fun base(block: AttributeBuilder.() -> Unit) = entity.base(block)
+    
+    inline fun equip(block: EquipmentBuilder.() -> Unit) = entity.equip(block)
+    
+    inline fun mechanic(block: Mob.() -> Unit) = entity.run(block)
 }

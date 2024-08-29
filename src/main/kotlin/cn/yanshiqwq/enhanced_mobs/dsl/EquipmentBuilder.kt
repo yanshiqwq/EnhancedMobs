@@ -2,8 +2,9 @@ package cn.yanshiqwq.enhanced_mobs.dsl
 
 import org.bukkit.Material
 import org.bukkit.entity.LivingEntity
-import org.bukkit.inventory.EquipmentSlot
 import org.bukkit.inventory.ItemStack
+import taboolib.platform.util.setEquipment
+import taboolib.type.BukkitEquipment
 
 /**
  * enhanced_mobs
@@ -107,15 +108,15 @@ class EquipmentBuilder {
      */
     fun apply(entity: LivingEntity) {
         mapOf(
-            EquipmentSlot.HEAD to head,
-            EquipmentSlot.CHEST to chest,
-            EquipmentSlot.LEGS to legs,
-            EquipmentSlot.FEET to feet,
-            EquipmentSlot.HAND to hand,
-            EquipmentSlot.OFF_HAND to offHand
+            BukkitEquipment.HEAD to head,
+            BukkitEquipment.CHEST to chest,
+            BukkitEquipment.LEGS to legs,
+            BukkitEquipment.FEET to feet,
+            BukkitEquipment.HAND to hand,
+            BukkitEquipment.OFF_HAND to offHand
         ).filterValues { it != null }
             .forEach { (slot, item) ->
-                entity.equipment?.setItem(slot, item)
+                entity.setEquipment(slot, item!!)
             }
     }
 }

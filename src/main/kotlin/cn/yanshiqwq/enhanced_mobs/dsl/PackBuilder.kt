@@ -1,9 +1,7 @@
 package cn.yanshiqwq.enhanced_mobs.dsl
 
 import cn.yanshiqwq.enhanced_mobs.*
-import cn.yanshiqwq.enhanced_mobs.manager.PackManager
 import org.bukkit.entity.EntityType
-import org.bukkit.entity.Mob
 
 /**
  * enhanced_mobs
@@ -30,11 +28,10 @@ class PackBuilder(
          * @param description 该包的描述信息
          * @param block 用于配置 `PackBuilder` 的配置块
          */
-        fun pack(id: String, description: String, block: PackBuilder.() -> Unit) {
+        fun pack(id: String, description: String, block: PackBuilder.() -> Unit): Pack {
             val builder = PackBuilder(id, description)
             block.invoke(builder)
-            val pack = builder.build()
-            PackManager.register(pack)
+            return builder.build()
         }
     }
     
@@ -58,6 +55,6 @@ class PackBuilder(
      * @param id 该怪物类型的唯一标识符
      * @param block 用于配置怪物实例
      */
-    fun type(type: EntityType, id: String, block: Mob.(EnhancedMob) -> Unit) =
+    fun type(type: EntityType, id: String, block: EnhancedMob.() -> Unit) =
         types.add(EnhancedMobType(id, type, block))
 }

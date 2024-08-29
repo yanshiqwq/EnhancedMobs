@@ -7,34 +7,34 @@
     <option name="autoReloadType" value="ALL" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="ef5c36e8-977c-42a1-8a12-007d83c37ffe" name="更改" comment="修复 - placeBlock 无法正常触发&#10;调整 - 去除了用于 debug 的日志&#10;调整 - 优化了注释和代码结构">
+    <list default="true" id="ef5c36e8-977c-42a1-8a12-007d83c37ffe" name="更改" comment="">
+      <change afterPath="$PROJECT_DIR$/src/main/kotlin/cn/yanshiqwq/enhanced_mobs/PackConfig.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/kotlin/cn/yanshiqwq/enhanced_mobs/dsl/BuffBuilder.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/kotlin/cn/yanshiqwq/enhanced_mobs/dsl/MobApi.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/kotlin/cn/yanshiqwq/enhanced_mobs/dsl/ParticleBuilder.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/jarRepositories.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/jarRepositories.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/kotlin/cn/yanshiqwq/enhanced_mobs/BuiltInPack.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/cn/yanshiqwq/enhanced_mobs/BuiltInPack.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/kotlin/cn/yanshiqwq/enhanced_mobs/config/AbstractConfig.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/cn/yanshiqwq/enhanced_mobs/config/AbstractConfig.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/kotlin/cn/yanshiqwq/enhanced_mobs/config/ConfigV1.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/cn/yanshiqwq/enhanced_mobs/config/ConfigV1.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/kotlin/cn/yanshiqwq/enhanced_mobs/dsl/AttributeBuilder.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/cn/yanshiqwq/enhanced_mobs/dsl/AttributeBuilder.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build.gradle.kts" beforeDir="false" afterPath="$PROJECT_DIR$/build.gradle.kts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/cn/yanshiqwq/enhanced_mobs/BuiltInPack.kt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/cn/yanshiqwq/enhanced_mobs/Command.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/cn/yanshiqwq/enhanced_mobs/Command.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/cn/yanshiqwq/enhanced_mobs/EnhancedMob.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/cn/yanshiqwq/enhanced_mobs/EnhancedMob.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/cn/yanshiqwq/enhanced_mobs/EnhancedMobType.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/cn/yanshiqwq/enhanced_mobs/EnhancedMobType.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/cn/yanshiqwq/enhanced_mobs/Main.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/cn/yanshiqwq/enhanced_mobs/Main.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/kotlin/cn/yanshiqwq/enhanced_mobs/dsl/ConditionHandler.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/cn/yanshiqwq/enhanced_mobs/dsl/ConditionHandler.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/kotlin/cn/yanshiqwq/enhanced_mobs/dsl/CooldownHandler.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/cn/yanshiqwq/enhanced_mobs/dsl/CooldownHandler.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/kotlin/cn/yanshiqwq/enhanced_mobs/dsl/CooldownTimer.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/cn/yanshiqwq/enhanced_mobs/dsl/CooldownTimer.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/kotlin/cn/yanshiqwq/enhanced_mobs/dsl/DelayBuilder.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/cn/yanshiqwq/enhanced_mobs/dsl/DelayBuilder.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/kotlin/cn/yanshiqwq/enhanced_mobs/dsl/EntityChecker.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/cn/yanshiqwq/enhanced_mobs/dsl/EntityChecker.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/cn/yanshiqwq/enhanced_mobs/dsl/EntityChecker.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/cn/yanshiqwq/enhanced_mobs/dsl/EntityHandler.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/kotlin/cn/yanshiqwq/enhanced_mobs/dsl/EquipmentBuilder.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/cn/yanshiqwq/enhanced_mobs/dsl/EquipmentBuilder.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/kotlin/cn/yanshiqwq/enhanced_mobs/dsl/EventBuilder.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/cn/yanshiqwq/enhanced_mobs/dsl/EventBuilder.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/kotlin/cn/yanshiqwq/enhanced_mobs/dsl/ExecutionHandler.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/cn/yanshiqwq/enhanced_mobs/dsl/ExecutionHandler.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/kotlin/cn/yanshiqwq/enhanced_mobs/dsl/GenericApi.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/cn/yanshiqwq/enhanced_mobs/dsl/GenericApi.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/cn/yanshiqwq/enhanced_mobs/dsl/ExecutionHandler.kt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/cn/yanshiqwq/enhanced_mobs/dsl/GenericApi.kt" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/kotlin/cn/yanshiqwq/enhanced_mobs/dsl/ListenerBuilder.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/cn/yanshiqwq/enhanced_mobs/dsl/ListenerBuilder.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/kotlin/cn/yanshiqwq/enhanced_mobs/dsl/PackBuilder.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/cn/yanshiqwq/enhanced_mobs/dsl/PackBuilder.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/kotlin/cn/yanshiqwq/enhanced_mobs/dsl/PotionEffectBuilder.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/cn/yanshiqwq/enhanced_mobs/dsl/PotionEffectBuilder.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/kotlin/cn/yanshiqwq/enhanced_mobs/dsl/PotionTypeBuilder.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/cn/yanshiqwq/enhanced_mobs/dsl/PotionTypeBuilder.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/kotlin/cn/yanshiqwq/enhanced_mobs/dsl/SkillApi.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/cn/yanshiqwq/enhanced_mobs/dsl/SkillApi.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/kotlin/cn/yanshiqwq/enhanced_mobs/dsl/TimerBuilder.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/cn/yanshiqwq/enhanced_mobs/dsl/TimerBuilder.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/kotlin/cn/yanshiqwq/enhanced_mobs/event/EnhancedMobSpawnEvent.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/cn/yanshiqwq/enhanced_mobs/event/EnhancedMobSpawnEvent.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/kotlin/cn/yanshiqwq/enhanced_mobs/event/PlayerInteractEnhancedMobEvent.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/cn/yanshiqwq/enhanced_mobs/event/PlayerInteractEnhancedMobEvent.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/kotlin/cn/yanshiqwq/enhanced_mobs/manager/MobManager.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/cn/yanshiqwq/enhanced_mobs/manager/MobManager.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/kotlin/cn/yanshiqwq/enhanced_mobs/manager/MobTypeManager.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/cn/yanshiqwq/enhanced_mobs/manager/MobTypeManager.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/kotlin/cn/yanshiqwq/enhanced_mobs/manager/PackManager.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/cn/yanshiqwq/enhanced_mobs/manager/PackManager.kt" afterDir="false" />
     </list>
-    <list id="7e1b331f-6d62-4e1a-8298-f2be4e969202" name="xiaym 进行的更改" comment="优化build脚本" />
+    <list id="7e1b331f-6d62-4e1a-8298-f2be4e969202" name="xiaym 进行的更改" comment="调整 - 优化build脚本" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -83,9 +83,11 @@
     <option name="RECENT_TEMPLATES">
       <list>
         <option value="Class" />
+        <option value="Kotlin Interface" />
+        <option value="Kotlin Enum" />
+        <option value="Kotlin Data Class" />
         <option value="Kotlin Object" />
         <option value="Kotlin Class" />
-        <option value="Kotlin Interface" />
       </list>
     </option>
   </component>
@@ -115,7 +117,7 @@
     <setting file="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/io.izzel.taboolib/common-env/6.1.2-beta10/3ef5238716e49baa13aa175edc19a1ab79cf566f/common-env-6.1.2-beta10-sources.jar!/main/taboolib/common/env/RuntimeDependency.java" root0="SKIP_INSPECTION" />
     <setting file="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/io.izzel.taboolib/common-platform-api/6.1.2-beta10/d6dc8f0e7eca32c55f527075894041facfcf74ce/common-platform-api-6.1.2-beta10-sources.jar!/main/taboolib/common/platform/command/CommandRegister.kt" root0="FORCE_HIGHLIGHTING" />
     <setting file="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/io.izzel.taboolib/common-platform-api/6.1.2-beta10/d6dc8f0e7eca32c55f527075894041facfcf74ce/common-platform-api-6.1.2-beta10-sources.jar!/main/taboolib/common/platform/command/component/CommandBase.kt" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/src/main/kotlin/cn/yanshiqwq/enhanced_mobs/dsl/GenericApi.kt" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/src/main/kotlin/cn/yanshiqwq/enhanced_mobs/dsl/MobApi.kt" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/src/main/kotlin/cn/yanshiqwq/enhanced_mobs/dsl/SkillApi.kt" root0="FORCE_HIGHLIGHTING" />
   </component>
   <component name="KotlinCodeInsightWorkspaceSettings">
@@ -146,8 +148,12 @@
   "keyToString": {
     "ASKED_ADD_EXTERNAL_FILES": "true",
     "ASKED_SHARE_PROJECT_CONFIGURATION_FILES": "true",
+    "Gradle.enhanced_mobs [build].executor": "Run",
+    "Gradle.enhanced_mobs [clean].executor": "Run",
     "Gradle.enhanced_mobs [init].executor": "Run",
     "Gradle.enhanced_mobs [jar].executor": "Run",
+    "Gradle.enhanced_mobs [taboolibBuildApi].executor": "Run",
+    "Gradle.enhanced_mobs [taboolibMainTask].executor": "Run",
     "Gradle.下载源代码.executor": "Run",
     "Gradle.加载 Gradle 依赖项.executor": "Run",
     "Gradle.升级 Gradle 包装器.executor": "Run",
@@ -180,6 +186,9 @@
   }
 }]]></component>
   <component name="RecentsManager">
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="F:\yanshiqwq\Project\Code\enhanced_mobs\lib" />
+    </key>
     <key name="CreateKotlinClassDialog.RecentsKey">
       <recent name="cn.yanshiqwq.enhanced_mobs.dsl" />
     </key>
@@ -191,8 +200,8 @@
       <recent name="cn.yanshiqwq.enhanced_mobs.mob" />
     </key>
   </component>
-  <component name="RunManager" selected="Gradle.enhanced_mobs [jar]">
-    <configuration name="enhanced_mobs [init]" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
+  <component name="RunManager" selected="Gradle.enhanced_mobs [build]">
+    <configuration name="enhanced_mobs [build]" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
       <ExternalSystemSettings>
         <option name="executionName" />
         <option name="externalProjectPath" value="$PROJECT_DIR$" />
@@ -203,7 +212,29 @@
         </option>
         <option name="taskNames">
           <list>
-            <option value="init" />
+            <option value="build" />
+          </list>
+        </option>
+        <option name="vmOptions" />
+      </ExternalSystemSettings>
+      <ExternalSystemDebugServerProcess>true</ExternalSystemDebugServerProcess>
+      <ExternalSystemReattachDebugProcess>true</ExternalSystemReattachDebugProcess>
+      <DebugAllEnabled>false</DebugAllEnabled>
+      <RunAsTest>false</RunAsTest>
+      <method v="2" />
+    </configuration>
+    <configuration name="enhanced_mobs [clean]" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
+      <ExternalSystemSettings>
+        <option name="executionName" />
+        <option name="externalProjectPath" value="$PROJECT_DIR$" />
+        <option name="externalSystemIdString" value="GRADLE" />
+        <option name="scriptParameters" />
+        <option name="taskDescriptions">
+          <list />
+        </option>
+        <option name="taskNames">
+          <list>
+            <option value="clean" />
           </list>
         </option>
         <option name="vmOptions" />
@@ -236,18 +267,57 @@
       <RunAsTest>false</RunAsTest>
       <method v="2" />
     </configuration>
-    <configuration name="ConfigV1Kt" type="JetRunConfigurationType" temporary="true" nameIsGenerated="true">
-      <option name="MAIN_CLASS_NAME" value="cn.yanshiqwq.enhanced_mobs.config.ConfigV1Kt" />
-      <module name="enhanced_mobs.main" />
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
+    <configuration name="enhanced_mobs [taboolibBuildApi]" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
+      <ExternalSystemSettings>
+        <option name="executionName" />
+        <option name="externalProjectPath" value="$PROJECT_DIR$" />
+        <option name="externalSystemIdString" value="GRADLE" />
+        <option name="scriptParameters" />
+        <option name="taskDescriptions">
+          <list />
+        </option>
+        <option name="taskNames">
+          <list>
+            <option value="taboolibBuildApi" />
+          </list>
+        </option>
+        <option name="vmOptions" />
+      </ExternalSystemSettings>
+      <ExternalSystemDebugServerProcess>true</ExternalSystemDebugServerProcess>
+      <ExternalSystemReattachDebugProcess>true</ExternalSystemReattachDebugProcess>
+      <DebugAllEnabled>false</DebugAllEnabled>
+      <RunAsTest>false</RunAsTest>
+      <method v="2" />
+    </configuration>
+    <configuration name="enhanced_mobs [taboolibMainTask]" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
+      <ExternalSystemSettings>
+        <option name="executionName" />
+        <option name="externalProjectPath" value="$PROJECT_DIR$" />
+        <option name="externalSystemIdString" value="GRADLE" />
+        <option name="scriptParameters" />
+        <option name="taskDescriptions">
+          <list />
+        </option>
+        <option name="taskNames">
+          <list>
+            <option value="taboolibMainTask" />
+          </list>
+        </option>
+        <option name="vmOptions" />
+      </ExternalSystemSettings>
+      <ExternalSystemDebugServerProcess>true</ExternalSystemDebugServerProcess>
+      <ExternalSystemReattachDebugProcess>true</ExternalSystemReattachDebugProcess>
+      <DebugAllEnabled>false</DebugAllEnabled>
+      <RunAsTest>false</RunAsTest>
+      <method v="2" />
     </configuration>
     <recent_temporary>
       <list>
-        <item itemvalue="Kotlin.ConfigV1Kt" />
+        <item itemvalue="Gradle.enhanced_mobs [build]" />
+        <item itemvalue="Gradle.enhanced_mobs [clean]" />
+        <item itemvalue="Gradle.enhanced_mobs [taboolibBuildApi]" />
+        <item itemvalue="Gradle.enhanced_mobs [taboolibMainTask]" />
         <item itemvalue="Gradle.enhanced_mobs [jar]" />
-        <item itemvalue="Gradle.enhanced_mobs [init]" />
       </list>
     </recent_temporary>
   </component>
@@ -273,7 +343,8 @@
       <workItem from="1724820646446" duration="251000" />
       <workItem from="1724820904684" duration="346000" />
       <workItem from="1724821264444" duration="288000" />
-      <workItem from="1724821565325" duration="1989000" />
+      <workItem from="1724821565325" duration="20959000" />
+      <workItem from="1724916220364" duration="9033000" />
     </task>
     <task id="LOCAL-00001" summary="taboolib init">
       <option name="closed" value="true" />
@@ -387,7 +458,15 @@
       <option name="project" value="LOCAL" />
       <updated>1724823032580</updated>
     </task>
-    <option name="localTasksCounter" value="15" />
+    <task id="LOCAL-00015" summary="调整 - 代码格式化">
+      <option name="closed" value="true" />
+      <created>1724823649217</created>
+      <option name="number" value="00015" />
+      <option name="presentableId" value="LOCAL-00015" />
+      <option name="project" value="LOCAL" />
+      <updated>1724823649217</updated>
+    </task>
+    <option name="localTasksCounter" value="16" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -404,7 +483,7 @@
                   <entry key="branch">
                     <value>
                       <list>
-                        <option value="HEAD" />
+                        <option value="origin/dev" />
                       </list>
                     </value>
                   </entry>
@@ -422,16 +501,24 @@
     <MESSAGE value="dsl &amp; api update" />
     <MESSAGE value="bug fix" />
     <MESSAGE value="v2.0 init" />
-    <MESSAGE value="modify README.md" />
-    <MESSAGE value="api update" />
+    <MESSAGE value="调整 - 修改 README" />
+    <MESSAGE value="调整 - 修改 DSL 格式" />
     <MESSAGE value="移除 - 等级压制机制&#10;修复 - 插件加载报错 Health value must be between 0 and 40.0&#10;修复 - 怪物伤害异常过低" />
-    <MESSAGE value="api update update" />
-    <MESSAGE value="dsl format update&#10;config added" />
+    <MESSAGE value="调整 - 又修改了 DSL 格式" />
+    <MESSAGE value="调整 - 修改 DSL 格式&#10;新增 - 配置文件" />
     <MESSAGE value="修复 - PackBuilder 无法正常添加怪物类型&#10;修复 - /enhancedmobs help 无法正常获取指令提示&#10;修复 - PlayerInteractEnhancedMobEvent 导致的编译失败&#10;修复 - 技能冷却时间未正常生效&#10;修复 - 技能异常触发多次" />
-    <MESSAGE value="调整 - JavaDoc 注释&#10;优化 - 代码重构" />
-    <MESSAGE value="优化build脚本" />
+    <MESSAGE value="调整 - JavaDoc 注释&#10;调整 - 代码重构" />
+    <MESSAGE value="调整 - 优化build脚本" />
     <MESSAGE value="修复 - placeBlock 无法正常触发&#10;调整 - 去除了用于 debug 的日志&#10;调整 - 优化了注释和代码结构" />
-    <option name="LAST_COMMIT_MESSAGE" value="修复 - placeBlock 无法正常触发&#10;调整 - 去除了用于 debug 的日志&#10;调整 - 优化了注释和代码结构" />
+    <MESSAGE value="调整 - 代码格式化" />
+    <MESSAGE value="调整 - 优化build脚本" />
+    <MESSAGE value="调整 - JavaDoc 注释&#10;调整 - 代码重构" />
+    <MESSAGE value="调整 - 修改 DSL 格式&#10;新增 - 配置文件" />
+    <MESSAGE value="调整 - DSL 格式" />
+    <MESSAGE value="调整 - 又修改了 DSL 格式" />
+    <MESSAGE value="调整 - 修改 DSL 格式" />
+    <MESSAGE value="调整 - 修改 README" />
+    <option name="LAST_COMMIT_MESSAGE" value="调整 - 修改 README" />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />

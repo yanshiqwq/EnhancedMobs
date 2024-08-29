@@ -22,23 +22,21 @@ import org.bukkit.entity.Mob
 data class EnhancedMobType(
     val id: String,
     val type: EntityType,
-    val block: Mob.(EnhancedMob) -> Unit
+    val block: EnhancedMob.() -> Unit
 ) {
-    companion object {
-        /**
-         * 在指定位置生成一个本插件的怪物
-         *
-         * @param loc 生物生成的位置
-         * @param level 生物的等级
-         * @return 一个怪物类型实例，表示生成的生物
-         * @throws NullPointerException 如果指定位置的世界不存在
-         * @throws ClassCastException 如果要生成的实体不是生物类型
-         */
-        fun spawn(enhancedType: EnhancedMobType, loc: Location, level: Int): EnhancedMob {
-            val world = loc.world ?: throw NullPointerException("The specified location's world is null: $loc")
-            val entity = world.spawnEntity(loc, enhancedType.type) as? Mob
-                         ?: throw ClassCastException("The provided type must be a subclass of Mob: $enhancedType.type")
-            return EnhancedMob.build(entity, enhancedType, level)
-        }
+    /**
+     * 在指定位置生成一个本插件的怪物
+     *
+     * @param loc 生物生成的位置
+     * @param level 生物的等级
+     * @return 一个怪物类型实例，表示生成的生物
+     * @throws NullPointerException 如果指定位置的世界不存在
+     * @throws ClassCastException 如果要生成的实体不是生物类型
+     */
+    fun spawn(loc: Location, level: Int): EnhancedMob {
+        val world = loc.world ?: throw NullPointerException("The specified location's world is null: $loc")
+        val entity = world.spawnEntity(loc, type) as? Mob
+                     ?: throw ClassCastException("The provided type must be a subclass of Mob: $type")
+        return EnhancedMob.build(entity, this, level)
     }
 }

@@ -17,19 +17,18 @@ object Command {
     @CommandBody(permission = "enhanced_mobs.spawn")
     val spawn = subCommand {
         dynamic("type") {
-            suggestion<CommandSender> { _, _ ->
+            suggest {
                 MobTypeManager.get().map { it.id }
             }
-            int("level") {
-                suggestion<CommandSender> { _, _ ->
-                    listOf("7", "16", "24", "33", "45", "56", "67", "75", "82", "88", "92", "95")
-                }
-                execute<Player> { sender, context, _ ->
+            int("level",
+                suggest = listOf("7", "16", "24", "33", "45", "56", "67", "75", "82", "85", "87", "92", "95")
+            ) {
+                exec<Player> {
                     val location = sender.location
-                    val type = MobTypeManager.get(context["type"])
-                               ?: throw NullPointerException("TypeId not found: ${context["type"]}")
-                    val level = context.int("level")
-                    EnhancedMobType.spawn(type, location, level)
+                    val type = MobTypeManager.get(ctx["type"])
+                               ?: throw NullPointerException("TypeId not found: ${ctx["type"]}")
+                    val level = ctx.int("level")
+                    type.spawn(location, level)
                 }
             }
         }
@@ -37,8 +36,8 @@ object Command {
     
     @CommandBody
     val help = subCommand {
-        execute<CommandSender> { sender, _, _ ->
-            sender.sendMessage("Usage: /enhancedmobs spawn <type> <level>")
+        exec<CommandSender> {
+            sender.sendMessage("&7Usage: &b/enhancedmobs spawn &a<type> <level>")
         }
     }
 }

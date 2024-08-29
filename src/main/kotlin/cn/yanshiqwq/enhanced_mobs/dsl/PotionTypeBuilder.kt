@@ -15,7 +15,7 @@ import org.bukkit.potion.PotionEffectType
  *
  * @param effects 要管理的药水效果列表
  */
-data class PotionTypeBuilder(private val effects: MutableList<PotionEffect>) {
+data class PotionTypeBuilder(private val effects: MutableList<PotionEffect> = arrayListOf()) {
     /**
      * 修改组内指定的状态效果
      *

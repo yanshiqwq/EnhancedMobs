@@ -26,7 +26,25 @@ open class TimerBuilder(
     private val now: Boolean = false,
     private val async: Boolean = false
 ): EventBuilder<PlatformExecutor.PlatformTask>() {
-    override var executor: PlatformExecutor.PlatformTask.() -> Unit = {}
+    
+    /**
+     * 添加条件
+     *
+     * @param condition 要添加的条件
+     * @return 是否成功添加条件
+     */
+    inline fun judge(crossinline condition: () -> Boolean) =
+        conditions.add { condition.invoke() }
+    
+    fun execute(block: PlatformExecutor.PlatformTask.() -> Unit) {
+        executor = {
+            block.invoke(this)
+        }
+    }
+    
+    fun failed(block: PlatformExecutor.PlatformTask.() -> Unit) {
+        failed = { block.invoke(this) }
+    }
     
     /**
      * 构建并提交任务
@@ -34,9 +52,9 @@ open class TimerBuilder(
      * @param entity 任务关联的实体
      * @return TabooLib 任务
      */
-    fun build(entity: LivingEntity) = submit(now, async, delay, period) {
-        checkAndExecute(entity, this, executor) {
-            cancel()
+    fun build(entity: LivingEntity) {
+        submit(now, async, delay, period) {
+            checkAndExecute(entity, this) { cancel() }
         }
     }
 }

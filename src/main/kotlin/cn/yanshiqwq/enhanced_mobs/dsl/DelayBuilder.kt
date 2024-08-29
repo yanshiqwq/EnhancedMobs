@@ -7,7 +7,7 @@ package cn.yanshiqwq.enhanced_mobs.dsl
  * @param now 是否立即执行
  * @param async 是否异步执行
  */
-class DelayBuilder(
+open class DelayBuilder(
     delay: Long,
     now: Boolean = false,
     async: Boolean = false

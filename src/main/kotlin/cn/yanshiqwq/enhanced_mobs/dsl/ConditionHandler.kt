@@ -15,15 +15,7 @@ interface ConditionHandler<T> {
     /**
      * 存储条件
      */
-    val conditions: MutableCollection<(T) -> Boolean>
-    
-    /**
-     * 添加单个条件
-     *
-     * @param condition 要添加的条件
-     * @return 是否成功添加条件
-     */
-    fun judge(condition: (T) -> Boolean) = conditions.add(condition)
+    val conditions: MutableCollection<T.() -> Boolean>
     
     /**
      * 判断所有条件是否都满足
@@ -37,7 +29,7 @@ interface ConditionHandler<T> {
      *
      * @param condition 要判断的条件数组
      */
-    fun any(vararg condition: Boolean) = condition.any { it }
+    fun anyOf(vararg condition: Boolean) = condition.any { it }
     
     /**
      * 检查条件是否满足

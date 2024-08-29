@@ -14,7 +14,7 @@ import org.bukkit.entity.LivingEntity
  *
  * @param T 上下文的类型
  */
-interface EntityChecker<T> {
+interface EntityHandler<T> {
     /**
      * 是否在实体死亡后继续运行
      */

@@ -1,8 +1,5 @@
 
-import io.izzel.taboolib.gradle.BUKKIT_ALL
-import io.izzel.taboolib.gradle.CHAT
-import io.izzel.taboolib.gradle.EXPANSION_SUBMIT_CHAIN
-import io.izzel.taboolib.gradle.UNIVERSAL
+import io.izzel.taboolib.gradle.*
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
@@ -19,7 +16,6 @@ repositories {
 }
 
 dependencies {
-    compileOnly("com.github.Keelar:ExprK:91fdabf")
     compileOnly("ink.ptms.core:v12004:12004:mapped")
     compileOnly("ink.ptms.core:v12004:12004:universal")
     compileOnly(kotlin("stdlib"))

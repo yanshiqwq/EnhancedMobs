@@ -1,10 +1,12 @@
 package cn.yanshiqwq.enhanced_mobs
 
 import cn.yanshiqwq.enhanced_mobs.config.ConfigV1
-import cn.yanshiqwq.enhanced_mobs.event.PlayerInteractEnhancedMobEvent
 import cn.yanshiqwq.enhanced_mobs.manager.MobManager
+import cn.yanshiqwq.enhanced_mobs.manager.PackManager
 import org.bukkit.attribute.Attribute
+import org.bukkit.entity.Mob
 import org.bukkit.event.entity.EntityTargetEvent
+import org.bukkit.event.player.PlayerInteractEntityEvent
 import taboolib.common.platform.Plugin
 import taboolib.common.platform.function.info
 import taboolib.common.platform.function.registerBukkitListener
@@ -20,17 +22,21 @@ object Main: Plugin() {
     
     override fun onEnable() {
         // 加载内置怪物类型
-        if (ConfigV1.loadBuiltinPacks) BuiltInPack.load()
+        if (ConfigV1.loadBuiltinPacks) {
+            PackManager.register(PackConfig.default)
+        }
+        
         // 加载 EnhancedMob
         registerBukkitListener(EntityTargetEvent::class.java) {
             if (MobManager.has(it.entity.uniqueId)) return@registerBukkitListener
             EnhancedMob.tryLoad(it.entity)
         }
+        
         // 注册玩家查询实体属性事件
         // 潜行时右键实体即可触发
-        registerBukkitListener(PlayerInteractEnhancedMobEvent::class.java) {
+        registerBukkitListener(PlayerInteractEntityEvent::class.java) {
             val player = it.player
-            val mob = it.mob.entity
+            val mob = it.rightClicked as? Mob ?: return@registerBukkitListener
             if (it.isCancelled || !it.player.isSneaking) return@registerBukkitListener
             val splitter = ComponentText.of(" | ").color(StandardColors.WHITE).newLine()
             val healthComponent = splitter.append(
