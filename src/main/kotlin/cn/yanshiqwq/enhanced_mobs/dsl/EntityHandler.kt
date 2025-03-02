@@ -11,10 +11,8 @@ import org.bukkit.entity.LivingEntity
  */
 /**
  * 用于检查实体条件的接口
- *
- * @param T 上下文的类型
  */
-interface EntityHandler<T> {
+interface EntityHandler {
     /**
      * 是否在实体死亡后继续运行
      */

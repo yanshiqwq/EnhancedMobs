@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="EntryPointsManager">
-    <list size="2">
-      <item index="0" class="java.lang.String" itemvalue="taboolib.common.platform.command.CommandBody" />
-      <item index="1" class="java.lang.String" itemvalue="taboolib.common.platform.command.CommandHeader" />
+    <list size="3">
+      <item index="0" class="java.lang.String" itemvalue="taboolib.common.platform.PlatformSide" />
+      <item index="1" class="java.lang.String" itemvalue="taboolib.common.platform.command.CommandBody" />
+      <item index="2" class="java.lang.String" itemvalue="taboolib.common.platform.command.CommandHeader" />
     </list>
   </component>
-  <component name="ExternalStorageConfigurationManager" enabled="true" />
   <component name="FrameworkDetectionExcludesConfiguration">
     <file type="web" url="file://$PROJECT_DIR$" />
   </component>

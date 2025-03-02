@@ -1,10 +1,13 @@
 
-import io.izzel.taboolib.gradle.*
+import io.izzel.taboolib.gradle.Basic
+import io.izzel.taboolib.gradle.Bukkit
+import io.izzel.taboolib.gradle.BukkitUtil
+import io.izzel.taboolib.gradle.MinecraftChat
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
     java
-    id("io.izzel.taboolib") version "2.0.11"
+    id("io.izzel.taboolib") version "2.0.22"
     id("org.jetbrains.kotlin.jvm") version "1.9.22"
     kotlin("plugin.serialization") version "1.7.20"
 }
@@ -16,8 +19,8 @@ repositories {
 }
 
 dependencies {
-    compileOnly("ink.ptms.core:v12004:12004:mapped")
-    compileOnly("ink.ptms.core:v12004:12004:universal")
+    compileOnly("ink.ptms.core:v12104:12104:mapped")
+    compileOnly("paper:v12104:12104:core")
     compileOnly(kotlin("stdlib"))
     compileOnly(fileTree("libs"))
 }
@@ -32,10 +35,10 @@ taboolib {
     }
     
     env {
-        install(UNIVERSAL, BUKKIT_ALL, CHAT, EXPANSION_SUBMIT_CHAIN)
+        install(BukkitUtil, Bukkit, MinecraftChat, Basic)
     }
     
-    version { taboolib = "6.1.2-beta10" }
+    version { taboolib = "6.2.3" }
 }
 
 tasks {

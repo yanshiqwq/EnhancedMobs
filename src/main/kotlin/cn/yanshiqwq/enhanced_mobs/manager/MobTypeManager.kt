@@ -10,13 +10,6 @@ import org.bukkit.entity.EntityType
  * @author yanshiqwq
  * @since 2024/8/22 下午 5:04
  */
-object MobTypeManager {
-    private val types: HashSet<EnhancedMobType> = hashSetOf()
-    fun register(type: EnhancedMobType) = types.add(type)
-    fun register(type: HashSet<EnhancedMobType>) = types.addAll(type)
-    fun unregister(type: EnhancedMobType) = types.remove(type)
-    fun unregister(type: HashSet<EnhancedMobType>) = types.removeAll(type.toSet())
-    fun get() = types
-    fun get(id: String) = types.find { it.id == id }
-    fun get(type: EntityType) = types.find { it.type == type }
+object MobTypeManager: HashMapManager<String, EnhancedMobType>() {
+    fun get(type: EntityType) = entries.values.first { it.type == type }
 }

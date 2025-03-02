@@ -17,5 +17,5 @@ package cn.yanshiqwq.enhanced_mobs
 data class Pack(
     val id: String,
     val description: String,
-    val types: HashSet<EnhancedMobType> = hashSetOf()
+    val types: HashMap<String, EnhancedMobType> = hashMapOf()
 )

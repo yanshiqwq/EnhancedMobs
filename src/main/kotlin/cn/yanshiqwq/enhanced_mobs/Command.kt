@@ -1,9 +1,11 @@
 package cn.yanshiqwq.enhanced_mobs
 
+import cn.yanshiqwq.enhanced_mobs.manager.LevelCurveManager
 import cn.yanshiqwq.enhanced_mobs.manager.MobTypeManager
 import org.bukkit.command.CommandSender
 import org.bukkit.entity.Player
 import taboolib.common.platform.command.*
+import taboolib.common.platform.command.component.ExecuteContext
 
 /**
  * enhanced_mobs
@@ -18,26 +20,40 @@ object Command {
     val spawn = subCommand {
         dynamic("type") {
             suggest {
-                MobTypeManager.get().map { it.id }
+                MobTypeManager.entries.keys.toList()
             }
-            int("level",
-                suggest = listOf("7", "16", "24", "33", "45", "56", "67", "75", "82", "85", "87", "92", "95")
-            ) {
+            int("level") {
+                dynamic("levelCurve") {
+                    suggest {
+                        LevelCurveManager.entries.keys.toList()
+                    }
+                    exec<Player> {
+                        val level = ctx.int("level")
+                        val levelCurve = ctx["levelCurve"]
+                        spawnMob(level, levelCurve)
+                    }
+                }
                 exec<Player> {
-                    val location = sender.location
-                    val type = MobTypeManager.get(ctx["type"])
-                               ?: throw NullPointerException("TypeId not found: ${ctx["type"]}")
                     val level = ctx.int("level")
-                    type.spawn(location, level)
+                    spawnMob(level, "default")
                 }
             }
+            exec<Player> {
+                spawnMob(64, "default")
+            }
         }
+    }
+    private fun ExecuteContext<Player>.spawnMob(level: Int, levelCurve: String) {
+        val location = sender.location
+        val typeId = ctx["type"]
+        val type = MobTypeManager.getValue(typeId)
+        type.spawn(location, level, levelCurve)
     }
     
     @CommandBody
     val help = subCommand {
         exec<CommandSender> {
-            sender.sendMessage("&7Usage: &b/enhancedmobs spawn &a<type> <level>")
+            sender.sendMessage("&7Usage: &b/enhancedmobs spawn &a<type> [level]")
         }
     }
 }

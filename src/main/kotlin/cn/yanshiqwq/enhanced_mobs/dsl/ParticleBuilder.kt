@@ -13,23 +13,26 @@ import taboolib.common.util.Vector
  */
 data class ParticleBuilder(
     val particle: Particle,
-    var count: Int = 32,
-    var speed: Double = 0.0
+    var count: Int,
+    var speed: Double = 0.0,
+    var offset: Vector = Vector(0, 0, 0),
+    var spread: Vector = Vector(0, 0, 0)
 ) {
-    var offset = Vector(0, 0, 0)
-    var spread = Vector(0, 0, 0)
-    var data: Any? = null
-    
     fun vertical(amount: Double) {
         spread.y = amount
     }
+    
     fun horizontal(amount: Double) {
         spread.x = amount
         spread.z = amount
     }
     
-    fun build(loc: Location) = if (data == null)
-        loc.world?.spawnParticle(particle, loc, count, offset.x, offset.y, offset.z, speed)
-    else
-        loc.world?.spawnParticle(particle, loc, count, offset.x, offset.y, offset.z, speed, data)
+    var data: Any? = null
+    
+    fun build(loc: Location) = loc.world?.run {
+        if (data == null)
+            spawnParticle(particle, loc, count, offset.x, offset.y, offset.z, speed)
+        else
+            spawnParticle(particle, loc, count, offset.x, offset.y, offset.z, speed, data)
+    }
 }

@@ -11,23 +11,25 @@ import taboolib.common.platform.function.info
  * @author yanshiqwq
  * @since 2024/8/22 下午 5:04
  */
+@Suppress("unused")
 object PackManager {
     private val packs: HashSet<Pack> = hashSetOf()
     fun register(pack: Pack) {
         info("Loading Pack \"${pack.id}\" ... (${pack.types.size} types)")
+        info("Description: ${pack.description}")
         packs.add(pack)
         pack.types.forEach {
             MobTypeManager.register(it)
-            info("  - $it")
+            info("  - [${it.key}] ${it.value.type}")
         }
         info("Pack \"${pack.id}\" loaded!")
     }
     
     fun unregister(pack: Pack) {
         packs.remove(pack)
-        MobTypeManager.unregister(pack.types)
+        MobTypeManager.unregister(pack.types.keys)
     }
     
     fun get(id: String) = packs.find { it.id == id }
-    fun get(type: EnhancedMobType) = packs.find { it.types.contains(type) }
+    fun get(type: EnhancedMobType) = packs.find { it.types.values.contains(type) }
 }

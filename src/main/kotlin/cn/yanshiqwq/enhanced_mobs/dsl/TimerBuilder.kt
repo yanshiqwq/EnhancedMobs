@@ -25,25 +25,23 @@ open class TimerBuilder(
     private val delay: Long = 0,
     private val now: Boolean = false,
     private val async: Boolean = false
-): EventBuilder<PlatformExecutor.PlatformTask>() {
-    
-    /**
-     * 添加条件
-     *
-     * @param condition 要添加的条件
-     * @return 是否成功添加条件
-     */
-    inline fun judge(crossinline condition: () -> Boolean) =
-        conditions.add { condition.invoke() }
-    
-    fun execute(block: PlatformExecutor.PlatformTask.() -> Unit) {
-        executor = {
-            block.invoke(this)
+): EventBuilder() {
+    companion object {
+        /**
+         * 创建一个 TabooLib 计时器任务
+         *
+         * @see TimerBuilder
+         * @return 返回创建的 TabooLib 计时器任务
+         */
+        fun LivingEntity.onTimer(
+            period: Long,
+            cooldown: Long? = null,
+            block: PlatformExecutor.PlatformTask.() -> Unit
+        ): PlatformExecutor.PlatformTask {
+            val builder = TimerBuilder(period)
+            if (cooldown != null) builder.setCooldown(cooldown, world)
+            return builder.build(this, block)
         }
-    }
-    
-    fun failed(block: PlatformExecutor.PlatformTask.() -> Unit) {
-        failed = { block.invoke(this) }
     }
     
     /**
@@ -52,9 +50,10 @@ open class TimerBuilder(
      * @param entity 任务关联的实体
      * @return TabooLib 任务
      */
-    fun build(entity: LivingEntity) {
-        submit(now, async, delay, period) {
-            checkAndExecute(entity, this) { cancel() }
+    fun build(entity: LivingEntity, block: PlatformExecutor.PlatformTask.() -> Unit): PlatformExecutor.PlatformTask {
+        val taskBlock: PlatformExecutor.PlatformTask.() -> Unit = {
+            checkAndExecute(entity, this, block) { cancel() }
         }
+        return submit(now, async, period, delay, taskBlock)
     }
 }

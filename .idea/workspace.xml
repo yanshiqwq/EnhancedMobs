@@ -7,32 +7,43 @@
     <option name="autoReloadType" value="ALL" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="ef5c36e8-977c-42a1-8a12-007d83c37ffe" name="更改" comment="">
-      <change afterPath="$PROJECT_DIR$/src/main/kotlin/cn/yanshiqwq/enhanced_mobs/PackConfig.kt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/kotlin/cn/yanshiqwq/enhanced_mobs/dsl/BuffBuilder.kt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/kotlin/cn/yanshiqwq/enhanced_mobs/dsl/MobApi.kt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/kotlin/cn/yanshiqwq/enhanced_mobs/dsl/ParticleBuilder.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/jarRepositories.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/jarRepositories.xml" afterDir="false" />
+    <list default="true" id="ef5c36e8-977c-42a1-8a12-007d83c37ffe" name="更改" comment="- 新增了韧性条机制&#10;- 大幅重构了代码">
+      <change afterPath="$PROJECT_DIR$/src/main/kotlin/cn/yanshiqwq/enhanced_mobs/Initialize.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/kotlin/cn/yanshiqwq/enhanced_mobs/LevelCurve.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/kotlin/cn/yanshiqwq/enhanced_mobs/dsl/BaseConditionHandler.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/kotlin/cn/yanshiqwq/enhanced_mobs/dsl/ContextConditionHandler.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/kotlin/cn/yanshiqwq/enhanced_mobs/dsl/LevelCurveBuilder.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/kotlin/cn/yanshiqwq/enhanced_mobs/manager/HashMapManager.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/kotlin/cn/yanshiqwq/enhanced_mobs/manager/HashSetManager.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/kotlin/cn/yanshiqwq/enhanced_mobs/manager/LevelCurveManager.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/build.gradle.kts" beforeDir="false" afterPath="$PROJECT_DIR$/build.gradle.kts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/kotlin/cn/yanshiqwq/enhanced_mobs/BuiltInPack.kt" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/kotlin/cn/yanshiqwq/enhanced_mobs/Command.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/cn/yanshiqwq/enhanced_mobs/Command.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/kotlin/cn/yanshiqwq/enhanced_mobs/EnhancedMob.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/cn/yanshiqwq/enhanced_mobs/EnhancedMob.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/kotlin/cn/yanshiqwq/enhanced_mobs/EnhancedMobType.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/cn/yanshiqwq/enhanced_mobs/EnhancedMobType.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/kotlin/cn/yanshiqwq/enhanced_mobs/Main.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/cn/yanshiqwq/enhanced_mobs/Main.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/cn/yanshiqwq/enhanced_mobs/Pack.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/cn/yanshiqwq/enhanced_mobs/Pack.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/cn/yanshiqwq/enhanced_mobs/PackConfig.kt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/cn/yanshiqwq/enhanced_mobs/config/ConfigV1.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/cn/yanshiqwq/enhanced_mobs/config/ConfigV1.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/cn/yanshiqwq/enhanced_mobs/dsl/AttributeBuilder.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/cn/yanshiqwq/enhanced_mobs/dsl/AttributeBuilder.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/kotlin/cn/yanshiqwq/enhanced_mobs/dsl/ConditionHandler.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/cn/yanshiqwq/enhanced_mobs/dsl/ConditionHandler.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/kotlin/cn/yanshiqwq/enhanced_mobs/dsl/DelayBuilder.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/cn/yanshiqwq/enhanced_mobs/dsl/DelayBuilder.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/kotlin/cn/yanshiqwq/enhanced_mobs/dsl/EntityChecker.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/cn/yanshiqwq/enhanced_mobs/dsl/EntityHandler.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/cn/yanshiqwq/enhanced_mobs/dsl/DelayBuilder.kt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/cn/yanshiqwq/enhanced_mobs/dsl/EntityHandler.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/cn/yanshiqwq/enhanced_mobs/dsl/EntityHandler.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/kotlin/cn/yanshiqwq/enhanced_mobs/dsl/EquipmentBuilder.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/cn/yanshiqwq/enhanced_mobs/dsl/EquipmentBuilder.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/kotlin/cn/yanshiqwq/enhanced_mobs/dsl/EventBuilder.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/cn/yanshiqwq/enhanced_mobs/dsl/EventBuilder.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/kotlin/cn/yanshiqwq/enhanced_mobs/dsl/ExecutionHandler.kt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/kotlin/cn/yanshiqwq/enhanced_mobs/dsl/GenericApi.kt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/kotlin/cn/yanshiqwq/enhanced_mobs/dsl/ListenerBuilder.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/cn/yanshiqwq/enhanced_mobs/dsl/ListenerBuilder.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/cn/yanshiqwq/enhanced_mobs/dsl/ListenerBuilder.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/cn/yanshiqwq/enhanced_mobs/dsl/EntityEventListenerBuilder.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/cn/yanshiqwq/enhanced_mobs/dsl/MobApi.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/cn/yanshiqwq/enhanced_mobs/Utils.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/kotlin/cn/yanshiqwq/enhanced_mobs/dsl/PackBuilder.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/cn/yanshiqwq/enhanced_mobs/dsl/PackBuilder.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/kotlin/cn/yanshiqwq/enhanced_mobs/dsl/PotionTypeBuilder.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/cn/yanshiqwq/enhanced_mobs/dsl/PotionTypeBuilder.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/cn/yanshiqwq/enhanced_mobs/dsl/ParticleBuilder.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/cn/yanshiqwq/enhanced_mobs/dsl/ParticleBuilder.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/kotlin/cn/yanshiqwq/enhanced_mobs/dsl/SkillApi.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/cn/yanshiqwq/enhanced_mobs/dsl/SkillApi.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/kotlin/cn/yanshiqwq/enhanced_mobs/dsl/TimerBuilder.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/cn/yanshiqwq/enhanced_mobs/dsl/TimerBuilder.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/cn/yanshiqwq/enhanced_mobs/event/EnhancedMobSpawnEvent.kt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/cn/yanshiqwq/enhanced_mobs/event/PlayerInteractEnhancedMobEvent.kt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/cn/yanshiqwq/enhanced_mobs/manager/MobManager.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/cn/yanshiqwq/enhanced_mobs/manager/MobManager.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/cn/yanshiqwq/enhanced_mobs/manager/MobTypeManager.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/cn/yanshiqwq/enhanced_mobs/manager/MobTypeManager.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/cn/yanshiqwq/enhanced_mobs/manager/PackManager.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/cn/yanshiqwq/enhanced_mobs/manager/PackManager.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/config.yml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/config.yml" afterDir="false" />
     </list>
     <list id="7e1b331f-6d62-4e1a-8298-f2be4e969202" name="xiaym 进行的更改" comment="调整 - 优化build脚本" />
     <option name="SHOW_DIALOG" value="false" />
@@ -83,11 +94,11 @@
     <option name="RECENT_TEMPLATES">
       <list>
         <option value="Class" />
-        <option value="Kotlin Interface" />
         <option value="Kotlin Enum" />
+        <option value="Kotlin Interface" />
         <option value="Kotlin Data Class" />
-        <option value="Kotlin Object" />
         <option value="Kotlin Class" />
+        <option value="Kotlin Object" />
       </list>
     </option>
   </component>
@@ -110,15 +121,16 @@
   <component name="GithubPullRequestsUISettings">{
   &quot;selectedUrlAndAccountId&quot;: {
     &quot;url&quot;: &quot;https://github.com/yanshiqwq/EnhancedMobs.git&quot;,
-    &quot;accountId&quot;: &quot;c3f97eb3-ce37-4d88-8788-4388ef9af76d&quot;
+    &quot;accountId&quot;: &quot;bd15916d-105d-42cc-a7c7-6948d186b5cc&quot;
   }
 }</component>
   <component name="HighlightingSettingsPerFile">
-    <setting file="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/io.izzel.taboolib/common-env/6.1.2-beta10/3ef5238716e49baa13aa175edc19a1ab79cf566f/common-env-6.1.2-beta10-sources.jar!/main/taboolib/common/env/RuntimeDependency.java" root0="SKIP_INSPECTION" />
-    <setting file="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/io.izzel.taboolib/common-platform-api/6.1.2-beta10/d6dc8f0e7eca32c55f527075894041facfcf74ce/common-platform-api-6.1.2-beta10-sources.jar!/main/taboolib/common/platform/command/CommandRegister.kt" root0="FORCE_HIGHLIGHTING" />
-    <setting file="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/io.izzel.taboolib/common-platform-api/6.1.2-beta10/d6dc8f0e7eca32c55f527075894041facfcf74ce/common-platform-api-6.1.2-beta10-sources.jar!/main/taboolib/common/platform/command/component/CommandBase.kt" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/src/main/kotlin/cn/yanshiqwq/enhanced_mobs/dsl/MobApi.kt" root0="FORCE_HIGHLIGHTING" />
+    <setting file="jar://$PROJECT_DIR$/../../../../../ProgramData/Gradle/caches/modules-2/files-2.1/ink.ptms.core/v12104/12104/3b3154e3f320a2c959dc740b1236bef7113a2899/v12104-12104-mapped.jar!/org/bukkit/entity/Entity.class" root0="FORCE_HIGHLIGHTING" />
+    <setting file="jar://$PROJECT_DIR$/../../../../../ProgramData/Gradle/caches/modules-2/files-2.1/ink.ptms.core/v12104/12104/3b3154e3f320a2c959dc740b1236bef7113a2899/v12104-12104-mapped.jar!/org/bukkit/entity/EntityType.class" root0="SKIP_INSPECTION" />
+    <setting file="jar://$PROJECT_DIR$/../../../../../ProgramData/Gradle/caches/modules-2/files-2.1/io.izzel.taboolib/minecraft-chat/6.2.3/813d056cb969204e2a2fed223f248d895353ed10/minecraft-chat-6.2.3-sources.jar!/main/taboolib/module/chat/Source.kt" root0="SKIP_INSPECTION" />
     <setting file="file://$PROJECT_DIR$/src/main/kotlin/cn/yanshiqwq/enhanced_mobs/dsl/SkillApi.kt" root0="FORCE_HIGHLIGHTING" />
+    <setting file="jar://$PROJECT_DIR$/../../../../Downloads/Motrix/paper-api-1.21.4-R0.1-20250228.195534-183-sources.jar!/org/bukkit/entity/Entity.java" root0="FORCE_HIGHLIGHTING" />
+    <setting file="jar://$PROJECT_DIR$/../../../../Downloads/Motrix/paper-api-1.21.4-R0.1-20250228.195534-183-sources.jar!/org/bukkit/entity/Player.java" root0="FORCE_HIGHLIGHTING" />
   </component>
   <component name="KotlinCodeInsightWorkspaceSettings">
     <option name="optimizeImportsOnTheFly" value="true" />
@@ -144,47 +156,49 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "ASKED_ADD_EXTERNAL_FILES": "true",
-    "ASKED_SHARE_PROJECT_CONFIGURATION_FILES": "true",
-    "Gradle.enhanced_mobs [build].executor": "Run",
-    "Gradle.enhanced_mobs [clean].executor": "Run",
-    "Gradle.enhanced_mobs [init].executor": "Run",
-    "Gradle.enhanced_mobs [jar].executor": "Run",
-    "Gradle.enhanced_mobs [taboolibBuildApi].executor": "Run",
-    "Gradle.enhanced_mobs [taboolibMainTask].executor": "Run",
-    "Gradle.下载源代码.executor": "Run",
-    "Gradle.加载 Gradle 依赖项.executor": "Run",
-    "Gradle.升级 Gradle 包装器.executor": "Run",
-    "Gradle.构建 enhanced_mobs.executor": "Run",
-    "Kotlin.ConfigV1Kt.executor": "Run",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "codeWithMe.voiceChat.enabledByDefault": "false",
-    "git-widget-placeholder": "dev",
-    "ignore_missing_gitignore": "true",
-    "kotlin-language-version-configured": "true",
-    "last_opened_file_path": "F:/yanshiqwq/Downloads/Atom_Material_Icons-97.0.0.zip",
-    "node.js.detected.package.eslint": "true",
-    "node.js.detected.package.tslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.tslint": "(autodetect)",
-    "nodejs_package_manager_path": "npm",
-    "project.structure.last.edited": "SDK",
-    "project.structure.proportion": "0.15",
-    "project.structure.side.proportion": "0.2",
-    "run.code.analysis.last.selected.profile": "pProject Default",
-    "settings.build.tools.auto.reload": "ALL",
-    "settings.editor.selected.configurable": "preferences.pluginManager",
-    "settings.editor.splitter.proportion": "0.23282051",
-    "vue.rearranger.settings.migration": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;ASKED_ADD_EXTERNAL_FILES&quot;: &quot;true&quot;,
+    &quot;ASKED_SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
+    &quot;Gradle.enhanced_mobs [build].executor&quot;: &quot;Run&quot;,
+    &quot;Gradle.enhanced_mobs [clean].executor&quot;: &quot;Run&quot;,
+    &quot;Gradle.enhanced_mobs [init].executor&quot;: &quot;Run&quot;,
+    &quot;Gradle.enhanced_mobs [jar].executor&quot;: &quot;Run&quot;,
+    &quot;Gradle.enhanced_mobs [taboolibBuildApi].executor&quot;: &quot;Run&quot;,
+    &quot;Gradle.enhanced_mobs [taboolibMainTask].executor&quot;: &quot;Run&quot;,
+    &quot;Gradle.下载源代码.executor&quot;: &quot;Run&quot;,
+    &quot;Gradle.加载 Gradle 依赖项.executor&quot;: &quot;Run&quot;,
+    &quot;Gradle.升级 Gradle 包装器.executor&quot;: &quot;Run&quot;,
+    &quot;Gradle.构建 enhanced_mobs.executor&quot;: &quot;Run&quot;,
+    &quot;Kotlin.ConfigV1Kt.executor&quot;: &quot;Run&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;codeWithMe.voiceChat.enabledByDefault&quot;: &quot;false&quot;,
+    &quot;dart.analysis.tool.window.visible&quot;: &quot;false&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;dev&quot;,
+    &quot;ignore_missing_gitignore&quot;: &quot;true&quot;,
+    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
+    &quot;last_opened_file_path&quot;: &quot;F:/yanshiqwq/Downloads/Motrix/paper-api-1.21.4-R0.1-20250228.195534-183-sources.jar&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;project.structure.last.edited&quot;: &quot;SDK&quot;,
+    &quot;project.structure.proportion&quot;: &quot;0.15&quot;,
+    &quot;project.structure.side.proportion&quot;: &quot;0.2&quot;,
+    &quot;run.code.analysis.last.selected.profile&quot;: &quot;pProject Default&quot;,
+    &quot;settings.build.tools.auto.reload&quot;: &quot;ALL&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;inlay.hints&quot;,
+    &quot;settings.editor.splitter.proportion&quot;: &quot;0.23282051&quot;,
+    &quot;show.migrate.to.gradle.popup&quot;: &quot;false&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   },
-  "keyToStringList": {
-    "kotlin-gradle-user-dirs": [
-      "C:\\Users\\yanshiqwq\\.gradle"
+  &quot;keyToStringList&quot;: {
+    &quot;kotlin-gradle-user-dirs&quot;: [
+      &quot;F:\\ProgramData\\Gradle&quot;
     ]
   }
-}]]></component>
+}</component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
       <recent name="F:\yanshiqwq\Project\Code\enhanced_mobs\lib" />
@@ -193,11 +207,11 @@
       <recent name="cn.yanshiqwq.enhanced_mobs.dsl" />
     </key>
     <key name="MoveKotlinTopLevelDeclarationsDialog.RECENTS_KEY">
+      <recent name="cn.yanshiqwq.enhanced_mobs.ui" />
       <recent name="cn.yanshiqwq.enhanced_mobs" />
       <recent name="cn.yanshiqwq.enhanced_mobs.dsl" />
+      <recent name="cn.yanshiqwq.enhanced_mobs.dsl.buff" />
       <recent name="cn.yanshiqwq.enhanced_mobs.dsl.handler" />
-      <recent name="cn.yanshiqwq.enhanced_mobs.dsl.api" />
-      <recent name="cn.yanshiqwq.enhanced_mobs.mob" />
     </key>
   </component>
   <component name="RunManager" selected="Gradle.enhanced_mobs [build]">
@@ -314,22 +328,25 @@
     <recent_temporary>
       <list>
         <item itemvalue="Gradle.enhanced_mobs [build]" />
-        <item itemvalue="Gradle.enhanced_mobs [clean]" />
-        <item itemvalue="Gradle.enhanced_mobs [taboolibBuildApi]" />
         <item itemvalue="Gradle.enhanced_mobs [taboolibMainTask]" />
+        <item itemvalue="Gradle.enhanced_mobs [taboolibBuildApi]" />
         <item itemvalue="Gradle.enhanced_mobs [jar]" />
+        <item itemvalue="Gradle.enhanced_mobs [clean]" />
       </list>
     </recent_temporary>
   </component>
   <component name="SharedIndexes">
     <attachedChunks>
       <set>
-        <option value="bundled-jdk-9f38398b9061-39b83d9b5494-intellij.indexing.shared.core-IU-241.19072.14" />
-        <option value="bundled-js-predefined-1d06a55b98c1-0b3e54e931b4-JavaScript-IU-241.19072.14" />
+        <option value="bundled-jdk-9f38398b9061-39b83d9b5494-intellij.indexing.shared.core-IU-241.19416.15" />
+        <option value="bundled-js-predefined-1d06a55b98c1-0b3e54e931b4-JavaScript-IU-241.19416.15" />
       </set>
     </attachedChunks>
   </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="应用程序级" UseSingleDictionary="true" transferred="true" />
+  <component name="SvnConfiguration">
+    <configuration>C:\Users\Administrator\AppData\Roaming\Subversion</configuration>
+  </component>
   <component name="TaskManager">
     <task active="true" id="Default" summary="默认任务">
       <changelist id="ef5c36e8-977c-42a1-8a12-007d83c37ffe" name="更改" comment="" />
@@ -345,6 +362,49 @@
       <workItem from="1724821264444" duration="288000" />
       <workItem from="1724821565325" duration="20959000" />
       <workItem from="1724916220364" duration="9033000" />
+      <workItem from="1725004132426" duration="1594000" />
+      <workItem from="1725005747660" duration="64000" />
+      <workItem from="1725005817506" duration="24435000" />
+      <workItem from="1725371559013" duration="3109000" />
+      <workItem from="1725678039343" duration="121000" />
+      <workItem from="1725678168275" duration="1001000" />
+      <workItem from="1725679184764" duration="155000" />
+      <workItem from="1725679349523" duration="12170000" />
+      <workItem from="1725799281273" duration="1941000" />
+      <workItem from="1725807945612" duration="3000" />
+      <workItem from="1726067469411" duration="4770000" />
+      <workItem from="1726383219937" duration="23399000" />
+      <workItem from="1726460024053" duration="4313000" />
+      <workItem from="1726668967935" duration="4000" />
+      <workItem from="1726748333717" duration="763000" />
+      <workItem from="1726749505978" duration="1547000" />
+      <workItem from="1726756801114" duration="698000" />
+      <workItem from="1726989582900" duration="13902000" />
+      <workItem from="1727863964890" duration="8845000" />
+      <workItem from="1727955901399" duration="3623000" />
+      <workItem from="1728133281574" duration="679000" />
+      <workItem from="1730544286440" duration="383000" />
+      <workItem from="1734014538505" duration="8000" />
+      <workItem from="1734770824050" duration="182000" />
+      <workItem from="1734771018185" duration="237000" />
+      <workItem from="1740725115705" duration="123000" />
+      <workItem from="1740725242902" duration="1348000" />
+      <workItem from="1740726597464" duration="192000" />
+      <workItem from="1740726795203" duration="77000" />
+      <workItem from="1740726881249" duration="1966000" />
+      <workItem from="1740729231686" duration="30000" />
+      <workItem from="1740729265209" duration="36000" />
+      <workItem from="1740729305611" duration="680000" />
+      <workItem from="1740729994757" duration="2424000" />
+      <workItem from="1740732425276" duration="341000" />
+      <workItem from="1740732770624" duration="92000" />
+      <workItem from="1740732867889" duration="243000" />
+      <workItem from="1740733117270" duration="139000" />
+      <workItem from="1740733563261" duration="17226000" />
+      <workItem from="1740812391174" duration="9989000" />
+      <workItem from="1740822858208" duration="9597000" />
+      <workItem from="1740832470644" duration="20310000" />
+      <workItem from="1740854215537" duration="10728000" />
     </task>
     <task id="LOCAL-00001" summary="taboolib init">
       <option name="closed" value="true" />
@@ -466,7 +526,15 @@
       <option name="project" value="LOCAL" />
       <updated>1724823649217</updated>
     </task>
-    <option name="localTasksCounter" value="16" />
+    <task id="LOCAL-00016" summary="新增 - default.zombie_guard_shield&#10;新增 - 粒子效果 DSL&#10;调整 - placeBlock() 的编写位置&#10;调整 - DSL 结构&#10;修复 - 等级无法自动补全&#10;TODO - placeBlock() 会意外多产生一个计时器">
+      <option name="closed" value="true" />
+      <created>1724950345203</created>
+      <option name="number" value="00016" />
+      <option name="presentableId" value="LOCAL-00016" />
+      <option name="project" value="LOCAL" />
+      <updated>1724950345203</updated>
+    </task>
+    <option name="localTasksCounter" value="17" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -518,7 +586,11 @@
     <MESSAGE value="调整 - 又修改了 DSL 格式" />
     <MESSAGE value="调整 - 修改 DSL 格式" />
     <MESSAGE value="调整 - 修改 README" />
-    <option name="LAST_COMMIT_MESSAGE" value="调整 - 修改 README" />
+    <MESSAGE value="新增 - default.zombie_guard_shield&#10;新增 - 粒子效果 DSL&#10;调整 - placeBlock() 的编写位置&#10;调整 - DSL 结构&#10;修复 - 等级无法自动补全&#10;TODO - placeBlock() 会意外多产生一个计时器" />
+    <MESSAGE value="- 新增了韧性条机制&#10;- 大幅重构了代码" />
+    <option name="LAST_COMMIT_MESSAGE" value="- 新增了韧性条机制&#10;- 大幅重构了代码" />
+    <option name="OPTIMIZE_IMPORTS_BEFORE_PROJECT_COMMIT" value="true" />
+    <option name="REARRANGE_BEFORE_PROJECT_COMMIT" value="true" />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />

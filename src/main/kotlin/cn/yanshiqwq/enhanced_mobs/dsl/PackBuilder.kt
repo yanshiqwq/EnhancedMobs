@@ -1,6 +1,8 @@
 package cn.yanshiqwq.enhanced_mobs.dsl
 
-import cn.yanshiqwq.enhanced_mobs.*
+import cn.yanshiqwq.enhanced_mobs.EnhancedMob
+import cn.yanshiqwq.enhanced_mobs.EnhancedMobType
+import cn.yanshiqwq.enhanced_mobs.Pack
 import org.bukkit.entity.EntityType
 
 /**
@@ -35,7 +37,7 @@ class PackBuilder(
         }
     }
     
-    private val types: HashSet<EnhancedMobType> = hashSetOf()
+    private val types: HashMap<String, EnhancedMobType> = hashMapOf()
     
     /**
      * 构建并返回一个数据包实例
@@ -44,7 +46,7 @@ class PackBuilder(
      * @throws NullPointerException 如果包的 id 为空，则抛出异常
      */
     fun build(): Pack {
-        if (id == "") throw NullPointerException("Pack id must not be empty")
+        if (id == "") throw NullPointerException("Pack id should not be empty")
         return Pack(id, description, types)
     }
     
@@ -56,5 +58,5 @@ class PackBuilder(
      * @param block 用于配置怪物实例
      */
     fun type(type: EntityType, id: String, block: EnhancedMob.() -> Unit) =
-        types.add(EnhancedMobType(id, type, block))
+        types.put(id, EnhancedMobType(type, block))
 }

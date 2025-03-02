@@ -1,10 +1,8 @@
 package cn.yanshiqwq.enhanced_mobs.config
 
 import cn.yanshiqwq.enhanced_mobs.Main
-import com.github.keelar.exprk.Expressions
-import org.bukkit.attribute.Attributable
-import org.bukkit.attribute.Attribute
 import taboolib.common.platform.function.info
+import taboolib.module.chat.colored
 import taboolib.module.configuration.ConfigFile
 
 /**
@@ -14,74 +12,31 @@ import taboolib.module.configuration.ConfigFile
  * @author yanshiqwq
  * @since 2024/8/22 下午 9:08
  */
-object ConfigV1: AbstractConfig(Main.configFile) {
+object ConfigV1 {
     private val config: ConfigFile = Main.configFile
-    var loadBuiltinPacks: Boolean = config.getBoolean("loadBuiltinPacks", true)
-    var levelRange: IntRange = runCatching {
-        val rangeStr = config.getString("levelRange")!!
-        val start = rangeStr.substringBefore("..").toInt()
-        val end = rangeStr.substringAfter("..").toInt()
+    val loadBuiltinPacks: Boolean = config.getBoolean("load_built_in_packs", true)
+    val levelFormula: String = config.getString(
+        "level_formula",
+        "{vertical_coeff} * sqrt(abs({y} - 64)) + {horizontal_coeff} * ln(sqrt(pow({x}, 2) + pow({z}, 2)) + 1)"
+    )!!
+    val coeff: Pair<Int, Int> = Pair(
+        config.getInt("coeff.vertical", 6),
+        config.getInt("coeff.horizontal", 2)
+    )
+    val levelRange: IntRange = runCatching {
+        val start = config.getInt("level_range.min", 1)
+        val end = config.getInt("level_range.max", 95)
         return@runCatching start .. end
-    }.getOrDefault(1 .. 99)
-    var customName: String = config.getString("customName", "&7[%sLv.%d&7] %s")!!
-    val levelFormula: LevelFormula by lazy { // TODO
-        LevelFormula(
-            config.getString("levelFormula.maxHealth") ?: "base * 1.025 ^ (level - 20)",
-            config.getString("levelFormula.armor") ?: "base + level * 0.08",
-            config.getString("levelFormula.attackDamage") ?: "base * 1.025 ^ (level - 30)",
-            config.getString("levelFormula.movementSpeed") ?: """
-                if (level <= 65) then
-                    base
-                else if (level <= 77) then
-                    1.1 * base
-                else if (level <= 85) then
-                    1.2 * base
-                else
-                    1.32 * base
-            """.trimIndent(),
-            config.getString("levelFormula.attackKnockback") ?: """
-                if (level <= 65) then
-                    base
-                else if (level <= 77) then
-                    base + 0.35
-                else if (level <= 85) then
-                    base + 0.85
-                else
-                    base + 1.5
-            """.trimIndent(),
-            config.getString("levelFormula.knockbackResistance") ?: "base + level * 0.35"
-        )
-    }
-    
-    data class LevelFormula(
-        val maxHealth: String,
-        val armor: String,
-        val attackDamage: String,
-        val movementSpeed: String,
-        val attackKnockback: String,
-        val knockbackResistance: String
-    ) {
-        fun apply(entity: Attributable, level: Int) = mapOf(
-            Attribute.GENERIC_MAX_HEALTH to maxHealth,
-            Attribute.GENERIC_ATTACK_DAMAGE to attackDamage,
-            Attribute.GENERIC_MOVEMENT_SPEED to movementSpeed,
-            Attribute.GENERIC_KNOCKBACK_RESISTANCE to knockbackResistance
-        ).forEach { (attribute, expression) ->
-            entity.getAttribute(attribute)?.run {
-                baseValue = Expressions()
-                    .define("base", baseValue)
-                    .define("level", level.toBigDecimal())
-                    .eval(expression)
-                    .toDouble()
-            }
-        }
-    }
+    }.getOrDefault(1 .. 95)
+    val namePrefix: String = config.getString(
+        "name_prefix",
+        "&7[%sLv.%d&7] "
+    )!!
     
     init {
         info("Config initialized!")
-        info("  - configVersion = $configVersion")
-        info("  - loadBuiltInPacks = $loadBuiltinPacks")
-        info("  - levelRange = \"$levelRange\"")
-        info("  - customName = \"$customName\"")
+        info("  - load_built_in_packs = $loadBuiltinPacks")
+        info("  - level_range = \"$levelRange\"")
+        info("  - name_prefix = \"${namePrefix.colored()}\"")
     }
 }

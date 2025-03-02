@@ -21,29 +21,13 @@ import java.io.Closeable
  * @property eventClass 事件的类类型
  * @property priority 事件监听器的优先级
  * @property ignoreCancelled 是否忽略已取消的事件
- * @sample ListenerBuilder(EntityDeathEvent::class.java)
+ * @sample EntityEventListenerBuilder(EntityDeathEvent::class.java)
  */
-class ListenerBuilder<T: EntityEvent>(
+class EntityEventListenerBuilder<T: EntityEvent>(
     private val eventClass: Class<T>,
     private val priority: EventPriority = EventPriority.NORMAL,
     private val ignoreCancelled: Boolean = true
-): EventBuilder<T>() {
-    
-    fun judge(condition: T.() -> Boolean) =
-        conditions.add(condition)
-    
-    fun execute(block: T.() -> Unit) {
-        executor = block
-    }
-    
-    fun failed(block: T.() -> Unit) {
-        failed = block
-    }
-    
-    private var event: Closeable? = null
-    
-    fun close() = event?.close()
-    
+): EventBuilder() {
     /**
      * 构建并注册事件监听器
      *
@@ -54,14 +38,12 @@ class ListenerBuilder<T: EntityEvent>(
      */
     fun build(
         entity: LivingEntity,
+        block: Closeable.(T) -> Unit,
         criteria: T.() -> Entity = { this.entity }
     ) = registerBukkitListener(eventClass, priority, ignoreCancelled) { event ->
         // 检查事件实体是否与当前实体相同
         val criteriaEntity = criteria.invoke(event)
         if (criteriaEntity.uniqueId != entity.uniqueId) return@registerBukkitListener
-        
-        this@ListenerBuilder.event = this
-        
-        checkAndExecute(entity, event) { close() }
+        checkAndExecute(entity, this, event, block) { close() }
     }
 }

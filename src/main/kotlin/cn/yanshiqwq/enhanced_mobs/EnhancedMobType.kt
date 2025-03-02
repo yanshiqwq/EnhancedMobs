@@ -1,5 +1,6 @@
 package cn.yanshiqwq.enhanced_mobs
 
+import cn.yanshiqwq.enhanced_mobs.manager.MobTypeManager
 import org.bukkit.Location
 import org.bukkit.entity.EntityType
 import org.bukkit.entity.Mob
@@ -14,13 +15,11 @@ import org.bukkit.entity.Mob
 /**
  * 怪物类型
  *
- * @property id 怪物类型的唯一标识符
  * @property type 生物类型
  * @see EntityType
  * @property block 用于在创建生物时配置其属性的配置块
  */
 data class EnhancedMobType(
-    val id: String,
     val type: EntityType,
     val block: EnhancedMob.() -> Unit
 ) {
@@ -33,10 +32,11 @@ data class EnhancedMobType(
      * @throws NullPointerException 如果指定位置的世界不存在
      * @throws ClassCastException 如果要生成的实体不是生物类型
      */
-    fun spawn(loc: Location, level: Int): EnhancedMob {
+    fun spawn(loc: Location, level: Int, levelCurve: String): EnhancedMob {
         val world = loc.world ?: throw NullPointerException("The specified location's world is null: $loc")
         val entity = world.spawnEntity(loc, type) as? Mob
                      ?: throw ClassCastException("The provided type must be a subclass of Mob: $type")
-        return EnhancedMob.build(entity, this, level)
+        val typeId = MobTypeManager.getKey(this)
+        return EnhancedMob.buildMob(entity, typeId, level, levelCurve)
     }
 }

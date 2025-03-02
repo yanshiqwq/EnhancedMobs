@@ -12,50 +12,53 @@ import org.bukkit.event.entity.EntityDamageByEntityEvent
  * @since 2024/8/26 下午 7:47
  */
 /**
- * 抽象类，用于构建事件处理逻辑
- *
- * @param T 事件处理逻辑的类型
+ * 构建事件处理逻辑
  */
-abstract class EventBuilder<T>: EntityHandler<T>, ConditionHandler<T>, CooldownHandler {
+abstract class EventBuilder: EntityHandler, CooldownHandler {
     override var runAfterEntityDead: Boolean = false
     override var cooldown: CooldownTimer? = null
-    override val conditions = hashSetOf<T.() -> Boolean>()
     
-    /**
-     * 条件判断成功时要执行的操作
-     */
-    protected var executor: T.() -> Unit = {}
+    protected inline fun <T, R> checkAndExecute(
+        entity: LivingEntity,
+        context: T,
+        value: R,
+        executor: T.(R) -> Unit,
+        canceller: () -> Unit
+    ) = checkAndExecute(entity, canceller) {
+        executor.invoke(context, value)
+    }
     
-    /**
-     * 条件判断失败时要执行的操作
-     */
-    protected var failed: T.() -> Unit = {}
+    protected inline fun <T> checkAndExecute(
+        entity: LivingEntity,
+        context: T,
+        executor: T.() -> Unit,
+        canceller: () -> Unit
+    ) = checkAndExecute(entity, canceller) {
+        executor.invoke(context)
+    }
     
     /**
      * 检查条件并执行事件
      *
      * @param entity 事件相关的实体
-     * @param context 事件上下文
-     * @param onCancel 取消事件时的回调
+     * @param executor 事件执行器
+     * @param canceller 事件取消器
      */
-    protected fun checkAndExecute(
+    protected inline fun checkAndExecute(
         entity: LivingEntity,
-        context: T,
-        onCancel: () -> Unit
+        canceller: () -> Unit,
+        executor: () -> Unit
     ) {
         // 实体检测不通过则取消事件
         if (!checkIfValid(entity) || checkIfDead(entity)) {
-            onCancel.invoke()
+            canceller.invoke()
             return
         }
         
+        // 未冷却完毕则不执行
         if (!checkIfCooldownFinished()) return
         
-        if (!checkCondition(context)) {
-            failed.invoke(context)
-        } else {
-            executor.invoke(context)
-        }
+        executor.invoke()
     }
     
     @Suppress("UNCHECKED_CAST")
